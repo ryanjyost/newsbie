@@ -162,6 +162,39 @@ class App extends Component {
     let articleWidth = 300;
     let articleMargin = 10;
 
+    const Arrow = ({ direction }) => {
+      let isLeft = direction === "left";
+      return (
+        <div
+          style={{
+            height: 40,
+            width: 40,
+            // backgroundColor: "rgba(255, 255, 255, 0.2)",
+            display: "flex",
+            // alignItems: "center",
+            justifyContent: "center",
+            top: "50%",
+            // bottom: "-8px",
+            left: isLeft ? "2px" : "",
+            right: isLeft ? "" : "2px",
+            transform: "translateY(-50%)",
+            position: "absolute",
+            zIndex: 1,
+            borderRadius: 9999,
+            boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)",
+            border: "1px solid rgba(0, 0, 0, 0.1)",
+            fontSize: 24,
+            // color: "rgba(255, 255, 255, 0.4)",
+            lineHeight: "37px",
+            cursor: "pointer"
+          }}
+          className={"navArrow"}
+        >
+          {isLeft ? <spa>&lsaquo;</spa> : <spa>&rsaquo;</spa>}
+        </div>
+      );
+    };
+
     const FrontPages = () => {
       return (
         <div
@@ -173,27 +206,23 @@ class App extends Component {
             height: imageWidth,
             overflowX: "auto",
             backgroundColor: "rgba(255, 255, 255, 0.03)",
-            borderTop: "2px solid rgba(255, 255, 255, 0.05)",
-            padding: "20px 0px"
+            borderTop: "5px solid rgba(255, 255, 255, 0.05)",
+            padding: "50px 20px 35px 20px",
+            position: "relative"
           }}
         >
           {this.state.records.length
             ? this.state.records.map((record, i) => {
                 return (
-                  <div>
-                    <a
-                      href={record.site.url}
-                      style={{
-                        textAlign: "center",
-                        marginBottom: 15,
-                        color: "rgba(255, 255, 255, 0.2)",
-                        fontWeight: "300",
-                        display: "block",
-                        textDecoration: "none"
-                      }}
-                    >
-                      {record.site.title}
-                    </a>
+                  <div
+                    key={i}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexDirection: "column"
+                    }}
+                  >
                     <Site
                       key={i}
                       index={i}
@@ -201,18 +230,65 @@ class App extends Component {
                       siteMargin={30}
                       imageWidth={imageWidth - 50}
                     />
+
+                    <a
+                      href={record.site.url}
+                      className={"siteLink"}
+                      style={{
+                        textAlign: "left",
+                        marginTop: 25,
+                        fontWeight: "300",
+                        display: "inline-block",
+                        textDecoration: "none",
+                        marginLeft: 5,
+                        padding: "5px 12px",
+                        borderRadius: "50px",
+                        fontSize: 12,
+                        letterSpacing: "0.03em"
+                      }}
+                    >
+                      {record.site.title}
+                    </a>
                   </div>
                 );
               })
             : this.state.sites.map((site, i) => {
                 return (
-                  <Site
+                  <div
                     key={i}
-                    index={i}
-                    record={null}
-                    siteMargin={30}
-                    imageWidth={imageWidth - 50}
-                  />
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexDirection: "column"
+                    }}
+                  >
+                    <Site
+                      key={i}
+                      index={i}
+                      record={null}
+                      siteMargin={30}
+                      imageWidth={imageWidth - 50}
+                    />
+
+                    <a
+                      href={""}
+                      className={"siteLink"}
+                      style={{
+                        textAlign: "left",
+                        marginTop: 15,
+                        fontWeight: "300",
+                        display: "inline-block",
+                        textDecoration: "none",
+                        marginLeft: 5,
+                        padding: "5px 12px",
+                        borderRadius: "50px",
+                        fontSize: 12,
+                        letterSpacing: "0.03em",
+                        width: 50
+                      }}
+                    />
+                  </div>
                 );
               })}
         </div>
@@ -301,14 +377,69 @@ class App extends Component {
       );
     };
 
+    const SectionTitle = ({ title, description }) => {
+      return (
+        <div
+          style={{
+            margin: "20px",
+            marginTop: 50
+            // display: "inline-block",
+            // backgroundColor: "rgba(255, 255, 255, 0.3)",
+            // boxShadow:
+            //   "0 1px 3px rgba(255,255,255,0.08), 0 1px 2px rgba(255,255,255,0.12)"
+          }}
+        >
+          <h2
+            style={{
+              textAlign: "left",
+              margin: "0px",
+              marginBottom: 2,
+              color: "#2EB6F6",
+              fontWeight: "400",
+              letterSpacing: "0.05em"
+            }}
+          >
+            {title}
+          </h2>
+          <p
+            style={{
+              textAlign: "left",
+              margin: "0px",
+              color: "rgba(255, 255, 255, 0.5)",
+              fontWeight: "400",
+              letterSpacing: "0.05em",
+              fontSize: 14,
+              paddingLeft: 3
+            }}
+          >
+            {description}
+          </p>
+        </div>
+      );
+    };
+
     return (
       <div className="main" style={{ maxWidth: "100%", overflowX: "hidden" }}>
-        <h4 style={{ textAlign: "center" }}>Front Pages</h4>
-        <FrontPages />
+        <div style={{ height: 40 }}>menu</div>
+        <SectionTitle
+          title={"FRONT PAGES"}
+          description={
+            "Start out with a bird's eye view of popular news sites. "
+          }
+        />
 
-        <h4 style={{ textAlign: "center" }}>
-          Here are the most common words and phrases
-        </h4>
+        <div style={{ position: "relative" }}>
+          <Arrow direction={"left"} />
+          <FrontPages />
+          <Arrow direction={"right"} />
+        </div>
+
+        <SectionTitle
+          title={"Common Words"}
+          description={
+            "Start out with a bird's eye view of popular news sites, from a diverse range of sources."
+          }
+        />
         <Tags />
 
         <h4 style={{ textAlign: "center" }}>
