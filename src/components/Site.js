@@ -56,18 +56,19 @@ export default class Site extends Component {
               rel="noreferrer"
               key={index}
               style={{
-                margin: siteMargin - 1,
+                marginRight: siteMargin - 1,
+                marginRight: siteMargin - 1,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 height: imageWidth,
                 // border: "3px solid #e5e5e5",
                 width: imageWidth,
-                backgroundColor: "#f2f2f2",
+                backgroundColor: "rgba(255, 255, 255, 0.3)",
                 position: "relative",
                 //border: "2px solid rgba(0,0,0,0.1)"
                 boxShadow:
-                  "0 10px 20px rgba(255,255,255,0.10), 0 6px 6px rgba(255,255,255,0.20)"
+                  "0 1px 3px rgba(255,255,255,0.08), 0 1px 2px rgba(255,255,255,0.12)"
                 // filter: `blur(${style.imageOpacity * 2}px)`,
                 // WebkitFilter: `blur(${style.imageOpacity * 2}px)`
               }}

@@ -180,13 +180,28 @@ class App extends Component {
           {this.state.records.length
             ? this.state.records.map((record, i) => {
                 return (
-                  <Site
-                    key={i}
-                    index={i}
-                    record={record}
-                    siteMargin={30}
-                    imageWidth={imageWidth - 50}
-                  />
+                  <div>
+                    <a
+                      href={record.site.url}
+                      style={{
+                        textAlign: "center",
+                        marginBottom: 15,
+                        color: "rgba(255, 255, 255, 0.2)",
+                        fontWeight: "300",
+                        display: "block",
+                        textDecoration: "none"
+                      }}
+                    >
+                      {record.site.title}
+                    </a>
+                    <Site
+                      key={i}
+                      index={i}
+                      record={record}
+                      siteMargin={30}
+                      imageWidth={imageWidth - 50}
+                    />
+                  </div>
                 );
               })
             : this.state.sites.map((site, i) => {
