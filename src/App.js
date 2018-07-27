@@ -103,7 +103,7 @@ class App extends Component {
       });
 
     axios
-      .get("http://localhost:8000/today")
+      .get("https://birds-eye-news-api.herokuapp.com/today")
       .then(res => {
         let currentNews = shuffle(res.data.politicsArticles).slice(0, 50);
 
