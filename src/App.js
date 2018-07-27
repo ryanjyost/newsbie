@@ -7,6 +7,8 @@ import $ from "jquery";
 import { Icon } from "react-icons-kit";
 import Site from "./components/Site";
 import Article from "./components/Article";
+import { OverlayTrigger, Popover, Button } from "react-bootstrap";
+import Tag from "./components/Tag";
 
 class App extends Component {
   constructor(props) {
@@ -70,6 +72,14 @@ class App extends Component {
   }
 
   componentDidMount() {
+    let tagPlaceholders = [];
+
+    for (let i = 1; i <= 30; i++) {
+      tagPlaceholders.push(null);
+    }
+
+    this.setState({ topTags: tagPlaceholders });
+
     this.updateDimensions();
 
     axios
@@ -95,8 +105,13 @@ class App extends Component {
     axios
       .get("http://localhost:8000/today")
       .then(res => {
-        let currentNews = shuffle(res.data.politicsArticles).slice(0, 10);
-        let currentOpinions = shuffle(res.data.opinionArticles).slice(0, 10);
+        let currentNews = shuffle(res.data.politicsArticles).slice(0, 50);
+
+        let filteredOpinions = res.data.opinionArticles.filter(article => {
+          return article.site.name.toLowerCase() !== "cbsnews";
+        });
+
+        let currentOpinions = shuffle(filteredOpinions).slice(0, 50);
 
         this.setState({
           sites: res.data.sites,
@@ -108,21 +123,6 @@ class App extends Component {
         });
       })
       .catch(err => console.log(err));
-
-    $.ajax({
-      type: "POST",
-      url:
-        "https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=trump&prop=info&inprop=url&utf8=&format=json",
-      dataType: "jsonp",
-      contentType: "application/x-www-form-urlencoded",
-      crossDomain: true,
-      success: function(data) {
-        console.log("Data", data);
-      },
-      error: function(jqXhr, textStatus, errorThrown) {
-        console.log(errorThrown);
-      }
-    });
 
     window.addEventListener(
       "resize",
@@ -157,12 +157,14 @@ class App extends Component {
 
   render() {
     const { screenWidth, screenHeight, records } = this.state;
-    let imageWidth = Math.min(screenWidth, 500);
+    let imageWidth = Math.min(screenWidth, 400);
 
     let articleWidth = 300;
     let articleMargin = 10;
 
-    const Arrow = ({ direction }) => {
+    let isWide = screenWidth > 768;
+
+    const Arrow = ({ direction, handleClick }) => {
       let isLeft = direction === "left";
       return (
         <div
@@ -189,8 +191,9 @@ class App extends Component {
             cursor: "pointer"
           }}
           className={"navArrow"}
+          // onClick={() => handleClick()}
         >
-          {isLeft ? <spa>&lsaquo;</spa> : <spa>&rsaquo;</spa>}
+          {isLeft ? <span>&lsaquo;</span> : <span>&rsaquo;</span>}
         </div>
       );
     };
@@ -200,13 +203,14 @@ class App extends Component {
         <div
           className={"horzRow"}
           style={{
+            borderRadius: 5,
             display: "flex",
             flexDirection: "column",
             flexWrap: "wrap",
             height: imageWidth,
             overflowX: "auto",
-            backgroundColor: "rgba(255, 255, 255, 0.03)",
-            borderTop: "5px solid rgba(255, 255, 255, 0.05)",
+            backgroundColor: "rgba(255, 255, 255, 0.05)",
+            // borderTop: "5px solid rgba(255, 255, 255, 0.01)",
             padding: "50px 20px 35px 20px",
             position: "relative"
           }}
@@ -233,7 +237,7 @@ class App extends Component {
 
                     <a
                       href={record.site.url}
-                      className={"siteLink"}
+                      className={"hoverBtn"}
                       style={{
                         textAlign: "left",
                         marginTop: 25,
@@ -273,7 +277,7 @@ class App extends Component {
 
                     <a
                       href={""}
-                      className={"siteLink"}
+                      className={"hoverBtn"}
                       style={{
                         textAlign: "left",
                         marginTop: 15,
@@ -313,43 +317,31 @@ class App extends Component {
             }}
           >
             {this.state.topTags.map((tag, i) => {
-              return (
-                <div
-                  key={i}
-                  style={{
-                    border: "1px solid #d8d8d8",
-                    fontSize: "18px",
-                    margin: "5px 5px",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    padding: "3px 5px",
-                    backgroundColor: "rgba(255,255,255,0.9)"
-                    // flex: "1 1 80px"
-                  }}
-                >
-                  {tag.term}
-                </div>
-              );
+              return <Tag key={i} tag={tag} />;
             })}
           </div>
         </div>
       );
     };
 
-    const News = () => {
+    const ArticleList = ({ list }) => {
       return (
         <div
           style={{
+            borderRadius: 5,
             display: "flex",
             flexDirection: "column",
             flexWrap: "wrap",
             height: articleWidth,
             overflowX: "auto",
-            backgroundColor: "#fafafa"
+            backgroundColor: "rgba(255, 255, 255, 0.5)",
+            // borderTop: "5px solid rgba(255, 255, 255, 0.01)",
+            padding: "30px 20px 20px 20px",
+            position: "relative"
           }}
         >
-          {this.state.currentNews.length
-            ? this.state.currentNews.map((article, i) => {
+          {list.length
+            ? list.map((article, i) => {
                 return (
                   <Article
                     key={i}
@@ -360,24 +352,26 @@ class App extends Component {
                   />
                 );
               })
-            : [1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((article, i) => {
-                return (
-                  <div
-                    key={i}
-                    style={{
-                      height: articleWidth,
-                      width: articleWidth,
-                      backgroundColor: "red",
-                      margin: articleMargin
-                    }}
-                  />
-                );
-              })}
+            : [null, null, null, null, null, null, null, null, null, null].map(
+                (article, i) => {
+                  return (
+                    <div
+                      key={i}
+                      style={{
+                        height: articleWidth,
+                        width: articleWidth,
+                        backgroundColor: "rgba(255, 255, 255, 0.1)",
+                        margin: articleMargin
+                      }}
+                    />
+                  );
+                }
+              )}
         </div>
       );
     };
 
-    const SectionTitle = ({ title, description }) => {
+    const SectionTitle = ({ title, description, num }) => {
       return (
         <div
           style={{
@@ -389,79 +383,157 @@ class App extends Component {
             //   "0 1px 3px rgba(255,255,255,0.08), 0 1px 2px rgba(255,255,255,0.12)"
           }}
         >
-          <h2
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <div
+              style={{
+                backgroundColor: "rgba(255,255,255,0.1)",
+                marginRight: 10,
+                height: 40,
+                width: 40,
+                borderRadius: 40,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 20,
+                color: "rgba(255, 255, 255, 0.8)"
+              }}
+            >
+              {num}
+            </div>
+            <h2
+              style={{
+                textAlign: "left",
+                margin: "0px",
+                marginBottom: 4,
+                color: "rgba(46, 228, 246, 1)",
+                fontWeight: "400",
+                letterSpacing: "0.05em"
+              }}
+            >
+              {title}
+            </h2>
+          </div>
+          <div
             style={{
               textAlign: "left",
               margin: "0px",
-              marginBottom: 2,
-              color: "#2EB6F6",
-              fontWeight: "400",
-              letterSpacing: "0.05em"
-            }}
-          >
-            {title}
-          </h2>
-          <p
-            style={{
-              textAlign: "left",
-              margin: "0px",
-              color: "rgba(255, 255, 255, 0.5)",
+              color: "rgba(255, 255, 255, 0.6)",
               fontWeight: "400",
               letterSpacing: "0.05em",
               fontSize: 14,
-              paddingLeft: 3
+              padding: "0px 10px 0px 50px",
+              lineHeight: 1.3
             }}
           >
             {description}
-          </p>
+          </div>
         </div>
       );
     };
 
+    // TODO WANT MORE? LOOK AT PENNYBOX
+
     return (
-      <div className="main" style={{ maxWidth: "100%", overflowX: "hidden" }}>
-        <div style={{ height: 40 }}>menu</div>
-        <SectionTitle
-          title={"FRONT PAGES"}
-          description={
-            "Start out with a bird's eye view of popular news sites. "
-          }
-        />
-
-        <div style={{ position: "relative" }}>
-          <Arrow direction={"left"} />
-          <FrontPages />
-          <Arrow direction={"right"} />
-        </div>
-
-        <SectionTitle
-          title={"Common Words"}
-          description={
-            "Start out with a bird's eye view of popular news sites, from a diverse range of sources."
-          }
-        />
-        <Tags />
-
-        <h4 style={{ textAlign: "center" }}>
-          Here are recent news articles, shuffled and ready to peruse.
-        </h4>
-        <News />
-
-        <h4 style={{ textAlign: "center" }}>
-          Here are recent opinion pieces, shuffled and ready to peruse.
-        </h4>
+      <div style={{ paddingBottom: "100px" }}>
         <div
           style={{
-            display: "flex",
+            height: 50,
+            backgroundColor: "rgba(33, 58, 73, 1)",
+            borderBottom: "2px solid rgba(255, 255," + " 255, 0.2)",
             width: "100%",
-            flexWrap: "wrap",
+            display: "flex",
             alignItems: "center",
-            justifyContent: "center"
+            justifyContent: "space-between",
+            letterSpacing: "0.03em",
+            position: "fixed",
+            top: 0,
+            zIndex: 10
           }}
         >
-          {this.state.currentOpinions.map((article, i) => {
-            return <div key={i}>{article.title}</div>;
-          })}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between"
+            }}
+          >
+            <h3 style={{ color: "rgba(255, 255, 255, 0.8)", marginLeft: 30 }}>
+              newsbie<span style={{ color: "rgba(255, 255, 255, 0.4)" }}>
+                .io
+              </span>
+            </h3>
+          </div>
+          <div
+            style={{
+              backgroundColor: "rgba(46, 228, 246, 0.6)",
+              marginRight: 30,
+              padding: "5px 15px",
+              fontSize: 14,
+              fontWeight: "600",
+              color: "#fff",
+              borderRadius: 9999
+            }}
+            className={"cta"}
+          >
+            {screenWidth > 500 ? "Graduate to News Junkie" : "Sign Up"}
+          </div>
+        </div>
+        <div
+          className="main"
+          style={{
+            maxWidth: "100%",
+            overflowX: "hidden",
+            margin: "50px 10px 0px 10px"
+          }}
+        >
+          <SectionTitle
+            num={1}
+            title={"Front Pages"}
+            description={
+              "Start out with a bird's eye view of a diverse range of news sources. Get a feel for what's being" +
+              " covered. "
+            }
+          />
+          <div style={{ position: "relative" }}>
+            <Arrow direction={"left"} />
+            <FrontPages />
+            <Arrow direction={"right"} />
+          </div>
+
+          <SectionTitle
+            num={2}
+            title={"Buzzwords"}
+            description={
+              this.state.opinionArticles.length
+                ? `Explore the most common words and phrases found in ${
+                    this.state.opinionArticles.length &&
+                    this.state.politicsArticles.length
+                      ? this.state.opinionArticles.length +
+                        this.state.politicsArticles.length
+                      : ""
+                  } recent article titles ${
+                    this.state.sites.length ? "from" : ""
+                  } ${this.state.sites.length ? this.state.sites.length : ""}${
+                    this.state.sites.length ? " sources" : ""
+                  }. ${isWide ? "Hover" : "Click"} to learn more.`
+                : ""
+            }
+          />
+          <Tags />
+
+          <SectionTitle num={3} title={"News Articles"} description={""} />
+          <div style={{ position: "relative" }}>
+            <Arrow direction={"left"} />
+            <ArticleList list={this.state.currentNews} />
+            <Arrow direction={"right"} />
+          </div>
+
+          <SectionTitle num={4} title={"Opinion Pieces"} description={""} />
+          <div style={{ position: "relative" }}>
+            <Arrow direction={"left"} />
+            <ArticleList list={this.state.currentOpinions} />
+            <Arrow direction={"right"} />
+          </div>
         </div>
       </div>
     );

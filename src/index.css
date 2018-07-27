@@ -1,8 +1,12 @@
+#_test {
+  color: #527991
+}
+
 body {
-  margin: 0;
+  margin: 0px 0px;
   padding: 0;
   font: 16px/1.2 -apple-system, BlinkMacSystemFont, “Segoe UI”, Roboto, Helvetica, Arial, sans-serif;
-  background-color: rgba(9, 25, 39, 1);
+  background-color: rgba(33, 58, 73, 1);
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -12,7 +16,10 @@ body {
 }
 
 @media(min-width: 769px) {
-  body {font-family: 'Source Sans Pro', sans-serif;}
+  body {
+    font-family: 'Source Sans Pro', sans-serif;
+    /*margin: 0px 10px;*/
+  }
 }
 
 .singleFeed {
@@ -25,27 +32,27 @@ body {
   -webkit-overflow-scrolling: touch !important;
 }
 
-::-webkit-scrollbar  {
+body::-webkit-scrollbar  {
   width: 10px;
   /*background-color: rgba(255, 255, 255, 0.03) !important;*/
   height: 10px;
 }
 
 /* Track */
- ::-webkit-scrollbar-track {
-  background-color: rgba(255, 255, 255, 0.04);
+body::-webkit-scrollbar-track {
+  background-color: rgba(255, 255, 255, 0.2);
   height: 5px
 }
 
 /* Handle */
-::-webkit-scrollbar-thumb {
-  background-color: rgba(9, 25, 39, 0.5);
-  border-radius: 50px;
+body::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 0px;
 }
 
 /* Handle on hover */
- ::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.4);
+body::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.40);
 }
 
 
@@ -63,32 +70,90 @@ body {
 
 /* Handle */
 .horzRow::-webkit-scrollbar-thumb, ::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: rgba(46, 228, 246, 0.3);
   border-radius: 50px;
 }
 
 /* Handle on hover */
 .horzRow::-webkit-scrollbar-thumb:hover, ::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(46, 228, 246, 0.6);
 }
 
-.siteLink{
-  color: rgba(255, 255, 255, 0.25);
+.hoverBtn{
+  color: rgba(255, 255, 255, 0.4);
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.siteLink:hover{
-  color: rgba(255, 255, 255, 0.5);
-  background-color: rgba(255, 255, 255, 0.2)
+.hoverBtn:hover{
+  color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
 }
+
 
 
 .navArrow{
   color: rgba(0, 0, 0, 0.4);
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .navArrow:hover{
   color: rgba(0, 0, 0, 0.6);
-  background-color: rgba(255, 255, 255, 0.8)
+  background-color: rgba(255, 255, 255, 1)
+}
+
+.noScrollBar::-webkit-scrollbar {
+  background-color: transparent !important;
+  color: transparent !important;
+  width: 0px !important;
+}
+
+.noScrollBar::-webkit-scrollbar-track {
+  background-color: transparent !important;
+  height: 5px
+}
+
+/* Handle */
+.noScrollBar::-webkit-scrollbar-thumb {
+  background-color: transparent !important;
+}
+
+/* Handle on hover */
+.noScrollBar::-webkit-scrollbar-thumb:hover {
+  background-color: transparent !important;
+}
+
+.wikiResultLink {
+  color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(255, 255, 255, 0);
+  text-decoration: none;
+}
+
+.wikiResultLink:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.2);
+  text-decoration: none;
+}
+
+.article {
+   background-color: rgba(0,0,0,0.5);
+ }
+
+.article:hover {
+  background-color: rgba(0,0,0,0.2);
+}
+
+.noTextDecoration {
+  text-decoration: none !important;
+}
+
+
+.cta {
+  box-shadow: 0 1px 3px rgba(255, 255, 255, 0.12), 0 1px 2px rgba(255, 255, 255, 0.24);
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+}
+
+.cta:hover {
+  box-shadow: 0 2px 6px rgba(255,255,255,0.25), 0 2px 4px rgba(255,255,255,0.22);
+  cursor: pointer;
 }
