@@ -38,6 +38,13 @@ body::-webkit-scrollbar  {
   height: 10px;
 }
 
+@media(min-width: 769px) {
+  body::-webkit-scrollbar  {
+    width: 0px;
+    display:none;
+  }
+}
+
 /* Track */
 body::-webkit-scrollbar-track {
   background-color: rgba(255, 255, 255, 0.2);
@@ -54,6 +61,12 @@ body::-webkit-scrollbar-thumb {
 body::-webkit-scrollbar-thumb:hover {
   background-color: rgba(255, 255, 255, 0.40);
 }
+
+
+/*.sliderContainer {*/
+  /*background-color: rgba(255, 255, 255, 0.05)*/
+/*}*/
+
 
 
 .horzRow::-webkit-scrollbar, ::-webkit-scrollbar  {
@@ -157,3 +170,5 @@ body::-webkit-scrollbar-thumb:hover {
   box-shadow: 0 2px 6px rgba(255,255,255,0.25), 0 2px 4px rgba(255,255,255,0.22);
   cursor: pointer;
 }
+
+

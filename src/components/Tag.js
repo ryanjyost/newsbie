@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import { Popover } from "react-bootstrap";
 import $ from "jquery";
 import Icon from "react-icons-kit";
 import { wikipediaW } from "react-icons-kit/fa/wikipediaW";
 import { frownO } from "react-icons-kit/fa/frownO";
+import { ic_close } from "react-icons-kit/md/ic_close";
 
 export default class Tag extends Component {
   constructor(props) {
@@ -11,11 +13,14 @@ export default class Tag extends Component {
       hover: false,
       popoverOpacity: 0,
       wiki: [null, null, null, null, null, null, null, null, null],
-      noResults: false
+      noResults: false,
+      loadWidth: 0
     };
 
     this.timeoutIn = null;
     this.timeoutOut = null;
+
+    this.timer = null;
   }
 
   fetchWiki() {
@@ -28,12 +33,10 @@ export default class Tag extends Component {
       contentType: "application/x-www-form-urlencoded",
       crossDomain: true,
       success: function(data) {
-        console.log(data);
         this.setState({
           wiki: data.query.search,
           noResults: data.query.searchinfo.totalhits === 0
         });
-        // if(data.query.search)
       }.bind(this),
       error: function(jqXhr, textStatus, errorThrown) {
         console.log(errorThrown);
@@ -41,34 +44,23 @@ export default class Tag extends Component {
     });
   }
 
-  handleMouseOver() {
-    clearTimeout(this.timeoutOut);
-    this.timeoutOut = null;
-
-    this.timeoutIn = setTimeout(
-      function() {
-        this.setState({ hover: true });
-        this.fetchWiki();
-      }.bind(this),
-      500
-    );
-  }
-
   handleMouseOverPopover() {
-    clearTimeout(this.timeoutOut);
-    this.timeoutOut = null;
-    this.setState({ hover: true });
+    this.setState({ hover: !this.state.hover });
+    if (!this.state.wiki[0]) {
+      this.fetchWiki();
+    }
   }
 
   handleMouseOut() {
-    this.timeoutOut = setTimeout(
-      function() {
-        this.setState({ hover: false });
-        clearTimeout(this.timeoutIn);
-        this.timeoutIn = null;
-      }.bind(this),
-      200
-    );
+    this.setState({ hover: false });
+    // this.timeoutOut = setTimeout(
+    //   function() {
+    //
+    //     clearTimeout(this.timeoutIn);
+    //     this.timeoutIn = null;
+    //   }.bind(this),
+    //   0
+    // );
   }
 
   render() {
@@ -83,7 +75,7 @@ export default class Tag extends Component {
             height: 200,
             width: 200,
             position: "absolute",
-            top: "-199px",
+            top: "-190px",
             borderRadius: 5,
             left: "-20px",
             backgroundColor: "#527991",
@@ -91,10 +83,8 @@ export default class Tag extends Component {
             boxShadow:
               "0 3px 6px rgba(255,255,255,0.08), 0 3px 6px rgba(255,255,255,0.12)"
           }}
-          onMouseOver={() => {
-            this.handleMouseOverPopover();
-          }}
-          onMouseOut={() => this.handleMouseOut()}
+
+          // onMouseLeave={() => this.handleMouseOut()}
         >
           {this.state.noResults ? (
             <div
@@ -122,10 +112,10 @@ export default class Tag extends Component {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "center",
+                  justifyContent: "space-between",
                   textAlign: "center",
                   fontSize: 12,
-                  padding: "8px 0px",
+                  padding: "8px 10px",
                   backgroundColor: "rgba(33, 58, 73, 0.6)",
                   color: "rgba(255, 255, 255, 0.5)",
                   borderTopRightRadius: 5,
@@ -135,10 +125,15 @@ export default class Tag extends Component {
               >
                 <Icon style={{ marginRight: 5 }} icon={wikipediaW} />
                 <span>
-                  {this.state.wiki[0]
-                    ? "Related Wikipedia Entries"
-                    : "Searching Wikipedia... "}
+                  {this.state.wiki[0] ? "Learn more" : "Searching ... "}
                 </span>
+                <Icon
+                  onClick={() => {
+                    this.handleMouseOut();
+                  }}
+                  style={{ marginLeft: 5, cursor: "pointer" }}
+                  icon={ic_close}
+                />
               </div>
 
               {this.state.wiki.map((item, i) => {
@@ -183,6 +178,15 @@ export default class Tag extends Component {
               })}
             </div>
           )}
+          {/*<div*/}
+          {/*style={{*/}
+          {/*width: 0,*/}
+          {/*height: 0,*/}
+          {/*borderStyle: "solid",*/}
+          {/*borderWidth: "30px 30px 0 30px",*/}
+          {/*borderColor: "#007bff transparent transparent transparent"*/}
+          {/*}}*/}
+          {/*/>*/}
         </div>
       );
     };
@@ -191,32 +195,54 @@ export default class Tag extends Component {
       <div key={i} style={{ position: "relative" }}>
         {hover && Popover()}
         <div
-          onMouseOver={() => {
+          onClick={() => {
             if (tag) {
-              this.handleMouseOver();
-            }
-          }}
-          onMouseOut={() => {
-            if (tag) {
-              this.handleMouseOut();
+              this.handleMouseOverPopover();
             }
           }}
           className={"hoverBtn"}
           style={{
             border: "0px solid rgba(255, 255, 255, 0)",
             fontSize: "20px",
-            borderRadius: 9999,
+            borderRadius: 3,
             margin: "5px 5px",
             alignItems: "center",
             justifyContent: "center",
             padding: "5px 12px",
             width: tag ? "auto" : 50 + 100 * Math.random(),
-            height: tag ? "auto" : 30
+            height: tag ? "auto" : 30,
             // backgroundColor: "rgba(255,255,255,0.9)"
-            // flex: "1 1 80px"
+            // flex: "1 1 80px",
+            display: "inline-block",
+            transition: "background 0.2s",
+            transform: "skew(-20deg)" /* SKEW */
           }}
         >
-          {tag ? tag.term : ""}
+          {/*<div*/}
+          {/*style={{*/}
+          {/*display: "inline-block",*/}
+          {/*backgroundColor: "rgba(255, 255, 255, 0.1)",*/}
+          {/*// backgroundColor: "red",*/}
+          {/*transition: "background 0.2s",*/}
+          {/*transform: "skew(-10deg)",*/}
+          {/*width: this.state.loadWidth,*/}
+          {/*height: "100%",*/}
+          {/*position: "absolute",*/}
+          {/*borderRadius: 3,*/}
+          {/*bottom: 0,*/}
+          {/*left: 0*/}
+          {/*// height: "100%"*/}
+          {/*}}*/}
+          {/*/>*/}
+          <div
+            style={{
+              display: "inline-block",
+              transition: "background 0.2s",
+              transform: "skew(20deg)" /* SKEW */
+            }}
+          >
+            {tag ? tag.term : ""}
+          </div>
         </div>
       </div>
     );

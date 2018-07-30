@@ -7,8 +7,13 @@ import $ from "jquery";
 import { Icon } from "react-icons-kit";
 import Site from "./components/Site";
 import Article from "./components/Article";
+import Landing from "./components/Landing";
 import { OverlayTrigger, Popover, Button } from "react-bootstrap";
 import Tag from "./components/Tag";
+import Slider from "react-slick";
+import MobileDetect from "mobile-detect";
+import detectIt from "detect-it";
+import HorizontalScroll from "react-scroll-horizontal";
 
 class App extends Component {
   constructor(props) {
@@ -46,6 +51,7 @@ class App extends Component {
     ];
 
     this.state = {
+      isLanding: true,
       list: shuffle(this.list),
       sites: [],
       articles: [],
@@ -59,7 +65,8 @@ class App extends Component {
 
       // UI
       screenWidth: 0,
-      screenHeight: 0
+      screenHeight: 0,
+      touchOnly: false
     };
   }
 
@@ -128,6 +135,9 @@ class App extends Component {
       "resize",
       this.throttle(this.updateDimensions.bind(this), 1000)
     );
+
+    let touchOnly = detectIt.deviceType === "touchOnly";
+    this.setState({ touchOnly });
   }
 
   /**
@@ -155,19 +165,35 @@ class App extends Component {
     };
   }
 
-  render() {
-    const { screenWidth, screenHeight, records } = this.state;
-    let imageWidth = Math.min(screenWidth, 400);
+  handleHorzScroll(direction, selector) {
+    $(`#${selector}`).animate(
+      {
+        scrollLeft: `${direction === "left" ? "-" : "+"}=${this.state
+          .screenWidth - 20}px`
+      },
+      "fast"
+    );
+  }
 
-    let articleWidth = 300;
+  render() {
+    const { screenWidth, screenHeight, records, touchOnly } = this.state;
+    let imageWidth = touchOnly
+      ? Math.min(screenWidth, 700)
+      : Math.min(screenWidth, 400);
+
+    let articleWidth = touchOnly
+      ? Math.min(screenWidth, 400)
+      : Math.min(screenWidth, 300);
     let articleMargin = 10;
 
     let isWide = screenWidth > 768;
+    let showSlider = screenWidth < 500;
 
-    const Arrow = ({ direction, handleClick }) => {
+    const Arrow = ({ direction, selector }) => {
       let isLeft = direction === "left";
       return (
         <div
+          id={`${selector}-${direction}`}
           style={{
             height: 40,
             width: 40,
@@ -191,6 +217,7 @@ class App extends Component {
             cursor: "pointer"
           }}
           className={"navArrow"}
+          onClick={() => this.handleHorzScroll(direction, selector)}
           // onClick={() => handleClick()}
         >
           {isLeft ? <span>&lsaquo;</span> : <span>&rsaquo;</span>}
@@ -199,104 +226,180 @@ class App extends Component {
     };
 
     const FrontPages = () => {
-      return (
-        <div
-          className={"horzRow"}
-          style={{
-            borderRadius: 5,
-            display: "flex",
-            flexDirection: "column",
-            flexWrap: "wrap",
-            height: imageWidth,
-            overflowX: "auto",
-            backgroundColor: "rgba(255, 255, 255, 0.05)",
-            // borderTop: "5px solid rgba(255, 255, 255, 0.01)",
-            padding: "50px 20px 35px 20px",
-            position: "relative"
-          }}
-        >
-          {this.state.records.length
-            ? this.state.records.map((record, i) => {
-                return (
-                  <div
-                    key={i}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexDirection: "column"
-                    }}
-                  >
-                    <Site
+      if (touchOnly) {
+        const settings = {
+          dots: false,
+          arrows: true,
+          infinite: true,
+          speed: 500,
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          className: "sliderContainer",
+          centerMode: true,
+          centerPadding: "20px",
+          swipeToSlide: true
+        };
+        return (
+          <Slider {...settings}>
+            {this.state.records.length
+              ? this.state.records.map((record, i) => {
+                  return (
+                    <div
                       key={i}
-                      index={i}
-                      record={record}
-                      siteMargin={30}
-                      imageWidth={imageWidth - 50}
-                    />
-
-                    <a
-                      href={record.site.url}
-                      className={"hoverBtn"}
                       style={{
-                        textAlign: "left",
-                        marginTop: 25,
-                        fontWeight: "300",
-                        display: "inline-block",
-                        textDecoration: "none",
-                        marginLeft: 5,
-                        padding: "5px 12px",
-                        borderRadius: "50px",
-                        fontSize: 12,
-                        letterSpacing: "0.03em"
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexDirection: "column"
                       }}
                     >
-                      {record.site.title}
-                    </a>
-                  </div>
-                );
-              })
-            : this.state.sites.map((site, i) => {
-                return (
-                  <div
-                    key={i}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexDirection: "column"
-                    }}
-                  >
-                    <Site
+                      <Site
+                        key={i}
+                        index={i}
+                        record={record}
+                        siteMargin={30}
+                        imageWidth={
+                          touchOnly ? imageWidth - 10 : imageWidth - 50
+                        }
+                        showSlider={showSlider}
+                        touchOnly={touchOnly}
+                      />
+                    </div>
+                  );
+                })
+              : this.state.sites.map((site, i) => {
+                  return (
+                    <div
                       key={i}
-                      index={i}
-                      record={null}
-                      siteMargin={30}
-                      imageWidth={imageWidth - 50}
-                    />
-
-                    <a
-                      href={""}
-                      className={"hoverBtn"}
                       style={{
-                        textAlign: "left",
-                        marginTop: 15,
-                        fontWeight: "300",
-                        display: "inline-block",
-                        textDecoration: "none",
-                        marginLeft: 5,
-                        padding: "5px 12px",
-                        borderRadius: "50px",
-                        fontSize: 12,
-                        letterSpacing: "0.03em",
-                        width: 50
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        flexDirection: "column"
                       }}
-                    />
-                  </div>
-                );
-              })}
-        </div>
-      );
+                    >
+                      <Site
+                        key={i}
+                        index={i}
+                        record={null}
+                        siteMargin={30}
+                        imageWidth={imageWidth - 50}
+                        showSlider={showSlider}
+                        touchOnly={touchOnly}
+                      />
+
+                      <a
+                        href={""}
+                        className={"hoverBtn"}
+                        style={{
+                          textAlign: "left",
+                          marginTop: 15,
+                          fontWeight: "300",
+                          display: "inline-block",
+                          textDecoration: "none",
+                          marginLeft: 5,
+                          padding: "5px 12px",
+                          borderRadius: "50px",
+                          fontSize: 12,
+                          letterSpacing: "0.03em",
+                          width: 50
+                        }}
+                      />
+                    </div>
+                  );
+                })}
+          </Slider>
+        );
+      } else {
+        return (
+          <div style={{ position: "relative" }}>
+            <Arrow direction={"left"} selector={"frontPages"} />
+            <div
+              id={"frontPages"}
+              className={"horzRow"}
+              style={{
+                borderRadius: 5,
+                display: "flex",
+                flexDirection: "column",
+                flexWrap: "wrap",
+                height: imageWidth + 80,
+                overflowX: "auto",
+                backgroundColor: "rgba(255, 255, 255, 0.05)",
+                // borderTop: "5px solid rgba(255, 255, 255, 0.01)",
+                padding: "50px 20px 35px 20px",
+                position: "relative"
+              }}
+            >
+              {this.state.records.length
+                ? this.state.records.map((record, i) => {
+                    return (
+                      <div
+                        key={i}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexDirection: "column"
+                        }}
+                      >
+                        <Site
+                          key={i}
+                          index={i}
+                          record={record}
+                          siteMargin={30}
+                          imageWidth={imageWidth - 50}
+                          showSlider={showSlider}
+                          touchOnly={touchOnly}
+                        />
+                      </div>
+                    );
+                  })
+                : this.state.sites.map((site, i) => {
+                    return (
+                      <div
+                        key={i}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          flexDirection: "column"
+                        }}
+                      >
+                        <Site
+                          key={i}
+                          index={i}
+                          record={null}
+                          siteMargin={30}
+                          imageWidth={imageWidth - 50}
+                          showSlider={showSlider}
+                          touchOnly={touchOnly}
+                        />
+
+                        <a
+                          href={""}
+                          className={"hoverBtn"}
+                          style={{
+                            textAlign: "left",
+                            marginTop: 15,
+                            fontWeight: "300",
+                            display: "inline-block",
+                            textDecoration: "none",
+                            marginLeft: 5,
+                            padding: "5px 12px",
+                            borderRadius: "50px",
+                            fontSize: 12,
+                            letterSpacing: "0.03em",
+                            width: 50
+                          }}
+                        />
+                      </div>
+                    );
+                  })}
+            </div>
+            <Arrow direction={"right"} selector={"frontPages"} />
+          </div>
+        );
+      }
     };
 
     const Tags = () => {
@@ -313,7 +416,8 @@ class App extends Component {
               padding: "10px 20px",
               display: "flex",
               width: "auto",
-              flexWrap: "wrap"
+              flexWrap: "wrap",
+              justifyContent: "center"
             }}
           >
             {this.state.topTags.map((tag, i) => {
@@ -324,36 +428,57 @@ class App extends Component {
       );
     };
 
-    const ArticleList = ({ list }) => {
-      return (
-        <div
-          style={{
-            borderRadius: 5,
-            display: "flex",
-            flexDirection: "column",
-            flexWrap: "wrap",
-            height: articleWidth,
-            overflowX: "auto",
-            backgroundColor: "rgba(255, 255, 255, 0.5)",
-            // borderTop: "5px solid rgba(255, 255, 255, 0.01)",
-            padding: "30px 20px 20px 20px",
-            position: "relative"
-          }}
-        >
-          {list.length
-            ? list.map((article, i) => {
-                return (
-                  <Article
-                    key={i}
-                    index={i}
-                    article={article}
-                    articleWidth={articleWidth}
-                    articleMargin={articleMargin}
-                  />
-                );
-              })
-            : [null, null, null, null, null, null, null, null, null, null].map(
-                (article, i) => {
+    const ArticleList = ({ list, container }) => {
+      if (touchOnly) {
+        const settings = {
+          dots: false,
+          arrows: true,
+          infinite: true,
+          speed: 500,
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          className: "sliderContainer",
+          centerMode: true,
+          swipeToSlide: true,
+          responsive: [
+            {
+              breakpoint: 700,
+              settings: {
+                slidesToShow: 2,
+                slidesToScroll: 2,
+                infinite: true,
+                dots: true
+              }
+            }
+          ]
+        };
+        return (
+          <Slider {...settings}>
+            {list.length
+              ? list.map((article, i) => {
+                  return (
+                    <Article
+                      key={i}
+                      index={i}
+                      article={article}
+                      articleWidth={articleWidth}
+                      articleMargin={articleMargin}
+                      isSlider
+                    />
+                  );
+                })
+              : [
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null
+                ].map((article, i) => {
                   return (
                     <div
                       key={i}
@@ -365,81 +490,147 @@ class App extends Component {
                       }}
                     />
                   );
-                }
-              )}
-        </div>
-      );
+                })}
+          </Slider>
+        );
+      } else {
+        return (
+          <div
+            id={container}
+            style={{
+              borderRadius: 5,
+              display: "flex",
+              flexDirection: "column",
+              flexWrap: "wrap",
+              height: articleWidth + 50,
+              overflowX: "auto",
+              backgroundColor: "rgba(255, 255, 255, 0.3)",
+              // borderTop: "5px solid rgba(255, 255, 255, 0.01)",
+              padding: "30px 20px 20px 20px",
+              position: "relative"
+            }}
+          >
+            {list.length
+              ? list.map((article, i) => {
+                  return (
+                    <Article
+                      key={i}
+                      index={i}
+                      article={article}
+                      articleWidth={articleWidth}
+                      articleMargin={articleMargin}
+                    />
+                  );
+                })
+              : [
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null,
+                  null
+                ].map((article, i) => {
+                  return (
+                    <div
+                      key={i}
+                      style={{
+                        height: articleWidth,
+                        width: articleWidth,
+                        backgroundColor: "rgba(255, 255, 255, 0.1)",
+                        margin: articleMargin
+                      }}
+                    />
+                  );
+                })}
+          </div>
+        );
+      }
     };
 
-    const SectionTitle = ({ title, description, num }) => {
+    const SectionTitle = ({ title, description, num, children }) => {
       return (
         <div
           style={{
-            margin: "20px",
-            marginTop: 50
-            // display: "inline-block",
-            // backgroundColor: "rgba(255, 255, 255, 0.3)",
-            // boxShadow:
-            //   "0 1px 3px rgba(255,255,255,0.08), 0 1px 2px rgba(255,255,255,0.12)"
+            display: "flex",
+            alignItems: "baseline",
+            justifyContent: "flex-start",
+            maxWidth: 500,
+            margin: "auto",
+            flexDirection: "column",
+            padding: "0px 10px",
+            marginBottom: 30
           }}
         >
-          <div style={{ display: "flex", alignItems: "center" }}>
-            <div
-              style={{
-                backgroundColor: "rgba(255,255,255,0.1)",
-                marginRight: 10,
-                height: 40,
-                width: 40,
-                borderRadius: 40,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: 20,
-                color: "rgba(255, 255, 255, 0.8)"
-              }}
-            >
-              {num}
-            </div>
-            <h2
+          <div
+            style={{
+              display: "flex",
+              alignItems: "end",
+              justifyContent: "space-between",
+              marginTop: 50,
+              marginBottom: 0,
+              width: "100%"
+            }}
+          >
+            <h3
               style={{
                 textAlign: "left",
                 margin: "0px",
-                marginBottom: 4,
+                // marginBottom: 7,
                 color: "rgba(46, 228, 246, 1)",
                 fontWeight: "400",
                 letterSpacing: "0.05em"
               }}
             >
               {title}
-            </h2>
+            </h3>
+            <div
+              style={{
+                backgroundColor: "rgba(255,255,255,0.1)",
+                marginRight: 10,
+                borderRadius: 30,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 12,
+                color: "rgba(255, 255, 255, 0.5)",
+                marginBottom: 10,
+                marginTop: 2,
+                padding: "5px 12px",
+                letterSpacing: "0.03em"
+              }}
+            >
+              Step {num}
+            </div>
           </div>
           <div
             style={{
               textAlign: "left",
-              margin: "0px",
+              margin: "5px 0px 0px 0px",
               color: "rgba(255, 255, 255, 0.6)",
               fontWeight: "400",
               letterSpacing: "0.05em",
-              fontSize: 14,
-              padding: "0px 10px 0px 50px",
-              lineHeight: 1.3
+              fontSize: 15,
+              padding: "0px 0px 0px 0px",
+              lineHeight: 1.2
             }}
           >
-            {description}
+            {children}
           </div>
         </div>
       );
     };
 
-    // TODO WANT MORE? LOOK AT PENNYBOX
-
     return (
       <div style={{ paddingBottom: "100px" }}>
         <div
           style={{
-            height: 50,
-            backgroundColor: "rgba(33, 58, 73, 1)",
-            borderBottom: "2px solid rgba(255, 255," + " 255, 0.2)",
+            height: 60,
+            backgroundColor: "rgba(33, 58, 73, 0.9)",
+            borderBottom: "1px solid rgba(255, 255," + " 255, 0.1)",
             width: "100%",
             display: "flex",
             alignItems: "center",
@@ -454,7 +645,8 @@ class App extends Component {
             style={{
               display: "flex",
               alignItems: "center",
-              justifyContent: "space-between"
+              justifyContent: "space-between",
+              marginBottom: 10
             }}
           >
             <h3 style={{ color: "rgba(255, 255, 255, 0.8)", marginLeft: 30 }}>
@@ -474,67 +666,139 @@ class App extends Component {
               borderRadius: 9999
             }}
             className={"cta"}
+            onClick={() => this.setState({ isLanding: !this.state.isLanding })}
           >
-            {screenWidth > 500 ? "Graduate to News Junkie" : "Sign Up"}
+            {this.state.isLanding ? "Go Back" : "Get the App"}
           </div>
         </div>
-        <div
-          className="main"
-          style={{
-            maxWidth: "100%",
-            overflowX: "hidden",
-            margin: "50px 10px 0px 10px"
-          }}
-        >
-          <SectionTitle
-            num={1}
-            title={"Front Pages"}
-            description={
-              "Start out with a bird's eye view of a diverse range of news sources. Get a feel for what's being" +
-              " covered. "
-            }
-          />
-          <div style={{ position: "relative" }}>
-            <Arrow direction={"left"} />
+        {this.state.isLanding ? (
+          <Landing />
+        ) : (
+          <div
+            className="main"
+            style={{
+              maxWidth: "100%",
+              overflowX: "hidden",
+              margin: "50px 10px 0px 10px"
+            }}
+          >
+            <div style={{ maxWidth: 600, margin: "auto", marginTop: 100 }}>
+              <h2
+                style={{
+                  color: "rgba(255, 255, 255, 0.9)",
+                  textAlign: "center",
+                  fontWeight: 400,
+                  lineHeight: 1.4,
+                  letterSpacing: "0.03em"
+                }}
+              >
+                Want a <strong>balanced, efficient</strong> way <br />to stay
+                informed?
+              </h2>
+              <h1
+                style={{
+                  textAlign: "center",
+                  color: "rgba(255, 255, 255, 0.3)"
+                }}
+              >
+                &darr;
+              </h1>
+            </div>
+            <SectionTitle num={1} title={"Browse Front Pages"}>
+              <div>
+                Start out with a bird's eye view of a diverse range of news
+                sources.{" "}
+                <div style={{ marginTop: 10 }}>
+                  Get a feel for{" "}
+                  <strong style={{ color: "rgba(255, 255, 255, 0.8)" }}>
+                    what
+                  </strong>{" "}
+                  is being covered and{" "}
+                  <strong style={{ color: "rgba(255, 255, 255, 0.8)" }}>
+                    {" "}
+                    how{" "}
+                  </strong>it's being covered.
+                </div>
+              </div>
+            </SectionTitle>
             <FrontPages />
-            <Arrow direction={"right"} />
+            <SectionTitle num={2} title={"Buzzwords"}>
+              <div>
+                {this.state.opinionArticles.length
+                  ? `Explore the most common words and phrases found in ${
+                      this.state.opinionArticles.length &&
+                      this.state.politicsArticles.length
+                        ? this.state.opinionArticles.length +
+                          this.state.politicsArticles.length
+                        : ""
+                    } recent article titles ${
+                      this.state.sites.length ? "from" : ""
+                    } ${
+                      this.state.sites.length ? this.state.sites.length : ""
+                    }${this.state.sites.length ? " sources" : ""}. `
+                  : ""}
+                <div style={{ marginTop: 10 }}>
+                  <strong style={{ color: "rgba(255, 255, 255, 0.8)" }}>
+                    Click a buzzword
+                  </strong>{" "}
+                  to dive deeper on Wikipedia.{" "}
+                </div>
+              </div>
+            </SectionTitle>
+            ]]
+            <Tags />
+            <SectionTitle num={3} title={"News Articles"}>
+              Now start skimming articles. Click and read some from a variety of
+              news sites.
+              <div style={{ marginTop: 10 }}>
+                By consulting multiple sources, you can recognize and filter out
+                potential biases - and{" "}
+                <strong style={{ color: "rgba(255, 255, 255, 0.8)" }}>
+                  get a clearer picture of what's really going on.
+                </strong>
+              </div>
+            </SectionTitle>
+            <div style={{ position: "relative" }}>
+              {touchOnly ? null : (
+                <Arrow direction={"left"} selector={"newsArticles"} />
+              )}
+              <ArticleList
+                list={this.state.currentNews}
+                container={"newsArticles"}
+              />
+              {touchOnly ? null : (
+                <Arrow direction={"right"} selector={"newsArticles"} />
+              )}
+            </div>
+            <SectionTitle num={4} title={"Opinion Pieces"}>
+              Once you've built up a base of facts and observations, you're
+              ready to explore more subjective takes on the stories of the day.
+              <div style={{ marginTop: 10 }}>
+                You'll want to consider a wide range of perspectives - and avoid
+                getting stuck in an{" "}
+                <a
+                  target="_blank"
+                  style={{ color: "rgba(255, 255, 255, 0.7)" }}
+                  href="https://en.wikipedia.org/wiki/Echo_chamber_(media)"
+                >
+                  echo chamber.
+                </a>
+              </div>
+            </SectionTitle>
+            <div style={{ position: "relative" }}>
+              {touchOnly ? null : (
+                <Arrow direction={"left"} selector={"opinionArticles"} />
+              )}
+              <ArticleList
+                list={this.state.currentOpinions}
+                container={"opinionArticles"}
+              />
+              {touchOnly ? null : (
+                <Arrow direction={"right"} selector={"opinionArticles"} />
+              )}
+            </div>
           </div>
-
-          <SectionTitle
-            num={2}
-            title={"Buzzwords"}
-            description={
-              this.state.opinionArticles.length
-                ? `Explore the most common words and phrases found in ${
-                    this.state.opinionArticles.length &&
-                    this.state.politicsArticles.length
-                      ? this.state.opinionArticles.length +
-                        this.state.politicsArticles.length
-                      : ""
-                  } recent article titles ${
-                    this.state.sites.length ? "from" : ""
-                  } ${this.state.sites.length ? this.state.sites.length : ""}${
-                    this.state.sites.length ? " sources" : ""
-                  }. ${isWide ? "Hover" : "Click"} to learn more.`
-                : ""
-            }
-          />
-          <Tags />
-
-          <SectionTitle num={3} title={"News Articles"} description={""} />
-          <div style={{ position: "relative" }}>
-            <Arrow direction={"left"} />
-            <ArticleList list={this.state.currentNews} />
-            <Arrow direction={"right"} />
-          </div>
-
-          <SectionTitle num={4} title={"Opinion Pieces"} description={""} />
-          <div style={{ position: "relative" }}>
-            <Arrow direction={"left"} />
-            <ArticleList list={this.state.currentOpinions} />
-            <Arrow direction={"right"} />
-          </div>
-        </div>
+        )}
       </div>
     );
   }
