@@ -31,10 +31,11 @@ export default class Article extends Component {
     return (
       <div
         style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
+          // display: "flex",
+          // flexDirection: "column",
+          // alignItems: "center",
+          // justifyContent: "center",
+          width: articleWidth,
           margin: isSlider ? "auto" : `${articleMargin - 1}px`
         }}
       >
@@ -43,7 +44,7 @@ export default class Article extends Component {
           rel="noreferrer"
           key={index}
           style={{
-            margin: !isSlider ? articleMargin - 1 : "auto",
+            margin: !isSlider ? articleMargin - 1 : "",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",

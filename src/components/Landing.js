@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import { Icon } from "react-icons-kit";
 import { scissors } from "react-icons-kit/ionicons/scissors";
+import { balanceScale } from "react-icons-kit/fa/balanceScale";
+import { androidTime } from "react-icons-kit/ionicons/androidTime";
+import { androidHappy } from "react-icons-kit/ionicons/androidHappy";
 
 export default class Landing extends Component {
   constructor(props) {
@@ -42,8 +45,8 @@ export default class Landing extends Component {
         className="main"
         style={{
           maxWidth: "100%",
-          overflowX: "hidden",
-          margin: "50px 10px 0px 10px"
+          overflowX: "hidden"
+          // margin: "10px 10px 0px 10px"
         }}
       >
         <h3
@@ -60,41 +63,70 @@ export default class Landing extends Component {
             color: "rgba(46, 228, 246, 0.8)",
             textAlign: "center",
             marginTop: 20,
-            fontWeight: "bold"
+            fontWeight: "bold",
+            padding: "0px 20px"
           }}
         >
           You need an app that fixes it.
         </h2>
         <div
           style={{
-            margin: "auto",
-            // display: "flex",
-            // justifyContent: "center",
-            borderTop: "2px solid rgba(255, 255, 255, 0.02)",
-            borderBottom: "2px solid rgba(255, 255, 255, 0.02)",
-            marginTop: "30px",
-            marginBottom: "30px",
-            color: "rgba(255, 255, 255, 0.9)",
-            fontSize: 24,
-            padding: 20,
-            maxWidth: 600
+            backgroundColor: "rgba(255, 255, 255, 0.03)",
+            marginBottom: 50
           }}
         >
-          <span style={{ color: "rgba(255, 255, 255, 1)" }}>newsbie</span>
-          <span style={{ color: "rgba(255, 255, 255, 0.5)", marginRight: 5 }}>
-            .io
-          </span>{" "}
-          is a command center for news junkies.<br />
-          <br />
           <div
             style={{
-              padding: "10px 0px",
-              fontSize: 20,
-              color: "rgba(255,255,255,0.6)"
+              margin: "auto",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              // borderTop: "2px solid rgba(255, 255, 255, 0.1)",
+              marginTop: "30px",
+              fontSize: 24,
+              padding: "30px 20px 0px 20px",
+              maxWidth: 600,
+              letterSpacing: "0.03em",
+              textAlign: "center",
+              color: "rgba(255, 255, 255, 0.8)"
             }}
           >
-            It enables you to...
-            <div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
+              <span style={{ color: "rgba(255, 255, 255, 1)", fontSize: 32 }}>
+                newsbie
+              </span>
+              <span
+                style={{
+                  color: "rgba(255, 255, 255, 0.5)",
+                  marginRight: 5,
+                  fontSize: 32
+                }}
+              >
+                .io
+              </span>{" "}
+            </div>
+            is a command center for news junkies. <br />
+            <br />It enables you to...
+          </div>
+          <div
+            style={{
+              padding: "10px 20px",
+              fontSize: 20,
+              color: "rgba(255,255,255,0.8)",
+              maxWidth: 600,
+              margin: "auto",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center"
+            }}
+          >
+            <div style={{ marginTop: 10 }}>
               <div
                 style={{
                   display: "flex",
@@ -145,16 +177,85 @@ export default class Landing extends Component {
                       marginRight: 5,
                       color: "rgba(255, 255, 255, 0.8)"
                     }}
-                    icon={scissors}
+                    icon={balanceScale}
                     size={28}
                   />
                 </div>
-                cut through the bullsh*t of your modern media diet
+                gain a clear + balanced view of what's going on
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "10px 5px",
+                  color: "rgba(255, 255, 255, 0.7)"
+                }}
+              >
+                <div
+                  style={{
+                    height: 50,
+                    width: 60,
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    marginRight: 5
+                  }}
+                >
+                  <Icon
+                    style={{
+                      marginRight: 5,
+                      color: "rgba(255, 255, 255, 0.8)"
+                    }}
+                    icon={androidTime}
+                    size={28}
+                  />
+                </div>
+                quickly + efficiently get caught up on news you missed
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  padding: "10px 5px",
+                  color: "rgba(255, 255, 255, 0.7)"
+                }}
+              >
+                <div
+                  style={{
+                    height: 50,
+                    width: 60,
+                    display: "flex",
+                    justifyContent: "flex-end",
+                    marginRight: 5
+                  }}
+                >
+                  <Icon
+                    style={{
+                      marginRight: 5,
+                      color: "rgba(255, 255, 255, 0.8)"
+                    }}
+                    icon={androidHappy}
+                    size={28}
+                  />
+                </div>
+                do a bunch of other stuff I can't think of (yet)
               </div>
             </div>
           </div>
         </div>
-        <div>Check out the features we have planned </div>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "rgba(255, 255, 255, 0.8)",
+            fontSize: 26
+          }}
+        >
+          {/*<div style={{ fontSize: 14, color: "rgba(255, 255, 255, 0.4)" }}>*/}
+          {/*The*/}
+          {/*</div>*/}
+          See any features you like?
+        </div>
         <div
           style={{
             display: "flex",

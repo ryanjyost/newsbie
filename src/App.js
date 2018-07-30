@@ -51,7 +51,7 @@ class App extends Component {
     ];
 
     this.state = {
-      isLanding: true,
+      isLanding: false,
       list: shuffle(this.list),
       sites: [],
       articles: [],
@@ -201,7 +201,7 @@ class App extends Component {
             display: "flex",
             // alignItems: "center",
             justifyContent: "center",
-            top: "50%",
+            top: "40%",
             // bottom: "-8px",
             left: isLeft ? "2px" : "",
             right: isLeft ? "" : "2px",
@@ -236,7 +236,7 @@ class App extends Component {
           slidesToScroll: 1,
           className: "sliderContainer",
           centerMode: true,
-          centerPadding: "20px",
+          centerPadding: "5px",
           swipeToSlide: true
         };
         return (
@@ -244,27 +244,15 @@ class App extends Component {
             {this.state.records.length
               ? this.state.records.map((record, i) => {
                   return (
-                    <div
+                    <Site
                       key={i}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexDirection: "column"
-                      }}
-                    >
-                      <Site
-                        key={i}
-                        index={i}
-                        record={record}
-                        siteMargin={30}
-                        imageWidth={
-                          touchOnly ? imageWidth - 10 : imageWidth - 50
-                        }
-                        showSlider={showSlider}
-                        touchOnly={touchOnly}
-                      />
-                    </div>
+                      index={i}
+                      record={record}
+                      siteMargin={30}
+                      imageWidth={touchOnly ? imageWidth : imageWidth - 50}
+                      showSlider={showSlider}
+                      touchOnly={touchOnly}
+                    />
                   );
                 })
               : this.state.sites.map((site, i) => {
@@ -283,7 +271,7 @@ class App extends Component {
                         index={i}
                         record={null}
                         siteMargin={30}
-                        imageWidth={imageWidth - 50}
+                        imageWidth={imageWidth}
                         showSlider={showSlider}
                         touchOnly={touchOnly}
                       />
@@ -438,19 +426,19 @@ class App extends Component {
           slidesToShow: 1,
           slidesToScroll: 1,
           className: "sliderContainer",
-          centerMode: true,
-          swipeToSlide: true,
-          responsive: [
-            {
-              breakpoint: 700,
-              settings: {
-                slidesToShow: 2,
-                slidesToScroll: 2,
-                infinite: true,
-                dots: true
-              }
-            }
-          ]
+          // centerMode: true,
+          swipeToSlide: true
+          // responsive: [
+          //   {
+          //     breakpoint: 700,
+          //     settings: {
+          //       slidesToShow: 2,
+          //       slidesToScroll: 2,
+          //       infinite: true,
+          //       dots: true
+          //     }
+          //   }
+          // ]
         };
         return (
           <Slider {...settings}>
@@ -562,14 +550,14 @@ class App extends Component {
             margin: "auto",
             flexDirection: "column",
             padding: "0px 10px",
-            marginBottom: 30
+            marginBottom: 20
           }}
         >
           <div
             style={{
               display: "flex",
-              alignItems: "end",
-              justifyContent: "space-between",
+              alignItems: "center",
+              justifyContent: "flex-start",
               marginTop: 50,
               marginBottom: 0,
               width: "100%"
@@ -587,30 +575,30 @@ class App extends Component {
             >
               {title}
             </h3>
-            <div
-              style={{
-                backgroundColor: "rgba(255,255,255,0.1)",
-                marginRight: 10,
-                borderRadius: 30,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: 12,
-                color: "rgba(255, 255, 255, 0.5)",
-                marginBottom: 10,
-                marginTop: 2,
-                padding: "5px 12px",
-                letterSpacing: "0.03em"
-              }}
-            >
-              Step {num}
-            </div>
+            {/*<div*/}
+            {/*style={{*/}
+            {/*backgroundColor: "rgba(255,255,255,0.1)",*/}
+            {/*marginRight: 10,*/}
+            {/*borderRadius: 30,*/}
+            {/*display: "flex",*/}
+            {/*alignItems: "center",*/}
+            {/*justifyContent: "center",*/}
+            {/*fontSize: 12,*/}
+            {/*color: "rgba(255, 255, 255, 0.5)",*/}
+            {/*marginBottom: 10,*/}
+            {/*marginTop: 2,*/}
+            {/*padding: "5px 12px",*/}
+            {/*letterSpacing: "0.03em"*/}
+            {/*}}*/}
+            {/*>*/}
+            {/*Step {num}*/}
+            {/*</div>*/}
           </div>
           <div
             style={{
               textAlign: "left",
               margin: "5px 0px 0px 0px",
-              color: "rgba(255, 255, 255, 0.6)",
+              color: "rgba(255, 255, 255, 0.7)",
               fontWeight: "400",
               letterSpacing: "0.05em",
               fontSize: 15,
@@ -704,7 +692,7 @@ class App extends Component {
                 &darr;
               </h1>
             </div>
-            <SectionTitle num={1} title={"Browse Front Pages"}>
+            <SectionTitle num={1} title={"Browse front pages of news sites"}>
               <div>
                 Start out with a bird's eye view of a diverse range of news
                 sources.{" "}
@@ -722,7 +710,7 @@ class App extends Component {
               </div>
             </SectionTitle>
             <FrontPages />
-            <SectionTitle num={2} title={"Buzzwords"}>
+            <SectionTitle num={2} title={"Catch up on buzzwords"}>
               <div>
                 {this.state.opinionArticles.length
                   ? `Explore the most common words and phrases found in ${
@@ -747,12 +735,12 @@ class App extends Component {
             </SectionTitle>
             ]]
             <Tags />
-            <SectionTitle num={3} title={"News Articles"}>
+            <SectionTitle num={3} title={"Read some news articles"}>
               Now start skimming articles. Click and read some from a variety of
               news sites.
               <div style={{ marginTop: 10 }}>
-                By consulting multiple sources, you can recognize and filter out
-                potential biases - and{" "}
+                By consulting multiple sources, you're able to filter out the
+                noise - and{" "}
                 <strong style={{ color: "rgba(255, 255, 255, 0.8)" }}>
                   get a clearer picture of what's really going on.
                 </strong>
@@ -770,7 +758,7 @@ class App extends Component {
                 <Arrow direction={"right"} selector={"newsArticles"} />
               )}
             </div>
-            <SectionTitle num={4} title={"Opinion Pieces"}>
+            <SectionTitle num={4} title={"Explore opinion pieces"}>
               Once you've built up a base of facts and observations, you're
               ready to explore more subjective takes on the stories of the day.
               <div style={{ marginTop: 10 }}>

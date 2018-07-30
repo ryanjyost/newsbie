@@ -87,27 +87,28 @@ export default class Site extends Component {
 
     return (
       <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          margin: touchOnly ? "auto" : `${siteMargin - 1}px`
-        }}
+        style={
+          {
+            // display: "flex",
+            // flexDirection: "column",
+            // alignItems: "center",
+            // justifyContent: "center",
+            // margin: touchOnly ? "auto" : `${siteMargin - 1}px`
+          }
+        }
       >
         <a
           href={record ? record.site.url : ""}
           rel="noreferrer"
           key={index}
           style={{
-            margin: "auto",
-
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            height: imageWidth,
+            // margin: "auto",
+            // display: "flex",
+            // alignItems: "center",
+            // justifyContent: "center",
+            // height: imageWidth,
             // border: "3px solid #e5e5e5",
-            width: imageWidth,
+            // width: imageWidth,
             backgroundColor: "rgba(255, 255, 255, 0.3)",
             position: "relative",
             // border: "2px solid rgba(255,255,255,0.2)",
@@ -161,7 +162,13 @@ export default class Site extends Component {
                 }}
                 style={{
                   display: loaded ? "" : "none",
-                  opacity: 1
+                  opacity: 1,
+                  borderRight: touchOnly
+                    ? "5px solid rgba(33, 58, 73, 1)"
+                    : "none",
+                  borderLeft: touchOnly
+                    ? "5px solid rgba(33, 58, 73, 1)"
+                    : "none"
                 }}
               />
             )
@@ -172,7 +179,6 @@ export default class Site extends Component {
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            width: imageWidth - 20,
             margin: showSlider ? "auto" : ""
           }}
         >
