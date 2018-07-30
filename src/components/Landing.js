@@ -45,8 +45,8 @@ export default class Landing extends Component {
         className="main"
         style={{
           maxWidth: "100%",
-          overflowX: "hidden"
-          // margin: "10px 10px 0px 10px"
+          overflowX: "hidden",
+          backgroundColor: "#fcfcfc"
         }}
       >
         <h3

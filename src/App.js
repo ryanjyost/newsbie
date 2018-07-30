@@ -66,7 +66,7 @@ class App extends Component {
       // UI
       screenWidth: 0,
       screenHeight: 0,
-      touchOnly: false
+      touchOnly: true
     };
   }
 
@@ -201,7 +201,7 @@ class App extends Component {
             display: "flex",
             // alignItems: "center",
             justifyContent: "center",
-            top: "40%",
+            top: "50%",
             // bottom: "-8px",
             left: isLeft ? "2px" : "",
             right: isLeft ? "" : "2px",
@@ -226,7 +226,7 @@ class App extends Component {
     };
 
     const FrontPages = () => {
-      if (touchOnly) {
+      if (touchOnly && this.state.records.length) {
         const settings = {
           dots: false,
           arrows: true,
@@ -236,7 +236,7 @@ class App extends Component {
           slidesToScroll: 1,
           className: "sliderContainer",
           centerMode: true,
-          centerPadding: "5px",
+          centerPadding: "0px",
           swipeToSlide: true
         };
         return (
@@ -263,37 +263,12 @@ class App extends Component {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        flexDirection: "column"
+                        flexDirection: "column",
+                        height: imageWidth,
+                        width: imageWidth,
+                        backgroundColor: "red"
                       }}
-                    >
-                      <Site
-                        key={i}
-                        index={i}
-                        record={null}
-                        siteMargin={30}
-                        imageWidth={imageWidth}
-                        showSlider={showSlider}
-                        touchOnly={touchOnly}
-                      />
-
-                      <a
-                        href={""}
-                        className={"hoverBtn"}
-                        style={{
-                          textAlign: "left",
-                          marginTop: 15,
-                          fontWeight: "300",
-                          display: "inline-block",
-                          textDecoration: "none",
-                          marginLeft: 5,
-                          padding: "5px 12px",
-                          borderRadius: "50px",
-                          fontSize: 12,
-                          letterSpacing: "0.03em",
-                          width: 50
-                        }}
-                      />
-                    </div>
+                    />
                   );
                 })}
           </Slider>
@@ -405,7 +380,9 @@ class App extends Component {
               display: "flex",
               width: "auto",
               flexWrap: "wrap",
-              justifyContent: "center"
+              justifyContent: "center",
+              maxWidth: 600,
+              margin: "auto"
             }}
           >
             {this.state.topTags.map((tag, i) => {
@@ -544,60 +521,61 @@ class App extends Component {
         <div
           style={{
             display: "flex",
-            alignItems: "baseline",
-            justifyContent: "flex-start",
+            alignItems: "center",
+            justifyContent: "center",
             maxWidth: 500,
             margin: "auto",
             flexDirection: "column",
             padding: "0px 10px",
-            marginBottom: 20
+            marginBottom: 20,
+            marginTop: 50,
+            textAlign: "center"
           }}
         >
           <div
             style={{
+              backgroundColor: "rgba(255,255,255,0.1)",
+              marginRight: 10,
+              borderRadius: 3,
               display: "flex",
               alignItems: "center",
-              justifyContent: "flex-start",
-              marginTop: 50,
-              marginBottom: 0,
-              width: "100%"
+              justifyContent: "center",
+              fontSize: 12,
+              color: "rgba(255, 255, 255, 0.5)",
+              marginBottom: 10,
+              marginTop: 2,
+              padding: "5px 12px",
+              letterSpacing: "0.03em",
+              transform: "skew(-20deg)" /* SKEW */
             }}
           >
-            <h3
+            <div
               style={{
-                textAlign: "left",
-                margin: "0px",
-                // marginBottom: 7,
-                color: "rgba(46, 228, 246, 1)",
-                fontWeight: "400",
-                letterSpacing: "0.05em"
+                display: "inline-block",
+                transition: "background 0.2s",
+                transform: "skew(20deg)" /* SKEW */
               }}
             >
-              {title}
-            </h3>
-            {/*<div*/}
-            {/*style={{*/}
-            {/*backgroundColor: "rgba(255,255,255,0.1)",*/}
-            {/*marginRight: 10,*/}
-            {/*borderRadius: 30,*/}
-            {/*display: "flex",*/}
-            {/*alignItems: "center",*/}
-            {/*justifyContent: "center",*/}
-            {/*fontSize: 12,*/}
-            {/*color: "rgba(255, 255, 255, 0.5)",*/}
-            {/*marginBottom: 10,*/}
-            {/*marginTop: 2,*/}
-            {/*padding: "5px 12px",*/}
-            {/*letterSpacing: "0.03em"*/}
-            {/*}}*/}
-            {/*>*/}
-            {/*Step {num}*/}
-            {/*</div>*/}
+              Step {num}
+            </div>
           </div>
+          <h4
+            style={{
+              margin: "0px",
+              // marginBottom: 7,
+              color: "rgba(46, 228, 246, 1)",
+              fontWeight: "400",
+              letterSpacing: "0.05em",
+              borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+              padding: "10px 0px"
+            }}
+          >
+            {title}
+          </h4>
           <div
             style={{
-              textAlign: "left",
-              margin: "5px 0px 0px 0px",
+              textAlign: "center",
+              margin: "10px 0px 0px 0px",
               color: "rgba(255, 255, 255, 0.7)",
               fontWeight: "400",
               letterSpacing: "0.05em",
@@ -610,6 +588,27 @@ class App extends Component {
           </div>
         </div>
       );
+    };
+
+    const SwipeHelp = () => {
+      if (touchOnly) {
+        return (
+          <div
+            style={{
+              margin: "auto",
+              color: "rgba(255, 255, 255, 0.4)",
+              textAlign: "center",
+              marginBottom: 5,
+              fontWeight: "light",
+              fontSize: 12
+            }}
+          >
+            &larr; <span style={{ margin: "0px 10px" }}>Swipe</span> &rarr;
+          </div>
+        );
+      } else {
+        return null;
+      }
     };
 
     return (
@@ -696,7 +695,7 @@ class App extends Component {
               <div>
                 Start out with a bird's eye view of a diverse range of news
                 sources.{" "}
-                <div style={{ marginTop: 10 }}>
+                <div style={{ marginTop: 15 }}>
                   Get a feel for{" "}
                   <strong style={{ color: "rgba(255, 255, 255, 0.8)" }}>
                     what
@@ -709,7 +708,9 @@ class App extends Component {
                 </div>
               </div>
             </SectionTitle>
+            <SwipeHelp />
             <FrontPages />
+
             <SectionTitle num={2} title={"Catch up on buzzwords"}>
               <div>
                 {this.state.opinionArticles.length
@@ -733,8 +734,9 @@ class App extends Component {
                 </div>
               </div>
             </SectionTitle>
-            ]]
+
             <Tags />
+
             <SectionTitle num={3} title={"Read some news articles"}>
               Now start skimming articles. Click and read some from a variety of
               news sites.
@@ -746,6 +748,7 @@ class App extends Component {
                 </strong>
               </div>
             </SectionTitle>
+            <SwipeHelp />
             <div style={{ position: "relative" }}>
               {touchOnly ? null : (
                 <Arrow direction={"left"} selector={"newsArticles"} />
@@ -758,6 +761,7 @@ class App extends Component {
                 <Arrow direction={"right"} selector={"newsArticles"} />
               )}
             </div>
+
             <SectionTitle num={4} title={"Explore opinion pieces"}>
               Once you've built up a base of facts and observations, you're
               ready to explore more subjective takes on the stories of the day.
@@ -773,6 +777,7 @@ class App extends Component {
                 </a>
               </div>
             </SectionTitle>
+            <SwipeHelp />
             <div style={{ position: "relative" }}>
               {touchOnly ? null : (
                 <Arrow direction={"left"} selector={"opinionArticles"} />

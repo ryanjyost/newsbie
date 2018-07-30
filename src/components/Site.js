@@ -87,15 +87,13 @@ export default class Site extends Component {
 
     return (
       <div
-        style={
-          {
-            // display: "flex",
-            // flexDirection: "column",
-            // alignItems: "center",
-            // justifyContent: "center",
-            // margin: touchOnly ? "auto" : `${siteMargin - 1}px`
-          }
-        }
+        style={{
+          // display: "flex",
+          // flexDirection: "column",
+          // alignItems: "center",
+          // justifyContent: "center",
+          margin: touchOnly ? "auto" : `${siteMargin - 1}px`
+        }}
       >
         <a
           href={record ? record.site.url : ""}
@@ -136,7 +134,8 @@ export default class Site extends Component {
                 onLoad={() => this.setState({ loaded: true })}
                 style={{
                   display: loaded ? "" : "none",
-                  opacity: 1
+                  opacity: 1,
+                  margin: "auto"
                 }}
               />
             ) : (
@@ -174,59 +173,62 @@ export default class Site extends Component {
             )
           ) : null}
         </a>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            margin: showSlider ? "auto" : ""
-          }}
-        >
-          <a
-            href={record.site.url}
-            className={"hoverBtn"}
-            style={{
-              textAlign: "left",
-              marginTop: 10,
-              fontWeight: "300",
-              display: "inline-block",
-              textDecoration: "none",
-              marginRight: 15,
-              padding: "5px 12px",
-              borderRadius: "50px",
-              fontSize: 14,
-              letterSpacing: "0.03em"
-            }}
-          >
-            {record.site.title}
-          </a>
+        {record && (
           <div
             style={{
               display: "flex",
               alignItems: "center",
-              marginTop: 10,
-              opacity: 0.7
+              justifyContent: "center",
+              margin: showSlider ? "auto" : "",
+              marginTop: 5
             }}
           >
-            <TwitterShareButton
-              url={`https://d1dzf0mjm4jp11.cloudfront.net/${record.image}`}
-              title={`Front page of ${record.site.title} `}
-              className="Demo__some-network__share-button"
-              style={{ marginRight: 10 }}
+            <a
+              href={record ? record.site.url : ""}
+              className={"hoverBtn"}
+              style={{
+                textAlign: "left",
+                marginTop: 10,
+                fontWeight: "300",
+                display: "inline-block",
+                textDecoration: "none",
+                marginRight: 15,
+                padding: "5px 12px",
+                borderRadius: "50px",
+                fontSize: 14,
+                letterSpacing: "0.03em"
+              }}
             >
-              <TwitterIcon size={30} round />
-            </TwitterShareButton>
-            <RedditShareButton
-              url={`https://d1dzf0mjm4jp11.cloudfront.net/${record.image}`}
-              title={`Check out the front page of ${record.site.title}`}
-              windowWidth={660}
-              windowHeight={460}
-              className="Demo__some-network__share-button"
+              {record.site.title}
+            </a>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginTop: 10,
+                opacity: 0.7
+              }}
             >
-              <RedditIcon size={30} round />
-            </RedditShareButton>
+              <TwitterShareButton
+                url={`https://d1dzf0mjm4jp11.cloudfront.net/${record.image}`}
+                title={`Front page of ${record.site.title} `}
+                className="Demo__some-network__share-button"
+                style={{ marginRight: 10 }}
+              >
+                <TwitterIcon size={30} round />
+              </TwitterShareButton>
+              <RedditShareButton
+                url={`https://d1dzf0mjm4jp11.cloudfront.net/${record.image}`}
+                title={`Check out the front page of ${record.site.title}`}
+                windowWidth={660}
+                windowHeight={460}
+                className="Demo__some-network__share-button"
+              >
+                <RedditIcon size={30} round />
+              </RedditShareButton>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }
