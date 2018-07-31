@@ -51,7 +51,7 @@ class App extends Component {
     ];
 
     this.state = {
-      isLanding: false,
+      isLanding: true,
       list: shuffle(this.list),
       sites: [],
       articles: [],
@@ -176,7 +176,13 @@ class App extends Component {
   }
 
   render() {
-    const { screenWidth, screenHeight, records, touchOnly } = this.state;
+    const {
+      screenWidth,
+      screenHeight,
+      records,
+      touchOnly,
+      isLanding
+    } = this.state;
     let imageWidth = touchOnly
       ? Math.min(screenWidth, 700)
       : Math.min(screenWidth, 400);
@@ -469,6 +475,7 @@ class App extends Component {
               flexWrap: "wrap",
               height: articleWidth + 50,
               overflowX: "auto",
+              overflowY: "hidden",
               backgroundColor: "rgba(255, 255, 255, 0.3)",
               // borderTop: "5px solid rgba(255, 255, 255, 0.01)",
               padding: "30px 20px 20px 20px",
@@ -611,13 +618,17 @@ class App extends Component {
       }
     };
 
-    return (
-      <div style={{ paddingBottom: "100px" }}>
+    const TopBar = () => {
+      return (
         <div
           style={{
             height: 60,
-            backgroundColor: "rgba(33, 58, 73, 0.9)",
-            borderBottom: "1px solid rgba(255, 255," + " 255, 0.1)",
+            backgroundColor: isLanding
+              ? "rgba(255, 255, 255, 0.95)"
+              : "rgba(33, 58, 73, 0.9)",
+            borderBottom: isLanding
+              ? "1px solid #e5e5e5"
+              : "1px solid rgba(255, 255," + " 255, 0.1)",
             width: "100%",
             display: "flex",
             alignItems: "center",
@@ -633,19 +644,27 @@ class App extends Component {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              marginBottom: 10
+              marginLeft: "5%"
             }}
           >
-            <h3 style={{ color: "rgba(255, 255, 255, 0.8)", marginLeft: 30 }}>
-              newsbie<span style={{ color: "rgba(255, 255, 255, 0.4)" }}>
-                .io
-              </span>
-            </h3>
+            <h4
+              style={{
+                color: isLanding
+                  ? "rgba(33, 58, 73, 0.9)"
+                  : "rgba(255, 255, 255, 0.8)",
+
+                fontWeight: "bold"
+              }}
+            >
+              newsbie
+            </h4>
           </div>
           <div
             style={{
-              backgroundColor: "rgba(46, 228, 246, 0.6)",
-              marginRight: 30,
+              backgroundColor: isLanding
+                ? "rgba(33, 58, 73, 0.4)"
+                : "rgba(46, 228, 246, 0.6)",
+              marginRight: "5%",
               padding: "5px 15px",
               fontSize: 14,
               fontWeight: "600",
@@ -655,11 +674,17 @@ class App extends Component {
             className={"cta"}
             onClick={() => this.setState({ isLanding: !this.state.isLanding })}
           >
-            {this.state.isLanding ? "Go Back" : "Get the App"}
+            {this.state.isLanding ? "Try Demo" : "Get the App"}
           </div>
         </div>
+      );
+    };
+
+    return (
+      <div style={{ paddingBottom: "100px" }}>
+        <TopBar />
         {this.state.isLanding ? (
-          <Landing />
+          <Landing records={this.state.records} />
         ) : (
           <div
             className="main"
