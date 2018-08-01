@@ -39,12 +39,12 @@ export default class Landing extends Component {
       return (
         <div
           style={{
-            width: 300,
+            width: 280,
             height: 250,
             backgroundColor: "rgba(255, 255, 255, 0.95)",
             margin: 20,
             borderRadius: 5,
-            padding: "30px 20px",
+            padding: "30px 30px",
             justifyContent: "center",
             alignItems: "center",
             display: "flex",
@@ -61,12 +61,13 @@ export default class Landing extends Component {
             style={{
               textAlign: "center",
               color: "rgba(33, 58, 73, 0.9)",
-              lineHeight: 1.3
+              lineHeight: 1.3,
+              margin: "10px 0px"
             }}
           >
             {title}
           </h4>
-          <div style={{ textAlign: "center", fontSize: 16 }}>{content}</div>
+          <div style={{ textAlign: "center", fontSize: 18 }}>{content}</div>
         </div>
       );
     };
@@ -90,10 +91,9 @@ export default class Landing extends Component {
                   // flexDirection: "column",
                   // justifyContent: "center",
                   // alignItems: "center",
-                  position: "absolute",
-                  bottom: isBottom ? "" : "0px",
-                  top: isBottom ? "0px" : "",
-                  width: "100%",
+                  // position: isBottom ? "" : "",
+                  // bottom: isBottom ? "" : "0px",
+                  // top: isBottom ? "0px" : "",
                   padding: "10px 20px 0px 20px",
                   backgroundImage: isBottom
                     ? "linear-gradient(to bottom, rgba(245, 245, 245, 1),rgba(245, 245, 245, 1), rgba(245, 245," +
@@ -131,6 +131,7 @@ export default class Landing extends Component {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
+                        flexDirection: "column",
                         marginTop: 10
                       }}
                     >
@@ -144,12 +145,10 @@ export default class Landing extends Component {
                         required
                         style={{
                           padding: "5px 15px",
-                          height: 45,
+                          height: 30,
                           borderRadius: 3,
-                          width: 245,
                           fontSize: 16,
-                          borderTopRightRadius: 0,
-                          borderBottomRightRadius: 0
+                          width: 250
                           // marginRight: 5
                         }}
                         onChange={e => this.setState({ email: e.target.value })}
@@ -165,38 +164,36 @@ export default class Landing extends Component {
                           value=""
                         />
                       </div>
-                      <div className="clear">
-                        <button
-                          type="submit"
-                          // name="subscribe"
-                          // id="mc-embedded-subscribe"
-                          className="button emailSignUpButton cta"
-                          style={{
-                            height: 45,
-                            fontSize: 16,
-                            padding: "0px 20px",
-                            minWidth: 100,
-                            backgroundColor: "rgba(33, 58, 73, 0.9)",
-                            color: "rgba(255, 255, 255, 1)",
-                            borderTopRightRadius: 5,
-                            borderBottomRightRadius: 5,
-                            border: "1px solid rgba(33, 58, 73, 0.9)"
-                          }}
-                          onClick={() => {
-                            if (this.validateEmail(this.state.email)) {
-                              console.log("SUBSCRIBE");
-                              subscribe({ EMAIL: this.state.email });
-                            } else {
-                              alert("error");
-                            }
-                          }}
-                        >
-                          {!status && "Sign Up"}
-                          {status === "sending" && "Sending..."}
-                          {status === "success" && "Success!"}
-                          {status === "error" && "Error :("}
-                        </button>
-                      </div>
+
+                      <button
+                        type="submit"
+                        // name="subscribe"
+                        // id="mc-embedded-subscribe"
+                        className="button emailSignUpButton cta"
+                        style={{
+                          height: 40,
+                          fontSize: 14,
+                          padding: "5px 15px",
+                          marginTop: 10,
+                          backgroundColor: "rgba(33, 58, 73, 0.9)",
+                          color: "rgba(255, 255, 255, 1)",
+                          border: "1px solid rgba(33, 58, 73, 0.9)",
+                          borderRadius: 3,
+                          width: 250
+                        }}
+                        onClick={() => {
+                          if (this.validateEmail(this.state.email)) {
+                            subscribe({ EMAIL: this.state.email });
+                          } else {
+                            alert("error");
+                          }
+                        }}
+                      >
+                        {!status && "Sign Up"}
+                        {status === "sending" && "Sending..."}
+                        {status === "success" && "Success!"}
+                        {status === "error" && "Error :("}
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -254,7 +251,6 @@ export default class Landing extends Component {
                 backgroundImage: "url(/images/sitesBackground.png)",
                 marginTop: 60,
                 height: "100%",
-                width: "100%",
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "center",
@@ -267,9 +263,9 @@ export default class Landing extends Component {
                 zIndex: 5,
                 position: "absolute",
                 height: "100%",
-                width: "100%",
                 paddingTop: 120,
-                top: 0
+                top: 0,
+                width: "100%"
               }}
             >
               <h1
@@ -301,7 +297,6 @@ export default class Landing extends Component {
               marginTop: "40px",
               fontSize: 24,
               padding: "30px 20px 0px 20px",
-              width: "100%",
               letterSpacing: "0.03em",
               textAlign: "center",
               color: "rgba(33, 58, 73, 0.7)",
@@ -371,7 +366,6 @@ export default class Landing extends Component {
             style={{
               padding: "100px 20px 70px 20px",
               fontSize: 20,
-              width: "100%",
               margin: "auto",
               display: "flex",
               flexDirection: "column",
@@ -582,11 +576,7 @@ export default class Landing extends Component {
 
               <Feature
                 icon={androidList}
-                title={
-                  <span>
-                    Everything you love about<br /> news aggregators
-                  </span>
-                }
+                title={<span>Everything you love about news aggregators</span>}
                 content={
                   <span>
                     Tons of content from <br />dozens of news sources
@@ -732,13 +722,13 @@ export default class Landing extends Component {
             </div>
           </div>
 
-          {/* MAIN LANDING  */}
-          <div style={{ height: 500, position: "relative" }}>
+          {/* Bottom LANDING  */}
+          <div style={{ height: 600, position: "relative" }}>
             <div
               style={{
                 backgroundImage: "url(/images/sitesBackground.png)",
+                // marginTop: 60,
                 height: "100%",
-                width: "100%",
                 backgroundSize: "cover",
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "center",
@@ -751,27 +741,26 @@ export default class Landing extends Component {
                 zIndex: 5,
                 position: "absolute",
                 height: "100%",
-                width: "100%",
-                paddingTop: 50,
-                top: 0
+                // paddingTop: 120,
+                top: 0,
+                width: "100%"
               }}
             >
+              {renderSignUp(true)}
               <div
                 style={{
                   padding: "0px 20px",
                   letterSpacing: "0.03em",
                   lineHeight: 1.3,
                   fontWeight: "bold",
-                  position: "absolute",
-                  bottom: "150px",
-                  width: "100%",
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "center",
-                  alignItems: "center"
+                  alignItems: "center",
+                  marginTop: 100
                 }}
               >
-                <h3
+                <h2
                   style={{
                     color: "#12232D",
                     textAlign: "center",
@@ -779,7 +768,6 @@ export default class Landing extends Component {
                     letterSpacing: "0.03em",
                     lineHeight: 1.3,
                     fontWeight: "bold",
-                    width: "100%",
                     marginBottom: 30
                   }}
                 >
@@ -791,7 +779,7 @@ export default class Landing extends Component {
                       fontWeight: "normal"
                     }}
                   />
-                </h3>
+                </h2>
                 <button
                   style={{
                     height: 45,
@@ -801,15 +789,14 @@ export default class Landing extends Component {
                     backgroundColor: "rgba(33, 58, 73, 0.9)",
                     color: "rgba(255, 255, 255, 1)",
                     borderRadius: 5,
-                    border: "1px solid rgba(33, 58, 73, 0.9)"
+                    border: "1px solid rgba(33, 58, 73, 0.9)",
+                    cursor: "pointer"
                   }}
                   onClick={() => this.props.switchToDemo()}
                 >
                   Try the demo
                 </button>
               </div>
-
-              {renderSignUp(true)}
             </div>
           </div>
         </div>

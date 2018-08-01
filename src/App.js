@@ -47,7 +47,7 @@ class App extends Component {
     ];
 
     this.state = {
-      isLanding: false,
+      isLanding: true,
       list: shuffle(this.list),
       sites: [],
       articles: [],
@@ -193,7 +193,7 @@ class App extends Component {
 
     let articleWidth = touchOnly
       ? Math.min(screenWidth, 400)
-      : Math.min(screenWidth, 300);
+      : Math.min(screenWidth, 340);
     let articleMargin = 10;
 
     let isWide = screenWidth > 768;
@@ -452,7 +452,7 @@ class App extends Component {
               display: "flex",
               flexDirection: "column",
               flexWrap: "wrap",
-              height: articleWidth + 50,
+              height: articleWidth,
               overflowX: "auto",
               overflowY: "hidden",
               backgroundColor: "rgba(255, 255, 255, 0.3)",
@@ -676,15 +676,8 @@ class App extends Component {
                 name="mc-embedded-subscribe-form"
                 className="validate"
                 style={{
-                  // display: "flex",
-                  // flexDirection: "column",
-                  // justifyContent: "center",
-                  // alignItems: "center",
-                  bottom: isBottom ? "" : "0px",
-                  top: isBottom ? "0px" : "",
-                  width: "100%",
                   padding: "50px 0px 50px 0px",
-                  backgroundColor: "rgba(255, 255, 255, 0.6)",
+                  backgroundColor: "rgba(255, 255, 255, 0.85)",
                   borderRadius: 5
                 }}
               >
@@ -717,6 +710,7 @@ class App extends Component {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
+                        flexDirection: "column",
                         marginTop: 10
                       }}
                     >
@@ -730,12 +724,10 @@ class App extends Component {
                         required
                         style={{
                           padding: "5px 15px",
-                          height: 45,
+                          height: 30,
                           borderRadius: 3,
-                          width: 245,
                           fontSize: 16,
-                          borderTopRightRadius: 0,
-                          borderBottomRightRadius: 0
+                          width: 250
                           // marginRight: 5
                         }}
                         onChange={e => this.setState({ email: e.target.value })}
@@ -751,38 +743,38 @@ class App extends Component {
                           value=""
                         />
                       </div>
-                      <div className="clear">
-                        <button
-                          type="submit"
-                          // name="subscribe"
-                          // id="mc-embedded-subscribe"
-                          className="button emailSignUpButton cta"
-                          style={{
-                            height: 45,
-                            fontSize: 16,
-                            padding: "0px 20px",
-                            minWidth: 100,
-                            backgroundColor: "rgba(33, 58, 73, 0.9)",
-                            color: "rgba(255, 255, 255, 1)",
-                            borderTopRightRadius: 5,
-                            borderBottomRightRadius: 5,
-                            border: "1px solid rgba(33, 58, 73, 0.9)"
-                          }}
-                          onClick={() => {
-                            if (this.validateEmail(this.state.email)) {
-                              console.log("SUBSCRIBE");
-                              subscribe({ EMAIL: this.state.email });
-                            } else {
-                              alert("error");
-                            }
-                          }}
-                        >
-                          {!status && "Sign Up"}
-                          {status === "sending" && "Sending..."}
-                          {status === "success" && "Success!"}
-                          {status === "error" && "Error :("}
-                        </button>
-                      </div>
+
+                      <button
+                        type="submit"
+                        // name="subscribe"
+                        // id="mc-embedded-subscribe"
+                        className="button emailSignUpButton cta"
+                        style={{
+                          height: 40,
+                          fontSize: 14,
+                          padding: "5px 15px",
+                          marginTop: 10,
+                          backgroundColor: "rgba(33, 58, 73, 0.9)",
+                          color: "rgba(255, 255, 255, 1)",
+                          border: "1px solid rgba(33, 58, 73, 0.9)",
+                          borderRadius: 3,
+                          width: 250,
+                          cursor: "pointer"
+                        }}
+                        onClick={() => {
+                          if (this.validateEmail(this.state.email)) {
+                            console.log("SUBSCRIBE");
+                            subscribe({ EMAIL: this.state.email });
+                          } else {
+                            alert("error");
+                          }
+                        }}
+                      >
+                        {!status && "Sign Up"}
+                        {status === "sending" && "Sending..."}
+                        {status === "success" && "Success!"}
+                        {status === "error" && "Error :("}
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -813,7 +805,14 @@ class App extends Component {
               margin: "50px 10px 0px 10px"
             }}
           >
-            <div style={{ maxWidth: 600, margin: "auto", marginTop: 100 }}>
+            <div
+              style={{
+                maxWidth: 600,
+                margin: "auto",
+                marginTop: 100,
+                padding: "0px 20px"
+              }}
+            >
               <h2
                 style={{
                   color: "rgba(255, 255, 255, 0.9)",
@@ -823,7 +822,7 @@ class App extends Component {
                   letterSpacing: "0.03em"
                 }}
               >
-                Want a <strong>balanced, efficient</strong> way <br />to stay
+                Want a <strong>balanced, efficient</strong> way to stay
                 informed?
               </h2>
               <h1
@@ -941,11 +940,12 @@ class App extends Component {
               You have a good feel for the news and how to navigate it, <br />but
               want to supercharge the way you stay informed.
             </SectionTitle>
+
             {renderSignUp()}
 
             <div
               style={{
-                padding: "50px 20px 0px 20px",
+                padding: "50px 0px 0px 0px",
                 letterSpacing: "0.03em",
                 lineHeight: 1.3,
                 fontWeight: "bold",

@@ -69,8 +69,7 @@ export default class Article extends Component {
               height: "100%",
               width: "100%",
               position: "relative",
-              color: "rgba(255, 255, 255, 0.95)",
-              padding: 20
+              color: "rgba(255, 255, 255, 0.95)"
             }}
           >
             <h3
