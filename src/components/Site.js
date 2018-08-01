@@ -139,37 +139,70 @@ export default class Site extends Component {
                 }}
               />
             ) : (
-              <ReactImageMagnify
-                enlargedImagePosition={"over"}
-                hoverDelayInMs={500}
-                {...{
-                  smallImage: {
-                    height: imageWidth,
-                    width: imageWidth,
-                    src: `https://d1dzf0mjm4jp11.cloudfront.net/${
-                      record.image
-                    }`,
-                    onLoad: () => this.setState({ loaded: true })
-                  },
-                  largeImage: {
-                    src: `https://d1dzf0mjm4jp11.cloudfront.net/${
-                      record.image
-                    }`,
-                    width: 1024,
-                    height: 1024
-                  }
+              <Motion
+                defaultStyle={{
+                  linkPosition: -50,
+                  imageOpacity: 0
                 }}
                 style={{
-                  display: loaded ? "" : "none",
-                  opacity: 1,
-                  borderRight: touchOnly
-                    ? "5px solid rgba(33, 58, 73, 1)"
-                    : "none",
-                  borderLeft: touchOnly
-                    ? "5px solid rgba(33, 58, 73, 1)"
-                    : "none"
+                  linkPosition: spring(this.state.hover ? 10 : -50),
+                  imageOpacity: spring(loaded ? 1 : 0)
                 }}
-              />
+              >
+                {style => {
+                  return (
+                    <a
+                      href={record ? record.site.url : ""}
+                      rel="noreferrer"
+                      key={index}
+                      style={{
+                        margin: `0px ${siteMargin - 1}`,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        height: imageWidth,
+                        width: imageWidth,
+                        backgroundColor: "rgba(255, 255, 255, 0.2)",
+                        position: "relative"
+                      }}
+                      // onMouseEnter={() => this.setState({ hover: true })}
+                      // onMouseLeave={() => this.setState({ hover: false })}
+                    >
+                      <ReactImageMagnify
+                        enlargedImagePosition={"over"}
+                        hoverDelayInMs={500}
+                        {...{
+                          smallImage: {
+                            height: imageWidth,
+                            width: imageWidth,
+                            src: `https://d1dzf0mjm4jp11.cloudfront.net/${
+                              record.image
+                            }`,
+                            onLoad: () => this.setState({ loaded: true })
+                          },
+                          largeImage: {
+                            src: `https://d1dzf0mjm4jp11.cloudfront.net/${
+                              record.image
+                            }`,
+                            width: 1024,
+                            height: 1024
+                          }
+                        }}
+                        style={{
+                          display: loaded ? "" : "none",
+                          opacity: style.opacity,
+                          borderRight: touchOnly
+                            ? "5px solid rgba(33, 58, 73, 1)"
+                            : "none",
+                          borderLeft: touchOnly
+                            ? "5px solid rgba(33, 58, 73, 1)"
+                            : "none"
+                        }}
+                      />
+                    </a>
+                  );
+                }}
+              </Motion>
             )
           ) : null}
         </a>

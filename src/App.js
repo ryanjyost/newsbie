@@ -2,18 +2,14 @@ import React, { Component } from "react";
 import shuffle from "shuffle-array";
 import "./App.css";
 import axios from "axios";
-import TwitterLogin from "react-twitter-auth";
 import $ from "jquery";
-import { Icon } from "react-icons-kit";
 import Site from "./components/Site";
 import Article from "./components/Article";
 import Landing from "./components/Landing";
-import { OverlayTrigger, Popover, Button } from "react-bootstrap";
 import Tag from "./components/Tag";
 import Slider from "react-slick";
-import MobileDetect from "mobile-detect";
 import detectIt from "detect-it";
-import HorizontalScroll from "react-scroll-horizontal";
+import MailchimpSubscribe from "react-mailchimp-subscribe";
 
 class App extends Component {
   constructor(props) {
@@ -51,7 +47,7 @@ class App extends Component {
     ];
 
     this.state = {
-      isLanding: true,
+      isLanding: false,
       list: shuffle(this.list),
       sites: [],
       articles: [],
@@ -173,6 +169,14 @@ class App extends Component {
       },
       "fast"
     );
+  }
+
+  scrollTop(isSmooth = false, top = 0) {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: isSmooth ? "smooth" : "auto"
+    });
   }
 
   render() {
@@ -328,40 +332,15 @@ class App extends Component {
                       <div
                         key={i}
                         style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexDirection: "column"
+                          margin: `0px ${29}px`,
+                          height: imageWidth - 50,
+                          width: imageWidth - 50,
+                          backgroundColor: "rgba(255, 255, 255, 0.2)",
+                          position: "relative"
                         }}
-                      >
-                        <Site
-                          key={i}
-                          index={i}
-                          record={null}
-                          siteMargin={30}
-                          imageWidth={imageWidth - 50}
-                          showSlider={showSlider}
-                          touchOnly={touchOnly}
-                        />
-
-                        <a
-                          href={""}
-                          className={"hoverBtn"}
-                          style={{
-                            textAlign: "left",
-                            marginTop: 15,
-                            fontWeight: "300",
-                            display: "inline-block",
-                            textDecoration: "none",
-                            marginLeft: 5,
-                            padding: "5px 12px",
-                            borderRadius: "50px",
-                            fontSize: 12,
-                            letterSpacing: "0.03em",
-                            width: 50
-                          }}
-                        />
-                      </div>
+                        // onMouseEnter={() => this.setState({ hover: true })}
+                        // onMouseLeave={() => this.setState({ hover: false })}
+                      />
                     );
                   })}
             </div>
@@ -672,7 +651,10 @@ class App extends Component {
               borderRadius: 9999
             }}
             className={"cta"}
-            onClick={() => this.setState({ isLanding: !this.state.isLanding })}
+            onClick={() => {
+              this.scrollTop();
+              this.setState({ isLanding: !this.state.isLanding });
+            }}
           >
             {this.state.isLanding ? "Try Demo" : "Get the App"}
           </div>
@@ -680,11 +662,148 @@ class App extends Component {
       );
     };
 
+    const renderSignUp = (isBottom = true) => {
+      const url =
+        "https://newsbie.us18.list-manage.com/subscribe/post?u=bbab41b4faa898c5bb1f4c2e1&amp;id=75f26540d8";
+
+      return (
+        <MailchimpSubscribe
+          url={url}
+          render={({ subscribe, status, message, onValidated }) => {
+            return (
+              <div
+                id="mc-embedded-subscribe-form"
+                name="mc-embedded-subscribe-form"
+                className="validate"
+                style={{
+                  // display: "flex",
+                  // flexDirection: "column",
+                  // justifyContent: "center",
+                  // alignItems: "center",
+                  bottom: isBottom ? "" : "0px",
+                  top: isBottom ? "0px" : "",
+                  width: "100%",
+                  padding: "50px 0px 50px 0px",
+                  backgroundColor: "rgba(255, 255, 255, 0.6)",
+                  borderRadius: 5
+                }}
+              >
+                <div style={{ padding: "0px 20px" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center"
+                    }}
+                  >
+                    <h4
+                      style={{
+                        textAlign: "center",
+                        lineHeight: 1.3,
+                        color: "rgba(33, 58, 73, 1)"
+                      }}
+                    >
+                      <span style={{ color: "rgba(33, 58, 73, 0.9)" }}>
+                        Join our mailing list for updates on the
+                      </span>{" "}
+                      <br />{" "}
+                      <span style={{ fontWeight: "bold" }}>
+                        upcoming app + free early access
+                      </span>
+                    </h4>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        marginTop: 10
+                      }}
+                    >
+                      <input
+                        type="email"
+                        value={this.state.email}
+                        name="EMAIL"
+                        className="email emailSignUpInput"
+                        id="mce-EMAIL"
+                        placeholder="jsnow44@winterfell.gov"
+                        required
+                        style={{
+                          padding: "5px 15px",
+                          height: 45,
+                          borderRadius: 3,
+                          width: 245,
+                          fontSize: 16,
+                          borderTopRightRadius: 0,
+                          borderBottomRightRadius: 0
+                          // marginRight: 5
+                        }}
+                        onChange={e => this.setState({ email: e.target.value })}
+                      />
+                      <div
+                        style={{ position: "absolute", left: -5000 }}
+                        aria-hidden="true"
+                      >
+                        <input
+                          type="text"
+                          name="b_bbab41b4faa898c5bb1f4c2e1_75f26540d8"
+                          tabIndex="-1"
+                          value=""
+                        />
+                      </div>
+                      <div className="clear">
+                        <button
+                          type="submit"
+                          // name="subscribe"
+                          // id="mc-embedded-subscribe"
+                          className="button emailSignUpButton cta"
+                          style={{
+                            height: 45,
+                            fontSize: 16,
+                            padding: "0px 20px",
+                            minWidth: 100,
+                            backgroundColor: "rgba(33, 58, 73, 0.9)",
+                            color: "rgba(255, 255, 255, 1)",
+                            borderTopRightRadius: 5,
+                            borderBottomRightRadius: 5,
+                            border: "1px solid rgba(33, 58, 73, 0.9)"
+                          }}
+                          onClick={() => {
+                            if (this.validateEmail(this.state.email)) {
+                              console.log("SUBSCRIBE");
+                              subscribe({ EMAIL: this.state.email });
+                            } else {
+                              alert("error");
+                            }
+                          }}
+                        >
+                          {!status && "Sign Up"}
+                          {status === "sending" && "Sending..."}
+                          {status === "success" && "Success!"}
+                          {status === "error" && "Error :("}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          }}
+        />
+      );
+    };
+
     return (
-      <div style={{ paddingBottom: "100px" }}>
+      <div>
         <TopBar />
         {this.state.isLanding ? (
-          <Landing records={this.state.records} />
+          <Landing
+            records={this.state.records}
+            switchToDemo={() => {
+              this.scrollTop();
+              this.setState({ isLanding: false });
+            }}
+          />
         ) : (
           <div
             className="main"
@@ -763,8 +882,10 @@ class App extends Component {
             <Tags />
 
             <SectionTitle num={3} title={"Read some news articles"}>
-              Now start skimming articles. Click and read some from a variety of
-              news sites.
+              Now start skimming articles.
+              <div style={{ marginTop: 10 }}>
+                Click and read some from a variety of news sites.
+              </div>
               <div style={{ marginTop: 10 }}>
                 By consulting multiple sources, you're able to filter out the
                 noise - and{" "}
@@ -814,6 +935,58 @@ class App extends Component {
               {touchOnly ? null : (
                 <Arrow direction={"right"} selector={"opinionArticles"} />
               )}
+            </div>
+
+            <SectionTitle num={5} title={"Graduate to News Junkie"}>
+              You have a good feel for the news and how to navigate it, <br />but
+              want to supercharge the way you stay informed.
+            </SectionTitle>
+            {renderSignUp()}
+
+            <div
+              style={{
+                padding: "50px 20px 0px 20px",
+                letterSpacing: "0.03em",
+                lineHeight: 1.3,
+                fontWeight: "bold",
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                height: 300
+              }}
+            >
+              <h3
+                style={{
+                  color: "rgba(255, 255, 255, 0.8)",
+                  textAlign: "center",
+                  padding: "0px 20px",
+                  letterSpacing: "0.03em",
+                  lineHeight: 1.3,
+                  fontWeight: "bold",
+                  width: "100%",
+                  marginBottom: 30
+                }}
+              >
+                Want to learn more about <br />the Newsbie app-in-progress?
+              </h3>
+              <button
+                style={{
+                  height: 45,
+                  fontSize: 16,
+                  padding: "0px 20px",
+                  width: 200,
+                  backgroundColor: "rgba(255, 255, 255, 0.8)",
+                  borderRadius: 5,
+                  color: "1px solid rgba(33, 58, 73, 0.9)"
+                }}
+                onClick={() => {
+                  this.scrollTop();
+                  this.setState({ isLanding: true });
+                }}
+              >
+                Learn More
+              </button>
             </div>
           </div>
         )}
