@@ -47,14 +47,42 @@
           <!--integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">-->
 
     <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
-
-
+    <style type="text/css">
+      #body {
+        margin: 0px;
+      }
+      #div {
+        height: 100vh;
+        width: 100%;
+        background-color: rgba(33, 58, 73, 1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        font-family:sans-serif;
+        text-align:center;
+      }
+      #text {
+        font-weight: 100;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 30px;
+      }
+    </style>
   </head>
-  <body>
-    <noscript>
-      You need to enable JavaScript to run this app.
-    </noscript>
-    <div id="root"></div>
+  <body id="body">
+  <noscript>
+    You need to enable JavaScript to run this app.
+  </noscript>
+  <div id="root">
+    <div id="div">
+      <!--<h4 id="text">Loading the news...</h4>-->
+      <img
+              src="https://res.cloudinary.com/ryanjyost/image/upload/v1530579641/newsbie-logo-large.png"
+              height="180px"
+              width="180px"
+      />
+    </div>
+  </div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

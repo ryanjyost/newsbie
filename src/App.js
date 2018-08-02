@@ -139,6 +139,14 @@ class App extends Component {
 
     let touchOnly = detectIt.deviceType === "touchOnly";
     this.setState({ touchOnly });
+
+    // google analystics
+    this.initReactGA();
+  }
+
+  initReactGA() {
+    ReactGA.initialize("UA-97014671-5");
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
   /**

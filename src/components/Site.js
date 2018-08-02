@@ -98,7 +98,7 @@ export default class Site extends Component {
         <a
           href={
             record
-              ? record.site
+              ? record.site.url
                 ? record.site.url.replace(/^http:\/\//i, "https://")
                 : ""
               : ""
@@ -225,7 +225,7 @@ export default class Site extends Component {
             <a
               href={
                 record
-                  ? record.site
+                  ? record.site.url
                     ? record.site.url.replace(/^http:\/\//i, "https://")
                     : ""
                   : ""

@@ -61,7 +61,9 @@ export default class Article extends Component {
             backgroundImage: `url(${
               article
                 ? article.image
-                  ? article.image.url.replace(/^http:\/\//i, "https://")
+                  ? article.image.url
+                    ? article.image.url.replace(/^http:\/\//i, "https://")
+                    : ""
                   : ""
                 : ""
             })`,
