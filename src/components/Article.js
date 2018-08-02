@@ -40,7 +40,13 @@ export default class Article extends Component {
         }}
       >
         <a
-          href={article.link}
+          href={
+            article
+              ? article.link
+                ? article.link.replace(/^http:\/\//i, "https://")
+                : "/"
+              : "/"
+          }
           rel="noreferrer"
           key={index}
           style={{
