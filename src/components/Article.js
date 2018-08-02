@@ -44,8 +44,8 @@ export default class Article extends Component {
             article
               ? article.link
                 ? article.link.replace(/^http:\/\//i, "https://")
-                : "/"
-              : "/"
+                : "https://res.cloudinary.com/ryanjyost/image/upload/v1530579641/newsbie-logo-large.png"
+              : "https://res.cloudinary.com/ryanjyost/image/upload/v1530579641/newsbie-logo-large.png"
           }
           rel="noreferrer"
           key={index}
@@ -63,8 +63,8 @@ export default class Article extends Component {
                 ? article.image
                   ? article.image.url
                     ? article.image.url.replace(/^http:\/\//i, "https://")
-                    : ""
-                  : ""
+                    : "https://res.cloudinary.com/ryanjyost/image/upload/v1530579641/newsbie-logo-large.png"
+                  : "https://res.cloudinary.com/ryanjyost/image/upload/v1530579641/newsbie-logo-large.png"
                 : ""
             })`,
             backgroundSize: "cover",

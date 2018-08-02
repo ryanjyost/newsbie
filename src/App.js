@@ -850,7 +850,7 @@ class App extends Component {
     };
 
     return (
-      <div>
+      <div style={{ backgroundColor: "rgba(33, 58, 73, 1)" }}>
         <TopBar />
         {this.state.isLanding ? (
           <Landing
@@ -866,7 +866,8 @@ class App extends Component {
             style={{
               maxWidth: "100%",
               overflowX: "hidden",
-              margin: "50px 10px 0px 10px"
+              paddingTop: 50,
+              margin: "0px 10px 0px 10px"
             }}
           >
             <div
