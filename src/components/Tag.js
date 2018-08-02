@@ -53,14 +53,6 @@ export default class Tag extends Component {
 
   handleMouseOut() {
     this.setState({ hover: false });
-    // this.timeoutOut = setTimeout(
-    //   function() {
-    //
-    //     clearTimeout(this.timeoutIn);
-    //     this.timeoutIn = null;
-    //   }.bind(this),
-    //   0
-    // );
   }
 
   render() {
@@ -130,6 +122,7 @@ export default class Tag extends Component {
                 <Icon
                   onClick={() => {
                     this.handleMouseOut();
+                    this.props.updateCurrentTag(null);
                   }}
                   style={{ marginLeft: 5, cursor: "pointer" }}
                   icon={ic_close}

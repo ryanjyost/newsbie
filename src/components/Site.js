@@ -151,9 +151,9 @@ export default class Site extends Component {
               >
                 {style => {
                   return (
-                    <a
-                      href={record ? record.site.url : ""}
-                      rel="noreferrer"
+                    <div
+                      // href={record ? record.site.url : ""}
+                      // rel="noreferrer"
                       key={index}
                       style={{
                         margin: `0px ${siteMargin - 1}`,
@@ -199,7 +199,7 @@ export default class Site extends Component {
                             : "none"
                         }}
                       />
-                    </a>
+                    </div>
                   );
                 }}
               </Motion>

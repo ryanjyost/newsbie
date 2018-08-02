@@ -10,6 +10,7 @@ import Tag from "./components/Tag";
 import Slider from "react-slick";
 import detectIt from "detect-it";
 import MailchimpSubscribe from "react-mailchimp-subscribe";
+import TimeAgo from "react-timeago";
 
 class App extends Component {
   constructor(props) {
@@ -47,7 +48,7 @@ class App extends Component {
     ];
 
     this.state = {
-      isLanding: true,
+      isLanding: false,
       list: shuffle(this.list),
       sites: [],
       articles: [],
@@ -58,6 +59,7 @@ class App extends Component {
       topTags: [],
       records: [],
       batch: null,
+      currentTag: null,
 
       // UI
       screenWidth: 0,
@@ -295,7 +297,7 @@ class App extends Component {
                 display: "flex",
                 flexDirection: "column",
                 flexWrap: "wrap",
-                height: imageWidth + 80,
+                height: imageWidth + 50,
                 overflowX: "auto",
                 backgroundColor: "rgba(255, 255, 255, 0.05)",
                 // borderTop: "5px solid rgba(255, 255, 255, 0.01)",
@@ -371,7 +373,14 @@ class App extends Component {
             }}
           >
             {this.state.topTags.map((tag, i) => {
-              return <Tag key={i} tag={tag} />;
+              return (
+                <Tag
+                  key={i}
+                  tag={tag}
+                  currentTag={this.state.currentTag}
+                  updateCurrentTag={tag => this.setState({ currentTag: tag })}
+                />
+              );
             })}
           </div>
         </div>
@@ -526,7 +535,7 @@ class App extends Component {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              fontSize: 12,
+              fontSize: 15,
               color: "rgba(255, 255, 255, 0.5)",
               marginBottom: 10,
               marginTop: 2,
@@ -545,7 +554,7 @@ class App extends Component {
               Step {num}
             </div>
           </div>
-          <h4
+          <h3
             style={{
               margin: "0px",
               // marginBottom: 7,
@@ -557,7 +566,7 @@ class App extends Component {
             }}
           >
             {title}
-          </h4>
+          </h3>
           <div
             style={{
               textAlign: "center",
@@ -678,7 +687,9 @@ class App extends Component {
                 style={{
                   padding: "50px 0px 50px 0px",
                   backgroundColor: "rgba(255, 255, 255, 0.85)",
-                  borderRadius: 5
+                  borderRadius: 5,
+                  maxWidth: 400,
+                  margin: "auto"
                 }}
               >
                 <div style={{ padding: "0px 20px" }}>
@@ -690,7 +701,49 @@ class App extends Component {
                       alignItems: "center"
                     }}
                   >
-                    <h4
+                    <div
+                      style={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "center",
+                        justifyContent: "center"
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontSize: 32,
+                          color: "rgba(255, 255, 255, 1)",
+                          transform: "skew(-20deg)" /* SKEW */,
+                          backgroundColor: "rgba(33, 58, 73, 1)",
+                          display: "inline-block",
+                          padding: "5px 20px",
+                          borderRadius: 3,
+                          marginBottom: 20
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "inline-block",
+                            transition: "background 0.2s",
+                            transform: "skew(20deg)" /* SKEW */
+                          }}
+                        >
+                          newsbie
+                        </div>
+                      </div>
+
+                      <div
+                        style={{
+                          color: "rgba(33, 58, 73, 1)",
+                          marginTop: 10,
+                          display: "inline-block",
+                          fontSize: 20
+                        }}
+                      >
+                        A command center for news junkies
+                      </div>
+                    </div>
+                    <h3
                       style={{
                         textAlign: "center",
                         lineHeight: 1.3,
@@ -700,11 +753,10 @@ class App extends Component {
                       <span style={{ color: "rgba(33, 58, 73, 0.9)" }}>
                         Join our mailing list for updates on the
                       </span>{" "}
-                      <br />{" "}
                       <span style={{ fontWeight: "bold" }}>
                         upcoming app + free early access
                       </span>
-                    </h4>
+                    </h3>
                     <div
                       style={{
                         display: "flex",
@@ -759,7 +811,8 @@ class App extends Component {
                           border: "1px solid rgba(33, 58, 73, 0.9)",
                           borderRadius: 3,
                           width: 250,
-                          cursor: "pointer"
+                          cursor: "pointer",
+                          fontWeight: "bold"
                         }}
                         onClick={() => {
                           if (this.validateEmail(this.state.email)) {
@@ -822,9 +875,22 @@ class App extends Component {
                   letterSpacing: "0.03em"
                 }}
               >
-                Want a <strong>balanced, efficient</strong> way to stay
-                informed?
+                Want a <strong>balanced, efficient</strong> way to read the
+                news?
               </h2>
+              {this.state.batch ? (
+                <h5
+                  style={{
+                    textAlign: "center",
+                    color: "rgba(255, 255, 255, 0.4)",
+                    letterSpacing: "0.03em"
+                  }}
+                >
+                  updated <TimeAgo date={this.state.batch.created_at} />
+                </h5>
+              ) : (
+                ""
+              )}
               <h1
                 style={{
                   textAlign: "center",
@@ -937,8 +1003,8 @@ class App extends Component {
             </div>
 
             <SectionTitle num={5} title={"Graduate to News Junkie"}>
-              You have a good feel for the news and how to navigate it, <br />but
-              want to supercharge the way you stay informed.
+              You have a good feel for the news and how to navigate it, but now
+              you may want to supercharge the way you stay informed.
             </SectionTitle>
 
             {renderSignUp()}
@@ -978,7 +1044,8 @@ class App extends Component {
                   width: 200,
                   backgroundColor: "rgba(255, 255, 255, 0.8)",
                   borderRadius: 5,
-                  color: "1px solid rgba(33, 58, 73, 0.9)"
+                  color: "1px solid rgba(33, 58, 73, 0.9)",
+                  fontWeight: "bold"
                 }}
                 onClick={() => {
                   this.scrollTop();
