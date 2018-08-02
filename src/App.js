@@ -51,7 +51,7 @@ class App extends Component {
     ];
 
     this.state = {
-      isLanding: false,
+      isLanding: true,
       list: shuffle(this.list),
       sites: [],
       articles: [],

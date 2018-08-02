@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="eaad3f9b-385c-4760-bbaf-b9ee01a5c1fb" name="Default" comment="progress">
       <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Landing.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Landing.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -26,13 +25,12 @@
       <file leaf-file-name="App.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/App.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="454">
-              <caret line="1066" column="35" lean-forward="true" selection-start-line="1066" selection-start-column="35" selection-end-line="1066" selection-end-column="35" />
+            <state relative-caret-position="-719">
+              <caret line="83" column="22" lean-forward="true" selection-start-line="83" selection-start-column="22" selection-end-line="83" selection-end-column="22" />
               <folding>
                 <element signature="e#0#41#0" />
                 <element signature="e#736#1234#0" />
                 <element signature="n#!!block;n#updateDimensions#0;n#App#0" />
-                <element signature="n#!!block;n#componentDidMount#0;n#App#0" />
                 <element signature="e#2030#2071#0" />
                 <element signature="e#2234#2278#0" />
                 <element signature="e#2304#2629#0" />
@@ -42,7 +40,6 @@
                 <element signature="e#2837#3409#0" />
                 <element signature="e#2989#3064#0" />
                 <element signature="e#3161#3399#0" />
-                <element signature="n#!!block;n#initReactGA#0;n#App#0" />
                 <element signature="n#!!doc;n#throttle#0;n#App#0" />
                 <element signature="n#!!block;n#throttle#0;n#App#0" />
                 <element signature="e#3871#4297#0" />
@@ -493,7 +490,7 @@
       <workItem from="1532824572228" duration="8430000" />
       <workItem from="1532890514113" duration="35199000" />
       <workItem from="1533002649482" duration="23423000" />
-      <workItem from="1533093316859" duration="20039000" />
+      <workItem from="1533093316859" duration="20546000" />
     </task>
     <task id="LOCAL-00001" summary="progress">
       <created>1533179196867</created>
@@ -506,7 +503,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="166426000" />
+    <option name="totallyTimeSpent" value="166933000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1280" height="778" extended-state="6" />
@@ -582,7 +579,6 @@
             <element signature="e#0#41#0" />
             <element signature="e#736#1234#0" />
             <element signature="n#!!block;n#updateDimensions#0;n#App#0" />
-            <element signature="n#!!block;n#componentDidMount#0;n#App#0" />
             <element signature="e#2030#2071#0" />
             <element signature="e#2234#2278#0" />
             <element signature="e#2304#2629#0" />
@@ -592,7 +588,6 @@
             <element signature="e#2837#3409#0" />
             <element signature="e#2989#3064#0" />
             <element signature="e#3161#3399#0" />
-            <element signature="n#!!block;n#initReactGA#0;n#App#0" />
             <element signature="n#!!doc;n#throttle#0;n#App#0" />
             <element signature="n#!!block;n#throttle#0;n#App#0" />
             <element signature="e#3871#4297#0" />
@@ -847,7 +842,6 @@
             <element signature="e#0#41#0" />
             <element signature="e#736#1234#0" />
             <element signature="n#!!block;n#updateDimensions#0;n#App#0" />
-            <element signature="n#!!block;n#componentDidMount#0;n#App#0" />
             <element signature="e#2030#2071#0" />
             <element signature="e#2234#2278#0" />
             <element signature="e#2304#2629#0" />
@@ -857,7 +851,6 @@
             <element signature="e#2837#3409#0" />
             <element signature="e#2989#3064#0" />
             <element signature="e#3161#3399#0" />
-            <element signature="n#!!block;n#initReactGA#0;n#App#0" />
             <element signature="n#!!doc;n#throttle#0;n#App#0" />
             <element signature="n#!!block;n#throttle#0;n#App#0" />
             <element signature="e#3871#4297#0" />
@@ -1094,7 +1087,6 @@
             <element signature="e#0#41#0" />
             <element signature="e#736#1234#0" />
             <element signature="n#!!block;n#updateDimensions#0;n#App#0" />
-            <element signature="n#!!block;n#componentDidMount#0;n#App#0" />
             <element signature="e#2030#2071#0" />
             <element signature="e#2234#2278#0" />
             <element signature="e#2304#2629#0" />
@@ -1104,7 +1096,6 @@
             <element signature="e#2837#3409#0" />
             <element signature="e#2989#3064#0" />
             <element signature="e#3161#3399#0" />
-            <element signature="n#!!block;n#initReactGA#0;n#App#0" />
             <element signature="n#!!doc;n#throttle#0;n#App#0" />
             <element signature="n#!!block;n#throttle#0;n#App#0" />
             <element signature="e#3871#4297#0" />
@@ -1329,7 +1320,6 @@
             <element signature="e#0#41#0" />
             <element signature="e#736#1234#0" />
             <element signature="n#!!block;n#updateDimensions#0;n#App#0" />
-            <element signature="n#!!block;n#componentDidMount#0;n#App#0" />
             <element signature="e#2030#2071#0" />
             <element signature="e#2234#2278#0" />
             <element signature="e#2304#2629#0" />
@@ -1339,7 +1329,6 @@
             <element signature="e#2837#3409#0" />
             <element signature="e#2989#3064#0" />
             <element signature="e#3161#3399#0" />
-            <element signature="n#!!block;n#initReactGA#0;n#App#0" />
             <element signature="n#!!doc;n#throttle#0;n#App#0" />
             <element signature="n#!!block;n#throttle#0;n#App#0" />
             <element signature="e#3871#4297#0" />
@@ -1561,7 +1550,6 @@
             <element signature="e#0#41#0" />
             <element signature="e#736#1234#0" />
             <element signature="n#!!block;n#updateDimensions#0;n#App#0" />
-            <element signature="n#!!block;n#componentDidMount#0;n#App#0" />
             <element signature="e#2030#2071#0" />
             <element signature="e#2234#2278#0" />
             <element signature="e#2304#2629#0" />
@@ -1571,7 +1559,6 @@
             <element signature="e#2837#3409#0" />
             <element signature="e#2989#3064#0" />
             <element signature="e#3161#3399#0" />
-            <element signature="n#!!block;n#initReactGA#0;n#App#0" />
             <element signature="n#!!doc;n#throttle#0;n#App#0" />
             <element signature="n#!!block;n#throttle#0;n#App#0" />
             <element signature="e#3871#4297#0" />
@@ -1793,7 +1780,6 @@
             <element signature="e#0#41#0" />
             <element signature="e#736#1234#0" />
             <element signature="n#!!block;n#updateDimensions#0;n#App#0" />
-            <element signature="n#!!block;n#componentDidMount#0;n#App#0" />
             <element signature="e#2030#2071#0" />
             <element signature="e#2234#2278#0" />
             <element signature="e#2304#2629#0" />
@@ -1803,7 +1789,6 @@
             <element signature="e#2837#3409#0" />
             <element signature="e#2989#3064#0" />
             <element signature="e#3161#3399#0" />
-            <element signature="n#!!block;n#initReactGA#0;n#App#0" />
             <element signature="n#!!doc;n#throttle#0;n#App#0" />
             <element signature="n#!!block;n#throttle#0;n#App#0" />
             <element signature="e#3871#4297#0" />
@@ -2118,13 +2103,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/App.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="454">
-          <caret line="1066" column="35" lean-forward="true" selection-start-line="1066" selection-start-column="35" selection-end-line="1066" selection-end-column="35" />
+        <state relative-caret-position="-719">
+          <caret line="83" column="22" lean-forward="true" selection-start-line="83" selection-start-column="22" selection-end-line="83" selection-end-column="22" />
           <folding>
             <element signature="e#0#41#0" />
             <element signature="e#736#1234#0" />
             <element signature="n#!!block;n#updateDimensions#0;n#App#0" />
-            <element signature="n#!!block;n#componentDidMount#0;n#App#0" />
             <element signature="e#2030#2071#0" />
             <element signature="e#2234#2278#0" />
             <element signature="e#2304#2629#0" />
@@ -2134,7 +2118,6 @@
             <element signature="e#2837#3409#0" />
             <element signature="e#2989#3064#0" />
             <element signature="e#3161#3399#0" />
-            <element signature="n#!!block;n#initReactGA#0;n#App#0" />
             <element signature="n#!!doc;n#throttle#0;n#App#0" />
             <element signature="n#!!block;n#throttle#0;n#App#0" />
             <element signature="e#3871#4297#0" />
