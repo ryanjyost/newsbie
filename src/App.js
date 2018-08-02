@@ -64,6 +64,8 @@ class App extends Component {
       batch: null,
       currentTag: null,
 
+      email: "",
+
       // UI
       screenWidth: 0,
       screenHeight: 0,
@@ -572,26 +574,28 @@ class App extends Component {
               color: "rgba(46, 228, 246, 1)",
               fontWeight: "400",
               letterSpacing: "0.05em",
-              borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
+              // borderBottom: "1px solid rgba(255, 255, 255, 0.1)",
               padding: "10px 0px"
             }}
           >
             {title}
           </h3>
-          <div
-            style={{
-              textAlign: "center",
-              margin: "10px 0px 0px 0px",
-              color: "rgba(255, 255, 255, 0.7)",
-              fontWeight: "400",
-              letterSpacing: "0.05em",
-              fontSize: 15,
-              padding: "0px 0px 0px 0px",
-              lineHeight: 1.2
-            }}
-          >
-            {children}
-          </div>
+          {children && (
+            <div
+              style={{
+                textAlign: "center",
+                margin: "10px 0px 0px 0px",
+                color: "rgba(255, 255, 255, 0.7)",
+                fontWeight: "400",
+                letterSpacing: "0.05em",
+                fontSize: 15,
+                padding: "0px 0px 0px 0px",
+                lineHeight: 1.2
+              }}
+            >
+              {children}
+            </div>
+          )}
         </div>
       );
     };
@@ -826,17 +830,12 @@ class App extends Component {
                           fontWeight: "bold"
                         }}
                         onClick={() => {
-                          if (this.validateEmail(this.state.email)) {
-                            console.log("SUBSCRIBE");
-                            subscribe({ EMAIL: this.state.email });
-                          } else {
-                            alert("error");
-                          }
+                          subscribe({ EMAIL: this.state.email });
                         }}
                       >
                         {!status && "Sign Up"}
                         {status === "sending" && "Sending..."}
-                        {status === "success" && "Success!"}
+                        {status === "success" && "You're signed up!"}
                         {status === "error" && "Error :("}
                       </button>
                     </div>
@@ -926,65 +925,58 @@ class App extends Component {
                 &darr;
               </h1>
             </div>
-            <SectionTitle num={1} title={"Browse front pages of news sites"}>
-              <div>
-                Start out with a bird's eye view of a diverse range of news
-                sources.{" "}
-                <div style={{ marginTop: 15 }}>
-                  Get a feel for{" "}
-                  <strong style={{ color: "rgba(255, 255, 255, 0.8)" }}>
-                    what
-                  </strong>{" "}
-                  is being covered and{" "}
-                  <strong style={{ color: "rgba(255, 255, 255, 0.8)" }}>
-                    {" "}
-                    how{" "}
-                  </strong>it's being covered.
-                </div>
-              </div>
-            </SectionTitle>
+            <SectionTitle num={1} title={"Browse front pages of news sites"} />
+            {/*<div>*/}
+            {/*Start out with a bird's eye view of a diverse range of news*/}
+            {/*sources.{" "}*/}
+            {/*<div style={{ marginTop: 15 }}>*/}
+            {/*Get a feel for{" "}*/}
+            {/*<strong style={{ color: "rgba(255, 255, 255, 0.8)" }}>*/}
+            {/*what*/}
+            {/*</strong>{" "}*/}
+            {/*is being covered and{" "}*/}
+            {/*<strong style={{ color: "rgba(255, 255, 255, 0.8)" }}>*/}
+            {/*{" "}*/}
+            {/*how{" "}*/}
+            {/*</strong>it's being covered.*/}
+            {/*</div>*/}
+            {/*</div>*/}
+            {/*</SectionTitle>*/}
             <SwipeHelp />
             <FrontPages />
 
             <SectionTitle num={2} title={"Catch up on buzzwords"}>
-              <div>
-                {this.state.opinionArticles.length
-                  ? `Explore the most common words and phrases found in ${
-                      this.state.opinionArticles.length &&
-                      this.state.politicsArticles.length
-                        ? this.state.opinionArticles.length +
-                          this.state.politicsArticles.length
-                        : ""
-                    } recent article titles ${
-                      this.state.sites.length ? "from" : ""
-                    } ${
-                      this.state.sites.length ? this.state.sites.length : ""
-                    }${this.state.sites.length ? " sources" : ""}. `
-                  : ""}
-                <div style={{ marginTop: 10 }}>
-                  <strong style={{ color: "rgba(255, 255, 255, 0.8)" }}>
-                    Click a buzzword
-                  </strong>{" "}
-                  to dive deeper on Wikipedia.{" "}
-                </div>
-              </div>
+              {/*{this.state.opinionArticles.length*/}
+              {/*? `Explore the most common words and phrases found in ${*/}
+              {/*this.state.opinionArticles.length &&*/}
+              {/*this.state.politicsArticles.length*/}
+              {/*? this.state.opinionArticles.length +*/}
+              {/*this.state.politicsArticles.length*/}
+              {/*: ""*/}
+              {/*} recent article titles ${*/}
+              {/*this.state.sites.length ? "from" : ""*/}
+              {/*} ${*/}
+              {/*this.state.sites.length ? this.state.sites.length : ""*/}
+              {/*}${this.state.sites.length ? " sources" : ""}. `*/}
+              {/*: ""}*/}
+              Click a buzzword to dive deeper on Wikipedia
             </SectionTitle>
 
             <Tags />
 
-            <SectionTitle num={3} title={"Read some news articles"}>
-              Now start skimming articles.
-              <div style={{ marginTop: 10 }}>
-                Click and read some from a variety of news sites.
-              </div>
-              <div style={{ marginTop: 10 }}>
-                By consulting multiple sources, you're able to filter out the
-                noise - and{" "}
-                <strong style={{ color: "rgba(255, 255, 255, 0.8)" }}>
-                  get a clearer picture of what's really going on.
-                </strong>
-              </div>
-            </SectionTitle>
+            <SectionTitle num={3} title={"Skim news articles"} />
+            {/*Now start skimming articles.*/}
+            {/*<div style={{ marginTop: 10 }}>*/}
+            {/*Click and read some from a variety of news sites.*/}
+            {/*</div>*/}
+            {/*<div style={{ marginTop: 10 }}>*/}
+            {/*By consulting multiple sources, you're able to filter out the*/}
+            {/*noise - and{" "}*/}
+            {/*<strong style={{ color: "rgba(255, 255, 255, 0.8)" }}>*/}
+            {/*get a clearer picture of what's really going on.*/}
+            {/*</strong>*/}
+            {/*</div>*/}
+            {/*</SectionTitle>*/}
             <SwipeHelp />
             <div style={{ position: "relative" }}>
               {touchOnly ? null : (
@@ -999,21 +991,21 @@ class App extends Component {
               )}
             </div>
 
-            <SectionTitle num={4} title={"Explore opinion pieces"}>
-              Once you've built up a base of facts and observations, you're
-              ready to explore more subjective takes on the stories of the day.
-              <div style={{ marginTop: 10 }}>
-                You'll want to consider a wide range of perspectives - and avoid
-                getting stuck in an{" "}
-                <a
-                  target="_blank"
-                  style={{ color: "rgba(255, 255, 255, 0.7)" }}
-                  href="https://en.wikipedia.org/wiki/Echo_chamber_(media)"
-                >
-                  echo chamber.
-                </a>
-              </div>
-            </SectionTitle>
+            <SectionTitle num={4} title={"Explore opinion pieces"} />
+            {/*Once you've built up a base of facts and observations, you're*/}
+            {/*ready to explore more subjective takes on the stories of the day.*/}
+            {/*<div style={{ marginTop: 10 }}>*/}
+            {/*You'll want to consider a wide range of perspectives - and avoid*/}
+            {/*getting stuck in an{" "}*/}
+            {/*<a*/}
+            {/*target="_blank"*/}
+            {/*style={{ color: "rgba(255, 255, 255, 0.7)" }}*/}
+            {/*href="https://en.wikipedia.org/wiki/Echo_chamber_(media)"*/}
+            {/*>*/}
+            {/*echo chamber.*/}
+            {/*</a>*/}
+            {/*</div>*/}
+            {/*</SectionTitle>*/}
             <SwipeHelp />
             <div style={{ position: "relative" }}>
               {touchOnly ? null : (
@@ -1028,10 +1020,10 @@ class App extends Component {
               )}
             </div>
 
-            <SectionTitle num={5} title={"Graduate to News Junkie"}>
-              You have a good feel for the news and how to navigate it, but now
-              you may want to supercharge the way you stay informed.
-            </SectionTitle>
+            <SectionTitle num={5} title={"Graduate to News Junkie"} />
+            {/*You have a good feel for the news and how to navigate it, but now*/}
+            {/*you may want to supercharge the way you stay informed.*/}
+            {/*</SectionTitle>*/}
 
             {renderSignUp()}
 
@@ -1071,7 +1063,8 @@ class App extends Component {
                   backgroundColor: "rgba(255, 255, 255, 0.8)",
                   borderRadius: 5,
                   color: "1px solid rgba(33, 58, 73, 0.9)",
-                  fontWeight: "bold"
+                  fontWeight: "bold",
+                  cursor: "pointer"
                 }}
                 onClick={() => {
                   this.scrollTop();

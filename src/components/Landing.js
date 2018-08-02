@@ -218,16 +218,12 @@ export default class Landing extends Component {
                           width: 250
                         }}
                         onClick={() => {
-                          if (this.validateEmail(this.state.email)) {
-                            subscribe({ EMAIL: this.state.email });
-                          } else {
-                            alert("error");
-                          }
+                          subscribe({ EMAIL: this.state.email });
                         }}
                       >
                         {!status && "Sign Up"}
                         {status === "sending" && "Sending..."}
-                        {status === "success" && "Success!"}
+                        {status === "success" && "You're signed up!"}
                         {status === "error" && "Error :("}
                       </button>
                     </div>
