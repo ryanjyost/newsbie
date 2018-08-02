@@ -59,7 +59,11 @@ export default class Article extends Component {
             backgroundColor: "rgba(0,0,0,0.5)",
             position: "relative",
             backgroundImage: `url(${
-              article ? ("image" in article ? article.image.url : "") : ""
+              article
+                ? article.image
+                  ? article.image.url.replace(/^http:\/\//i, "https://")
+                  : ""
+                : ""
             })`,
             backgroundSize: "cover",
             backgroundRepeat: "no-repeat",

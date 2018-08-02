@@ -12,8 +12,8 @@ import detectIt from "detect-it";
 import MailchimpSubscribe from "react-mailchimp-subscribe";
 import TimeAgo from "react-timeago";
 import { androidTime } from "react-icons-kit/ionicons/androidTime";
-import { scissors } from "react-icons-kit/ionicons/scissors";
 import { Icon } from "react-icons-kit";
+import ReactGA from "react-ga";
 
 class App extends Component {
   constructor(props) {
