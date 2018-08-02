@@ -96,7 +96,9 @@ export default class Site extends Component {
         }}
       >
         <a
-          href={record ? record.site.url : ""}
+          href={
+            record ? record.site.url.replace(/^http:\/\//i, "https://") : ""
+          }
           rel="noreferrer"
           key={index}
           style={{
@@ -217,7 +219,9 @@ export default class Site extends Component {
             }}
           >
             <a
-              href={record ? record.site.url : ""}
+              href={
+                record ? record.site.url.replace(/^http:\/\//i, "https://") : ""
+              }
               className={"hoverBtn"}
               style={{
                 textAlign: "left",

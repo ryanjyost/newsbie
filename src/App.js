@@ -11,6 +11,9 @@ import Slider from "react-slick";
 import detectIt from "detect-it";
 import MailchimpSubscribe from "react-mailchimp-subscribe";
 import TimeAgo from "react-timeago";
+import { androidTime } from "react-icons-kit/ionicons/androidTime";
+import { scissors } from "react-icons-kit/ionicons/scissors";
+import { Icon } from "react-icons-kit";
 
 class App extends Component {
   constructor(props) {
@@ -635,7 +638,7 @@ class App extends Component {
               marginLeft: "5%"
             }}
           >
-            <h4
+            <h3
               style={{
                 color: isLanding
                   ? "rgba(33, 58, 73, 0.9)"
@@ -645,7 +648,7 @@ class App extends Component {
               }}
             >
               newsbie
-            </h4>
+            </h3>
           </div>
           <div
             style={{
@@ -883,10 +886,24 @@ class App extends Component {
                   style={{
                     textAlign: "center",
                     color: "rgba(255, 255, 255, 0.4)",
-                    letterSpacing: "0.03em"
+                    letterSpacing: "0.03em",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center"
                   }}
                 >
-                  updated <TimeAgo date={this.state.batch.created_at} />
+                  <Icon
+                    style={{
+                      marginRight: 5,
+                      color: "rgba(255, 255, 255, 0.3)"
+                    }}
+                    icon={androidTime}
+                    size={20}
+                  />{" "}
+                  updated{" "}
+                  <span style={{ fontWeight: "bold", marginLeft: 3 }}>
+                    <TimeAgo date={this.state.batch.created_at} />
+                  </span>
                 </h5>
               ) : (
                 ""
