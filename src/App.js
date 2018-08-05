@@ -6,6 +6,7 @@ import $ from "jquery";
 import Site from "./components/Site";
 import Article from "./components/Article";
 import Landing from "./components/Landing";
+import FrontPages from "./components/FrontPages";
 import Tag from "./components/Tag";
 import Slider from "react-slick";
 import detectIt from "detect-it";
@@ -144,6 +145,35 @@ class App extends Component {
 
     // google analystics
     this.initReactGA();
+
+    window.addEventListener("touchstart", this.touchStart);
+    window.addEventListener("touchmove", this.preventTouch, { passive: false });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("touchstart", this.touchStart);
+    window.removeEventListener("touchmove", this.preventTouch, {
+      passive: false
+    });
+  }
+
+  touchStart(e) {
+    this.firstClientX = e.touches[0].clientX;
+    this.firstClientY = e.touches[0].clientY;
+  }
+
+  preventTouch(e) {
+    const minValue = 5; // threshold
+
+    this.clientX = e.touches[0].clientX - this.firstClientX;
+    this.clientY = e.touches[0].clientY - this.firstClientY;
+
+    // Vertical scrolling does not work when you start swiping horizontally.
+    if (Math.abs(this.clientX) > minValue) {
+      e.preventDefault();
+      e.returnValue = false;
+      return false;
+    }
   }
 
   initReactGA() {
@@ -248,121 +278,6 @@ class App extends Component {
           {isLeft ? <span>&lsaquo;</span> : <span>&rsaquo;</span>}
         </div>
       );
-    };
-
-    const FrontPages = () => {
-      if (touchOnly && this.state.records.length) {
-        const settings = {
-          dots: false,
-          arrows: true,
-          infinite: true,
-          speed: 500,
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          className: "sliderContainer",
-          centerMode: true,
-          centerPadding: "0px",
-          swipeToSlide: true
-        };
-        return (
-          <Slider {...settings}>
-            {this.state.records.length
-              ? this.state.records.map((record, i) => {
-                  return (
-                    <Site
-                      key={i}
-                      index={i}
-                      record={record}
-                      siteMargin={30}
-                      imageWidth={touchOnly ? imageWidth : imageWidth - 50}
-                      showSlider={showSlider}
-                      touchOnly={touchOnly}
-                    />
-                  );
-                })
-              : this.state.sites.map((site, i) => {
-                  return (
-                    <div
-                      key={i}
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        flexDirection: "column",
-                        height: imageWidth,
-                        width: imageWidth,
-                        backgroundColor: "red"
-                      }}
-                    />
-                  );
-                })}
-          </Slider>
-        );
-      } else {
-        return (
-          <div style={{ position: "relative" }}>
-            <Arrow direction={"left"} selector={"frontPages"} />
-            <div
-              id={"frontPages"}
-              className={"horzRow"}
-              style={{
-                borderRadius: 5,
-                display: "flex",
-                flexDirection: "column",
-                flexWrap: "wrap",
-                height: imageWidth + 50,
-                overflowX: "auto",
-                backgroundColor: "rgba(255, 255, 255, 0.05)",
-                // borderTop: "5px solid rgba(255, 255, 255, 0.01)",
-                padding: "50px 20px 35px 20px",
-                position: "relative"
-              }}
-            >
-              {this.state.records.length
-                ? this.state.records.map((record, i) => {
-                    return (
-                      <div
-                        key={i}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexDirection: "column"
-                        }}
-                      >
-                        <Site
-                          key={i}
-                          index={i}
-                          record={record}
-                          siteMargin={30}
-                          imageWidth={imageWidth - 50}
-                          showSlider={showSlider}
-                          touchOnly={touchOnly}
-                        />
-                      </div>
-                    );
-                  })
-                : this.state.sites.map((site, i) => {
-                    return (
-                      <div
-                        key={i}
-                        style={{
-                          margin: `0px ${29}px`,
-                          height: imageWidth - 50,
-                          width: imageWidth - 50,
-                          backgroundColor: "rgba(255, 255, 255, 0.2)",
-                          position: "relative"
-                        }}
-                        // onMouseEnter={() => this.setState({ hover: true })}
-                        // onMouseLeave={() => this.setState({ hover: false })}
-                      />
-                    );
-                  })}
-            </div>
-            <Arrow direction={"right"} selector={"frontPages"} />
-          </div>
-        );
-      }
     };
 
     const Tags = () => {
@@ -639,7 +554,7 @@ class App extends Component {
             letterSpacing: "0.03em",
             position: "fixed",
             top: 0,
-            zIndex: 10
+            zIndex: 100
           }}
         >
           <div
@@ -926,24 +841,15 @@ class App extends Component {
               </h1>
             </div>
             <SectionTitle num={1} title={"Browse front pages of news sites"} />
-            {/*<div>*/}
-            {/*Start out with a bird's eye view of a diverse range of news*/}
-            {/*sources.{" "}*/}
-            {/*<div style={{ marginTop: 15 }}>*/}
-            {/*Get a feel for{" "}*/}
-            {/*<strong style={{ color: "rgba(255, 255, 255, 0.8)" }}>*/}
-            {/*what*/}
-            {/*</strong>{" "}*/}
-            {/*is being covered and{" "}*/}
-            {/*<strong style={{ color: "rgba(255, 255, 255, 0.8)" }}>*/}
-            {/*{" "}*/}
-            {/*how{" "}*/}
-            {/*</strong>it's being covered.*/}
-            {/*</div>*/}
-            {/*</div>*/}
-            {/*</SectionTitle>*/}
+
             <SwipeHelp />
-            <FrontPages />
+            <FrontPages
+              touchOnly={touchOnly}
+              imageWidth={imageWidth}
+              showSlider={showSlider}
+              records={this.state.records}
+              sites={this.state.sites}
+            />
 
             <SectionTitle num={2} title={"Catch up on buzzwords"}>
               {/*{this.state.opinionArticles.length*/}

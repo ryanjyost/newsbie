@@ -81,7 +81,6 @@ export default class Landing extends Component {
         <MailchimpSubscribe
           url={url}
           render={({ subscribe, status, message, onValidated }) => {
-            console.log(status, message);
             return (
               <div
                 id="mc-embedded-subscribe-form"
@@ -282,84 +281,115 @@ export default class Landing extends Component {
             >
               Fix the broken way <br />you get your news
             </h1>
-
-            {renderSignUp()}
-          </div>
-        </div>
-
-        {/* Quick pitch + benefits */}
-        <div
-          style={{
-            margin: "auto",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            // borderTop: "2px solid rgba(255, 255, 255, 0.1)",
-            marginTop: "40px",
-            fontSize: 24,
-            padding: "30px 20px 0px 20px",
-            letterSpacing: "0.03em",
-            textAlign: "center",
-            color: "rgba(33, 58, 73, 0.7)",
-            backgroundImage:
-              "linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.25), rgba(255, 255," +
-              " 255, 0.5), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 1))"
-          }}
-        >
-          <div
-            style={{
-              fontSize: 16,
-              textAlign: "center",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              marginBottom: 50,
-              color: "rgba(33, 58, 73, 0.5)"
-            }}
-          >
-            scroll for the whole spiel<br />
-            <br /> &darr;
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center"
-            }}
-          >
             <div
               style={{
-                fontSize: 32,
-                color: "rgba(255, 255, 255, 1)",
-                transform: "skew(-20deg)" /* SKEW */,
-                backgroundColor: "rgba(33, 58, 73, 1)",
-                display: "inline-block",
-                padding: "5px 20px",
-                borderRadius: 3
+                fontSize: 16,
+                textAlign: "center",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginBottom: 20,
+                marginTop: 50,
+                color: "rgba(33, 58, 73, 0.7)"
+                // fontStyle: "italic"
+              }}
+            >
+              with
+              {/*scroll for the whole spiel<br />*/}
+              {/*<br /> &darr;*/}
+            </div>
+
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundImage:
+                  "linear-gradient(to bottom, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.25)," +
+                  " rgba(255, 255," +
+                  " 255, 0.5), rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 1))"
               }}
             >
               <div
                 style={{
+                  fontSize: 32,
+                  color: "rgba(255, 255, 255, 1)",
+                  transform: "skew(-20deg)" /* SKEW */,
+                  backgroundColor: "rgba(33, 58, 73, 1)",
                   display: "inline-block",
-                  transition: "background 0.2s",
-                  transform: "skew(20deg)" /* SKEW */
+                  padding: "5px 20px",
+                  borderRadius: 3
                 }}
               >
-                newsbie
+                <div
+                  style={{
+                    display: "inline-block",
+                    transition: "background 0.2s",
+                    transform: "skew(20deg)" /* SKEW */
+                  }}
+                >
+                  newsbie
+                </div>
+              </div>
+
+              <div
+                style={{
+                  color: "rgba(33, 58, 73, 1)",
+                  marginTop: 20,
+                  display: "inline-block",
+                  fontSize: 20
+                }}
+              >
+                a command center for news junkies
               </div>
             </div>
-
-            <div
-              style={{
-                color: "rgba(33, 58, 73, 1)",
-                marginTop: 20,
-                display: "inline-block"
-              }}
-            >
-              is a command center for news junkies
-            </div>
           </div>
+        </div>
+
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            padding: "50px 0px",
+            backgroundColor: "#fff"
+          }}
+        >
+          <button
+            style={{
+              height: 45,
+              fontSize: 16,
+              padding: "0px 20px",
+              width: 200,
+              borderRadius: 9999,
+              border: "1px solid rgba(33, 58, 73, 0.9)",
+              zIndex: 50
+            }}
+            className={"demoBtn"}
+            onClick={() => this.props.switchToDemo()}
+          >
+            Try the demo
+          </button>
+        </div>
+
+        <div
+          style={{
+            fontSize: 16,
+            textAlign: "center",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            paddingBottom: 20,
+            paddingTop: 30,
+            color: "rgba(33, 58, 73, 0.7)",
+            backgroundColor: "#fff"
+            // fontStyle: "italic"
+          }}
+        >
+          scroll for the whole spiel<br />
+          <br /> &darr;
         </div>
 
         {/* Benefits */}
@@ -386,7 +416,7 @@ export default class Landing extends Component {
               paddingBottom: 10
             }}
           >
-            It's a web app that enables you to...
+            Imagine a web app that enables you to...
           </div>
           <div style={{ marginTop: 10, color: "rgba(33, 58, 73, 0.7)" }}>
             <div
@@ -778,7 +808,6 @@ export default class Landing extends Component {
                   fontWeight: "bold",
                   marginBottom: 30
                 }}
-                s
               >
                 Get a feel for Newsbie's <br />vibe with the demo
                 <span
