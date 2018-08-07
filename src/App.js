@@ -52,7 +52,7 @@ class App extends Component {
     ];
 
     this.state = {
-      isLanding: true,
+      isLanding: false,
       list: shuffle(this.list),
       sites: [],
       articles: [],
@@ -148,10 +148,6 @@ class App extends Component {
 
     window.addEventListener("touchstart", this.touchStart);
     window.addEventListener("touchmove", this.preventTouch, { passive: false });
-
-    if (window.location.pathname.includes("demo")) {
-      this.setState({ isLanding: false });
-    }
   }
 
   componentWillUnmount() {
