@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import shuffle from "shuffle-array";
 import "./App.css";
 import axios from "axios";
@@ -536,71 +537,6 @@ class App extends Component {
       }
     };
 
-    const TopBar = () => {
-      return (
-        <div
-          style={{
-            height: 60,
-            backgroundColor: isLanding
-              ? "rgba(255, 255, 255, 0.95)"
-              : "rgba(33, 58, 73, 0.9)",
-            borderBottom: isLanding
-              ? "1px solid #e5e5e5"
-              : "1px solid rgba(255, 255," + " 255, 0.1)",
-            width: "100%",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            letterSpacing: "0.03em",
-            position: "fixed",
-            top: 0,
-            zIndex: 100
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              marginLeft: "5%"
-            }}
-          >
-            <h3
-              style={{
-                color: isLanding
-                  ? "rgba(33, 58, 73, 0.9)"
-                  : "rgba(255, 255, 255, 0.8)",
-
-                fontWeight: "bold"
-              }}
-            >
-              newsbie
-            </h3>
-          </div>
-          <div
-            style={{
-              backgroundColor: isLanding
-                ? "rgba(33, 58, 73, 0.4)"
-                : "rgba(46, 228, 246, 0.6)",
-              marginRight: "5%",
-              padding: "5px 15px",
-              fontSize: 14,
-              fontWeight: "600",
-              color: "#fff",
-              borderRadius: 9999
-            }}
-            className={"cta"}
-            onClick={() => {
-              this.scrollTop();
-              this.setState({ isLanding: !this.state.isLanding });
-            }}
-          >
-            {this.state.isLanding ? "Try Demo" : "Get the App"}
-          </div>
-        </div>
-      );
-    };
-
     const renderSignUp = (isBottom = true) => {
       const url =
         "https://newsbie.us18.list-manage.com/subscribe/post?u=bbab41b4faa898c5bb1f4c2e1&amp;id=75f26540d8";
@@ -667,10 +603,11 @@ class App extends Component {
                           color: "rgba(33, 58, 73, 1)",
                           marginTop: 10,
                           display: "inline-block",
-                          fontSize: 20
+                          fontSize: 20,
+                          textAlign: "center"
                         }}
                       >
-                        A command center for news junkies
+                        the balanced, efficient way <br />to follow the news
                       </div>
                     </div>
                     <h3
@@ -765,223 +702,212 @@ class App extends Component {
 
     return (
       <div style={{ backgroundColor: "rgba(33, 58, 73, 1)" }}>
-        <TopBar />
-        {this.state.isLanding ? (
-          <Landing
-            records={this.state.records}
-            switchToDemo={() => {
-              this.scrollTop();
-              this.setState({ isLanding: false });
-            }}
-          />
-        ) : (
+        <div
+          className="main"
+          style={{
+            maxWidth: "100%",
+            overflowX: "hidden",
+            paddingTop: 50,
+            margin: "0px 10px 0px 10px"
+          }}
+        >
           <div
-            className="main"
             style={{
-              maxWidth: "100%",
-              overflowX: "hidden",
-              paddingTop: 50,
-              margin: "0px 10px 0px 10px"
+              maxWidth: 600,
+              margin: "auto",
+              marginTop: 100,
+              padding: "0px 20px"
             }}
           >
-            <div
+            <h2
               style={{
-                maxWidth: 600,
-                margin: "auto",
-                marginTop: 100,
-                padding: "0px 20px"
+                color: "rgba(255, 255, 255, 0.9)",
+                textAlign: "center",
+                fontWeight: 400,
+                lineHeight: 1.4,
+                letterSpacing: "0.03em"
               }}
             >
-              <h2
+              Want a <strong>balanced, efficient</strong> way to read the news?
+            </h2>
+            {this.state.batch ? (
+              <h5
                 style={{
-                  color: "rgba(255, 255, 255, 0.9)",
                   textAlign: "center",
-                  fontWeight: 400,
-                  lineHeight: 1.4,
-                  letterSpacing: "0.03em"
+                  color: "rgba(255, 255, 255, 0.4)",
+                  letterSpacing: "0.03em",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center"
                 }}
               >
-                Want a <strong>balanced, efficient</strong> way to read the
-                news?
-              </h2>
-              {this.state.batch ? (
-                <h5
+                <Icon
                   style={{
-                    textAlign: "center",
-                    color: "rgba(255, 255, 255, 0.4)",
-                    letterSpacing: "0.03em",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center"
+                    marginRight: 5,
+                    color: "rgba(255, 255, 255, 0.3)"
                   }}
-                >
-                  <Icon
-                    style={{
-                      marginRight: 5,
-                      color: "rgba(255, 255, 255, 0.3)"
-                    }}
-                    icon={androidTime}
-                    size={20}
-                  />{" "}
-                  updated{" "}
-                  <span style={{ fontWeight: "bold", marginLeft: 3 }}>
-                    <TimeAgo date={this.state.batch.created_at} />
-                  </span>
-                </h5>
-              ) : (
-                ""
-              )}
-              <h1
-                style={{
-                  textAlign: "center",
-                  color: "rgba(255, 255, 255, 0.3)"
-                }}
-              >
-                &darr;
-              </h1>
-            </div>
-            <SectionTitle num={1} title={"Browse front pages of news sites"} />
-
-            <SwipeHelp />
-            <FrontPages
-              touchOnly={touchOnly}
-              imageWidth={imageWidth}
-              showSlider={showSlider}
-              records={this.state.records}
-              sites={this.state.sites}
-            />
-
-            <SectionTitle num={2} title={"Catch up on buzzwords"}>
-              {/*{this.state.opinionArticles.length*/}
-              {/*? `Explore the most common words and phrases found in ${*/}
-              {/*this.state.opinionArticles.length &&*/}
-              {/*this.state.politicsArticles.length*/}
-              {/*? this.state.opinionArticles.length +*/}
-              {/*this.state.politicsArticles.length*/}
-              {/*: ""*/}
-              {/*} recent article titles ${*/}
-              {/*this.state.sites.length ? "from" : ""*/}
-              {/*} ${*/}
-              {/*this.state.sites.length ? this.state.sites.length : ""*/}
-              {/*}${this.state.sites.length ? " sources" : ""}. `*/}
-              {/*: ""}*/}
-              Click a buzzword to dive deeper on Wikipedia
-            </SectionTitle>
-
-            <Tags />
-
-            <SectionTitle num={3} title={"Skim news articles"} />
-            {/*Now start skimming articles.*/}
-            {/*<div style={{ marginTop: 10 }}>*/}
-            {/*Click and read some from a variety of news sites.*/}
-            {/*</div>*/}
-            {/*<div style={{ marginTop: 10 }}>*/}
-            {/*By consulting multiple sources, you're able to filter out the*/}
-            {/*noise - and{" "}*/}
-            {/*<strong style={{ color: "rgba(255, 255, 255, 0.8)" }}>*/}
-            {/*get a clearer picture of what's really going on.*/}
-            {/*</strong>*/}
-            {/*</div>*/}
-            {/*</SectionTitle>*/}
-            <SwipeHelp />
-            <div style={{ position: "relative" }}>
-              {touchOnly ? null : (
-                <Arrow direction={"left"} selector={"newsArticles"} />
-              )}
-              <ArticleList
-                list={this.state.currentNews}
-                container={"newsArticles"}
-              />
-              {touchOnly ? null : (
-                <Arrow direction={"right"} selector={"newsArticles"} />
-              )}
-            </div>
-
-            <SectionTitle num={4} title={"Explore opinion pieces"} />
-            {/*Once you've built up a base of facts and observations, you're*/}
-            {/*ready to explore more subjective takes on the stories of the day.*/}
-            {/*<div style={{ marginTop: 10 }}>*/}
-            {/*You'll want to consider a wide range of perspectives - and avoid*/}
-            {/*getting stuck in an{" "}*/}
-            {/*<a*/}
-            {/*target="_blank"*/}
-            {/*style={{ color: "rgba(255, 255, 255, 0.7)" }}*/}
-            {/*href="https://en.wikipedia.org/wiki/Echo_chamber_(media)"*/}
-            {/*>*/}
-            {/*echo chamber.*/}
-            {/*</a>*/}
-            {/*</div>*/}
-            {/*</SectionTitle>*/}
-            <SwipeHelp />
-            <div style={{ position: "relative" }}>
-              {touchOnly ? null : (
-                <Arrow direction={"left"} selector={"opinionArticles"} />
-              )}
-              <ArticleList
-                list={this.state.currentOpinions}
-                container={"opinionArticles"}
-              />
-              {touchOnly ? null : (
-                <Arrow direction={"right"} selector={"opinionArticles"} />
-              )}
-            </div>
-
-            <SectionTitle num={5} title={"Graduate to News Junkie"} />
-            {/*You have a good feel for the news and how to navigate it, but now*/}
-            {/*you may want to supercharge the way you stay informed.*/}
-            {/*</SectionTitle>*/}
-
-            {renderSignUp()}
-
-            <div
+                  icon={androidTime}
+                  size={20}
+                />{" "}
+                updated{" "}
+                <span style={{ fontWeight: "bold", marginLeft: 3 }}>
+                  <TimeAgo date={this.state.batch.created_at} />
+                </span>
+              </h5>
+            ) : (
+              ""
+            )}
+            <h1
               style={{
-                padding: "50px 0px 0px 0px",
+                textAlign: "center",
+                color: "rgba(255, 255, 255, 0.3)"
+              }}
+            >
+              &darr;
+            </h1>
+          </div>
+          <SectionTitle num={1} title={"Browse front pages of news sites"} />
+
+          <SwipeHelp />
+          <FrontPages
+            touchOnly={touchOnly}
+            imageWidth={imageWidth}
+            showSlider={showSlider}
+            records={this.state.records}
+            sites={this.state.sites}
+          />
+
+          <SectionTitle num={2} title={"Catch up on buzzwords"}>
+            {/*{this.state.opinionArticles.length*/}
+            {/*? `Explore the most common words and phrases found in ${*/}
+            {/*this.state.opinionArticles.length &&*/}
+            {/*this.state.politicsArticles.length*/}
+            {/*? this.state.opinionArticles.length +*/}
+            {/*this.state.politicsArticles.length*/}
+            {/*: ""*/}
+            {/*} recent article titles ${*/}
+            {/*this.state.sites.length ? "from" : ""*/}
+            {/*} ${*/}
+            {/*this.state.sites.length ? this.state.sites.length : ""*/}
+            {/*}${this.state.sites.length ? " sources" : ""}. `*/}
+            {/*: ""}*/}
+            Click a buzzword to dive deeper on Wikipedia
+          </SectionTitle>
+
+          <Tags />
+
+          <SectionTitle num={3} title={"Skim news articles"} />
+          {/*Now start skimming articles.*/}
+          {/*<div style={{ marginTop: 10 }}>*/}
+          {/*Click and read some from a variety of news sites.*/}
+          {/*</div>*/}
+          {/*<div style={{ marginTop: 10 }}>*/}
+          {/*By consulting multiple sources, you're able to filter out the*/}
+          {/*noise - and{" "}*/}
+          {/*<strong style={{ color: "rgba(255, 255, 255, 0.8)" }}>*/}
+          {/*get a clearer picture of what's really going on.*/}
+          {/*</strong>*/}
+          {/*</div>*/}
+          {/*</SectionTitle>*/}
+          <SwipeHelp />
+          <div style={{ position: "relative" }}>
+            {touchOnly ? null : (
+              <Arrow direction={"left"} selector={"newsArticles"} />
+            )}
+            <ArticleList
+              list={this.state.currentNews}
+              container={"newsArticles"}
+            />
+            {touchOnly ? null : (
+              <Arrow direction={"right"} selector={"newsArticles"} />
+            )}
+          </div>
+
+          <SectionTitle num={4} title={"Explore opinion pieces"} />
+          {/*Once you've built up a base of facts and observations, you're*/}
+          {/*ready to explore more subjective takes on the stories of the day.*/}
+          {/*<div style={{ marginTop: 10 }}>*/}
+          {/*You'll want to consider a wide range of perspectives - and avoid*/}
+          {/*getting stuck in an{" "}*/}
+          {/*<a*/}
+          {/*target="_blank"*/}
+          {/*style={{ color: "rgba(255, 255, 255, 0.7)" }}*/}
+          {/*href="https://en.wikipedia.org/wiki/Echo_chamber_(media)"*/}
+          {/*>*/}
+          {/*echo chamber.*/}
+          {/*</a>*/}
+          {/*</div>*/}
+          {/*</SectionTitle>*/}
+          <SwipeHelp />
+          <div style={{ position: "relative" }}>
+            {touchOnly ? null : (
+              <Arrow direction={"left"} selector={"opinionArticles"} />
+            )}
+            <ArticleList
+              list={this.state.currentOpinions}
+              container={"opinionArticles"}
+            />
+            {touchOnly ? null : (
+              <Arrow direction={"right"} selector={"opinionArticles"} />
+            )}
+          </div>
+
+          <SectionTitle num={5} title={"Graduate to News Junkie"} />
+          {/*You have a good feel for the news and how to navigate it, but now*/}
+          {/*you may want to supercharge the way you stay informed.*/}
+          {/*</SectionTitle>*/}
+
+          {renderSignUp()}
+
+          <div
+            style={{
+              padding: "50px 0px 0px 0px",
+              letterSpacing: "0.03em",
+              lineHeight: 1.3,
+              fontWeight: "bold",
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              height: 300
+            }}
+          >
+            <h3
+              style={{
+                color: "rgba(255, 255, 255, 0.8)",
+                textAlign: "center",
+                padding: "0px 20px",
                 letterSpacing: "0.03em",
                 lineHeight: 1.3,
                 fontWeight: "bold",
                 width: "100%",
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                height: 300
+                marginBottom: 30
               }}
             >
-              <h3
-                style={{
-                  color: "rgba(255, 255, 255, 0.8)",
-                  textAlign: "center",
-                  padding: "0px 20px",
-                  letterSpacing: "0.03em",
-                  lineHeight: 1.3,
-                  fontWeight: "bold",
-                  width: "100%",
-                  marginBottom: 30
-                }}
-              >
-                Want to learn more about <br />the Newsbie app-in-progress?
-              </h3>
-              <button
-                style={{
-                  height: 45,
-                  fontSize: 16,
-                  padding: "0px 20px",
-                  width: 200,
-                  backgroundColor: "rgba(255, 255, 255, 0.8)",
-                  borderRadius: 5,
-                  color: "1px solid rgba(33, 58, 73, 0.9)",
-                  fontWeight: "bold",
-                  cursor: "pointer"
-                }}
-                onClick={() => {
-                  this.scrollTop();
-                  this.setState({ isLanding: true });
-                }}
-              >
-                Learn More
-              </button>
-            </div>
+              Want to learn more about <br />the Newsbie app-in-progress?
+            </h3>
+            <Link
+              to={"/"}
+              style={{
+                height: 45,
+                fontSize: 16,
+                padding: "0px 20px",
+                width: 200,
+                backgroundColor: "rgba(255, 255, 255, 0.8)",
+                borderRadius: 5,
+                color: "rgba(33, 58, 73, 0.9)",
+                textDecoration: "none",
+                fontWeight: "bold",
+                cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+            >
+              Learn More
+            </Link>
           </div>
-        )}
+        </div>
       </div>
     );
   }

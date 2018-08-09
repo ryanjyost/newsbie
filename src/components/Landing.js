@@ -6,6 +6,7 @@ import { balanceScale } from "react-icons-kit/fa/balanceScale";
 import { androidTime } from "react-icons-kit/ionicons/androidTime";
 import { androidHappy } from "react-icons-kit/ionicons/androidHappy";
 import { iosEye } from "react-icons-kit/ionicons/iosEye";
+import { Link } from "react-router-dom";
 
 // benefits
 import { androidPhonePortrait } from "react-icons-kit/ionicons/androidPhonePortrait";
@@ -129,19 +130,6 @@ export default class Landing extends Component {
                             Let me know by joining the zero spam mailing list!
                           </span>
                         </h2>
-                        <h5
-                          style={{
-                            textAlign: "center",
-                            color: "rgba(33, 58, 73, 0.7)",
-                            lineHeight: 1.3
-                          }}
-                        >
-                          My personal email is{" "}
-                          <a href="mailto:ryanjyost@gmail.com?subject=Make the Newsbie app, Ryan!">
-                            ryanjyost@gmail.com
-                          </a>
-                          <br /> if you'd rather let me know that way.
-                        </h5>
                       </div>
                     ) : (
                       <h3
@@ -225,6 +213,19 @@ export default class Landing extends Component {
                         {status === "success" && "You're signed up!"}
                         {status === "error" && "Error :("}
                       </button>
+                      <h5
+                        style={{
+                          textAlign: "center",
+                          color: "rgba(33, 58, 73, 0.7)",
+                          lineHeight: 1.3
+                        }}
+                      >
+                        My personal email is{" "}
+                        <a href="mailto:ryanjyost@gmail.com?subject=Make the Newsbie app, Ryan!">
+                          ryanjyost@gmail.com
+                        </a>
+                        <br /> if you'd rather let me know that way.
+                      </h5>
                     </div>
                   </div>
                 </div>
@@ -263,7 +264,7 @@ export default class Landing extends Component {
               zIndex: 5,
               position: "absolute",
               height: "100%",
-              paddingTop: 120,
+              paddingTop: 100,
               top: 0,
               width: "100%"
             }}
@@ -338,10 +339,11 @@ export default class Landing extends Component {
                   color: "rgba(33, 58, 73, 1)",
                   marginTop: 20,
                   display: "inline-block",
-                  fontSize: 20
+                  fontSize: 20,
+                  textAlign: "center"
                 }}
               >
-                a command center for news junkies
+                the balanced, efficient way <br />to follow the news
               </div>
             </div>
           </div>
@@ -357,7 +359,8 @@ export default class Landing extends Component {
             backgroundColor: "#fff"
           }}
         >
-          <button
+          <Link
+            to={"/demo"}
             style={{
               height: 45,
               fontSize: 16,
@@ -365,13 +368,17 @@ export default class Landing extends Component {
               width: 200,
               borderRadius: 9999,
               border: "1px solid rgba(33, 58, 73, 0.9)",
-              zIndex: 50
+              zIndex: 50,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              textDecoration: "none",
+              fontWeight: "bold"
             }}
             className={"demoBtn"}
-            onClick={() => this.props.switchToDemo()}
           >
             Try the demo
-          </button>
+          </Link>
         </div>
 
         <div
@@ -640,12 +647,9 @@ export default class Landing extends Component {
                 <span>
                   Overlook the media landscape with up-to-date screenshots of
                   news sites.{" "}
-                  <a
-                    style={{ cursor: "pointer" }}
-                    onClick={() => this.props.switchToDemo()}
-                  >
+                  <Link style={{ cursor: "pointer" }} to={"/demo"}>
                     Check out the demo
-                  </a>
+                  </Link>
                 </span>
               }
             />
@@ -818,7 +822,8 @@ export default class Landing extends Component {
                   }}
                 />
               </h3>
-              <button
+              <Link
+                to={"/demo"}
                 style={{
                   height: 45,
                   fontSize: 16,
@@ -828,12 +833,15 @@ export default class Landing extends Component {
                   color: "rgba(255, 255, 255, 1)",
                   borderRadius: 5,
                   border: "1px solid rgba(33, 58, 73, 0.9)",
-                  cursor: "pointer"
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  textDecoration: "none"
                 }}
-                onClick={() => this.props.switchToDemo()}
               >
                 Try the demo
-              </button>
+              </Link>
             </div>
           </div>
         </div>
