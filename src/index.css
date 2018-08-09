@@ -39,7 +39,7 @@ body::-webkit-scrollbar  {
   height: 10px;
 }
 
-@media(max-width: 769px) {
+@media(max-width: 500px) {
   body::-webkit-scrollbar  {
     width: 0px !important;
     display:none !important;;

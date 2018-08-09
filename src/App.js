@@ -775,6 +775,7 @@ class App extends Component {
             showSlider={showSlider}
             records={this.state.records}
             sites={this.state.sites}
+            screenWidth={screenWidth}
           />
 
           <SectionTitle num={2} title={"Catch up on buzzwords"}>

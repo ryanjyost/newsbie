@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Site from "./Site";
 import Slider from "react-slick";
+import $ from "jquery";
 
 export default class FrontPages extends Component {
   constructor(props) {
@@ -10,6 +11,16 @@ export default class FrontPages extends Component {
 
   shouldComponentUpdate() {
     return this.props.records.length === 0;
+  }
+
+  handleHorzScroll(direction, selector) {
+    $(`#${selector}`).animate(
+      {
+        scrollLeft: `${direction === "left" ? "-" : "+"}=${this.props
+          .screenWidth - 20}px`
+      },
+      "fast"
+    );
   }
 
   render() {
