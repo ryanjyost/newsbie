@@ -122,8 +122,21 @@ class App extends Component {
         let filteredOpinions = res.data.opinionArticles.filter(article => {
           return article.site.name.toLowerCase() !== "cbsnews";
         });
+        //
+        // let counts = {};
+        // res.data.opinionArticles.map(article => {
+        //   if (article.site.name in counts) {
+        //     counts[article.site.name].push(article);
+        //   } else {
+        //     counts[article.site.name] = [article];
+        //   }
+        // });
+        //
+        // console.log(counts);
 
-        let currentOpinions = shuffle(filteredOpinions).slice(0, 50);
+        let currentOpinions = shuffle(filteredOpinions);
+
+        currentOpinions = currentOpinions.slice(0, 50);
 
         this.setState({
           sites: res.data.sites,
