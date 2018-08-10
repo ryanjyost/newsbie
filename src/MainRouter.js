@@ -1,5 +1,10 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect
+} from "react-router-dom";
 import App from "./App";
 import Landing from "./components/Landing";
 import { withRouter } from "react-router";
@@ -92,6 +97,7 @@ const MainRouter = () => {
           <TopBarWithRouter />
           <Route exact path="/" component={Landing} />
           <Route path="/demo" component={App} />
+          <Route component={Landing} />
         </ScollToTopWithRouter>
       </div>
     </Router>
