@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eaad3f9b-385c-4760-bbaf-b9ee01a5c1fb" name="Default" comment="progress">
+      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MainRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/MainRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static.json" beforeDir="false" afterPath="$PROJECT_DIR$/static.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -26,8 +26,8 @@
       <file leaf-file-name="App.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/App.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="403">
-              <caret line="129" column="21" lean-forward="true" selection-start-line="129" selection-start-column="21" selection-end-line="129" selection-end-column="21" />
+            <state relative-caret-position="288">
+              <caret line="106" column="50" lean-forward="true" selection-start-line="106" selection-start-column="50" selection-end-line="106" selection-end-column="50" />
               <folding>
                 <element signature="n#!!block;n#constructor#0;n#App#0" />
                 <element signature="e#756#1254#0" />
@@ -36,7 +36,6 @@
                 <element signature="e#2068#2109#0" />
                 <element signature="e#2272#2316#0" />
                 <element signature="e#2352#2390#0" />
-                <element signature="e#2577#2657#0" />
                 <element signature="e#2691#2781#0" />
                 <element signature="e#3027#3102#0" />
                 <element signature="n#!!block;n#componentWillUnmount#0;n#App#0" />
@@ -205,8 +204,8 @@
       <file leaf-file-name="MainRouter.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/MainRouter.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="100" column="31" lean-forward="true" selection-start-line="100" selection-start-column="31" selection-end-line="100" selection-end-column="31" />
+            <state relative-caret-position="409">
+              <caret line="103" column="31" lean-forward="true" selection-start-line="103" selection-start-column="31" selection-end-line="103" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -451,8 +450,8 @@
         <option value="$PROJECT_DIR$/src/components/Landing.js" />
         <option value="$PROJECT_DIR$/src/components/FrontPages.js" />
         <option value="$PROJECT_DIR$/src/index.css" />
-        <option value="$PROJECT_DIR$/src/App.js" />
         <option value="$PROJECT_DIR$/static.json" />
+        <option value="$PROJECT_DIR$/src/App.js" />
         <option value="$PROJECT_DIR$/src/MainRouter.js" />
       </list>
     </option>
@@ -473,7 +472,7 @@
       <path value="$PROJECT_DIR$/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds">
     <option name="y" value="22" />
     <option name="width" value="1280" />
     <option name="height" value="778" />
@@ -568,7 +567,7 @@
       <workItem from="1533093316859" duration="21015000" />
       <workItem from="1533420367823" duration="10310000" />
       <workItem from="1533601855207" duration="310000" />
-      <workItem from="1533766819208" duration="9280000" />
+      <workItem from="1533766819208" duration="10255000" />
     </task>
     <task id="LOCAL-00001" summary="progress">
       <created>1533179196867</created>
@@ -581,10 +580,10 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="187302000" />
+    <option name="totallyTimeSpent" value="188277000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1280" height="778" extended-state="6" />
+    <frame x="0" y="22" width="1280" height="778" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -645,7 +644,6 @@
             <element signature="e#2068#2109#0" />
             <element signature="e#2272#2316#0" />
             <element signature="e#2352#2390#0" />
-            <element signature="e#2577#2657#0" />
             <element signature="e#2691#2781#0" />
             <element signature="e#3027#3102#0" />
             <element signature="n#!!block;n#componentWillUnmount#0;n#App#0" />
@@ -866,7 +864,6 @@
             <element signature="e#2068#2109#0" />
             <element signature="e#2272#2316#0" />
             <element signature="e#2352#2390#0" />
-            <element signature="e#2577#2657#0" />
             <element signature="e#2691#2781#0" />
             <element signature="e#3027#3102#0" />
             <element signature="n#!!block;n#componentWillUnmount#0;n#App#0" />
@@ -1069,7 +1066,6 @@
             <element signature="e#2068#2109#0" />
             <element signature="e#2272#2316#0" />
             <element signature="e#2352#2390#0" />
-            <element signature="e#2577#2657#0" />
             <element signature="e#2691#2781#0" />
             <element signature="e#3027#3102#0" />
             <element signature="n#!!block;n#componentWillUnmount#0;n#App#0" />
@@ -1262,7 +1258,6 @@
             <element signature="e#2068#2109#0" />
             <element signature="e#2272#2316#0" />
             <element signature="e#2352#2390#0" />
-            <element signature="e#2577#2657#0" />
             <element signature="e#2691#2781#0" />
             <element signature="e#3027#3102#0" />
             <element signature="n#!!block;n#componentWillUnmount#0;n#App#0" />
@@ -1454,7 +1449,6 @@
             <element signature="e#2068#2109#0" />
             <element signature="e#2272#2316#0" />
             <element signature="e#2352#2390#0" />
-            <element signature="e#2577#2657#0" />
             <element signature="e#2691#2781#0" />
             <element signature="e#3027#3102#0" />
             <element signature="n#!!block;n#componentWillUnmount#0;n#App#0" />
@@ -1646,7 +1640,6 @@
             <element signature="e#2068#2109#0" />
             <element signature="e#2272#2316#0" />
             <element signature="e#2352#2390#0" />
-            <element signature="e#2577#2657#0" />
             <element signature="e#2691#2781#0" />
             <element signature="e#3027#3102#0" />
             <element signature="n#!!block;n#componentWillUnmount#0;n#App#0" />
@@ -2042,13 +2035,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/FrontPages.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="19" column="31" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/static.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
@@ -2056,10 +2042,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/FrontPages.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="19" column="31" selection-start-line="19" selection-start-column="31" selection-end-line="19" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/App.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="403">
-          <caret line="129" column="21" lean-forward="true" selection-start-line="129" selection-start-column="21" selection-end-line="129" selection-end-column="21" />
+        <state relative-caret-position="288">
+          <caret line="106" column="50" lean-forward="true" selection-start-line="106" selection-start-column="50" selection-end-line="106" selection-end-column="50" />
           <folding>
             <element signature="n#!!block;n#constructor#0;n#App#0" />
             <element signature="e#756#1254#0" />
@@ -2068,7 +2061,6 @@
             <element signature="e#2068#2109#0" />
             <element signature="e#2272#2316#0" />
             <element signature="e#2352#2390#0" />
-            <element signature="e#2577#2657#0" />
             <element signature="e#2691#2781#0" />
             <element signature="e#3027#3102#0" />
             <element signature="n#!!block;n#componentWillUnmount#0;n#App#0" />
@@ -2226,8 +2218,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/MainRouter.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="100" column="31" lean-forward="true" selection-start-line="100" selection-start-column="31" selection-end-line="100" selection-end-column="31" />
+        <state relative-caret-position="409">
+          <caret line="103" column="31" lean-forward="true" selection-start-line="103" selection-start-column="31" selection-end-line="103" selection-end-column="31" />
         </state>
       </provider>
     </entry>

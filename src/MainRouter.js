@@ -2,6 +2,7 @@ import React from "react";
 import {
   BrowserRouter as Router,
   Route,
+  Switch,
   Link,
   Redirect
 } from "react-router-dom";
@@ -95,9 +96,11 @@ const MainRouter = () => {
       <div>
         <ScollToTopWithRouter>
           <TopBarWithRouter />
-          <Route exact path="/" component={Landing} />
-          <Route path="/demo" component={App} />
-          <Route component={Landing} />
+          <Switch>
+            <Route exact path="/" component={Landing} />
+            <Route path="/demo" component={App} />
+            <Route component={Landing} />
+          </Switch>
         </ScollToTopWithRouter>
       </div>
     </Router>

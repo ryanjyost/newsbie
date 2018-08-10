@@ -101,7 +101,9 @@ class App extends Component {
       .then(response => {
         //let results = response.body.results;
         // console.log("hey", response.data.records);
-        const records = response.data.records;
+        const records = response.data.records.filter(record => {
+          return record.site.name !== "thewashingtonpost";
+        });
         const randomOrder = shuffle(records, { copy: true });
 
         this.setState({
