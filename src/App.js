@@ -117,14 +117,15 @@ class App extends Component {
       });
 
     axios
-      .get("https://birds-eye-news-api.herokuapp.com/today")
+      .get("http://localhost:8000/today")
       .then(res => {
-        let currentNews = shuffle(res.data.politicsArticles).slice(0, 50);
+        let currentNews = shuffle(res.data.politicsArticles);
+        currentNews = currentNews.slice(0, 50);
 
         let filteredOpinions = res.data.opinionArticles.filter(article => {
           return article.site.name.toLowerCase() !== "cbsnews";
         });
-        //
+
         // let counts = {};
         // res.data.opinionArticles.map(article => {
         //   if (article.site.name in counts) {
@@ -133,11 +134,8 @@ class App extends Component {
         //     counts[article.site.name] = [article];
         //   }
         // });
-        //
-        // console.log(counts);
 
         let currentOpinions = shuffle(filteredOpinions);
-
         currentOpinions = currentOpinions.slice(0, 50);
 
         this.setState({

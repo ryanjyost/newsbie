@@ -7,6 +7,7 @@ import { androidTime } from "react-icons-kit/ionicons/androidTime";
 import { androidHappy } from "react-icons-kit/ionicons/androidHappy";
 import { iosEye } from "react-icons-kit/ionicons/iosEye";
 import { Link } from "react-router-dom";
+import ReactGA from "react-ga";
 
 // benefits
 import { androidPhonePortrait } from "react-icons-kit/ionicons/androidPhonePortrait";
@@ -31,9 +32,13 @@ export default class Landing extends Component {
     };
   }
 
-  validateEmail(email) {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
+  componentDidMount() {
+    // google analystics
+    this.initReactGA();
+  }
+  initReactGA() {
+    ReactGA.initialize("UA-97014671-5");
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
   render() {
