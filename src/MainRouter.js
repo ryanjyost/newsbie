@@ -104,7 +104,7 @@ const MainRouter = () => {
           <Switch>
             <Route exact path="/" component={Landing} />
             <Route path="/demo" component={App} />
-            {/*<Route path="/dashboard" component={Dashboard} />*/}
+            <Route path="/dashboard" component={Dashboard} />
             <Route component={Landing} />
           </Switch>
         </ScollToTopWithRouter>
