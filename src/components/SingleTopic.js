@@ -28,12 +28,14 @@ export default class SingleTopic extends Component {
         />
 
         <div
-          className={"horzScroll"}
+          className={"horzRow"}
           style={{
             display: "flex",
-            width: "auto",
-            overflowX: "scroll",
-            padding: "20px 0px"
+            padding: "20px 0px",
+            flexDirection: "column",
+            flexWrap: "wrap",
+            height: styles.articleHeight + 20,
+            overflowX: "auto"
           }}
         >
           {politicsArticles

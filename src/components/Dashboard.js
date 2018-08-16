@@ -366,7 +366,7 @@ export default class Dashboard extends Component {
             } ${this.state.records ? "news sites" : ""}`}
           </h5>
           <div
-            className={"horzScroll"}
+            className={"horzRow"}
             style={{
               display: "flex",
               width: "auto",

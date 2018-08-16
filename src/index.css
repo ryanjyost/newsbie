@@ -31,7 +31,10 @@ body {
 }
 
 .horzRow {
-  -webkit-overflow-scrolling: touch !important;
+  -webkit-overflow-scrolling: touch;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  display: flex;
 }
 
 body::-webkit-scrollbar  {
