@@ -3,19 +3,41 @@ import TagCloud from "./TagCloud";
 import axios from "axios/index";
 import shuffle from "shuffle-array";
 import ReactGA from "react-ga";
+import SingleFrontPage from "./SingleFrontPage";
+import TimeAgo from "react-timeago";
+import { androidTime } from "react-icons-kit/ionicons/androidTime";
+import { Icon } from "react-icons-kit";
+import SingleTopic from "./SingleTopic";
+import {
+  AreaSeries,
+  HorizontalBarSeries,
+  HorizontalGridLines,
+  VerticalGridLines,
+  XAxis,
+  XYPlot,
+  YAxis
+} from "react-vis";
 
 export default class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      topTags: [],
+      topTags: [null],
       batchOfTags: null,
       records: [],
-      batch: []
+      batch: [],
+      screenWidth: 0,
+      sites: [],
+      politicsArticles: [],
+      opinionArticles: [],
+      currentNews: [],
+      currentOpinions: []
     };
   }
 
   componentDidMount() {
+    this.updateDimensions();
+
     let tagPlaceholders = [];
 
     for (let i = 1; i <= 20; i++) {
@@ -25,11 +47,23 @@ export default class Dashboard extends Component {
     this.setState({ topTags: tagPlaceholders });
 
     axios
-      .get("http://localhost:8000/recent_tags")
+      .get("https://birds-eye-news-api.herokuapp.com/recent_tags")
       .then(res => {
+        const tags = res.data.batch.tags.sort((a, b) => {
+          let aCount = a ? ("tf" in a ? a.tf : 0) : 0;
+          let bCount = b ? ("tf" in b ? b.tf : 0) : 0;
+          if (aCount < bCount) {
+            return 1;
+          } else if (bCount < aCount) {
+            return -1;
+          } else {
+            return 0;
+          }
+        });
+
         this.setState({
           batchOfTags: res.data.batch,
-          topTags: res.data.batch.tags.slice(0, 20)
+          topTags: tags
         });
       })
       .catch(err => console.log(err));
@@ -56,6 +90,29 @@ export default class Dashboard extends Component {
         this.setState({ showError: true });
       });
 
+    axios
+      .get("https://birds-eye-news-api.herokuapp.com/today")
+      .then(res => {
+        let currentNews = shuffle(res.data.politicsArticles);
+        currentNews = currentNews.slice(0, 50);
+
+        let filteredOpinions = res.data.opinionArticles.filter(article => {
+          return article.site.name.toLowerCase() !== "cbsnews";
+        });
+
+        let currentOpinions = shuffle(filteredOpinions);
+        currentOpinions = currentOpinions.slice(0, 50);
+
+        this.setState({
+          sites: res.data.sites,
+          politicsArticles: res.data.politicsArticles,
+          opinionArticles: res.data.opinionArticles,
+          currentNews,
+          currentOpinions
+        });
+      })
+      .catch(err => console.log(err));
+
     window.addEventListener(
       "resize",
       this.throttle(this.updateDimensions.bind(this), 1000)
@@ -67,6 +124,64 @@ export default class Dashboard extends Component {
     window.addEventListener("touchstart", this.touchStart);
     window.addEventListener("touchmove", this.preventTouch, { passive: false });
   }
+
+  updateDimensions() {
+    let screenWidth = typeof window !== "undefined" ? window.innerWidth : 0;
+    let screenHeight = typeof window !== "undefined" ? window.innerHeight : 0;
+    // let update_height = Math.round(update_width)
+
+    this.setState({ screenWidth: screenWidth, screenHeight: screenHeight });
+  }
+
+  /**
+   * throttle function that catches and triggers last invocation
+   * use time to see if there is a last invocation
+   */
+  throttle(func, limit) {
+    let lastFunc;
+    let lastRan;
+    return function() {
+      const context = this;
+      const args = arguments;
+      if (!lastRan) {
+        func.apply(context, args);
+        lastRan = Date.now();
+      } else {
+        clearTimeout(lastFunc);
+        lastFunc = setTimeout(function() {
+          if (Date.now() - lastRan >= limit) {
+            func.apply(context, args);
+            lastRan = Date.now();
+          }
+        }, limit - (Date.now() - lastRan));
+      }
+    };
+  }
+
+  touchStart(e) {
+    this.firstClientX = e.touches[0].clientX;
+    this.firstClientY = e.touches[0].clientY;
+  }
+
+  preventTouch(e) {
+    const minValue = 5; // threshold
+
+    this.clientX = e.touches[0].clientX - this.firstClientX;
+    this.clientY = e.touches[0].clientY - this.firstClientY;
+
+    // Vertical scrolling does not work when you start swiping horizontally.
+    if (Math.abs(this.clientX) > minValue) {
+      e.preventDefault();
+      e.returnValue = false;
+      return false;
+    }
+  }
+
+  initReactGA() {
+    ReactGA.initialize("UA-97014671-5");
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }
+
   render() {
     const {
       screenWidth,
@@ -75,17 +190,144 @@ export default class Dashboard extends Component {
       touchOnly,
       isLanding
     } = this.state;
-    let imageWidth = touchOnly
-      ? Math.min(screenWidth, 700)
-      : Math.min(screenWidth, 400);
 
-    let articleWidth = touchOnly
-      ? Math.min(screenWidth, 400)
-      : Math.min(screenWidth, 340);
+    let imageWidth = Math.min(screenWidth - 80, 500);
+
+    let articleWidth = 250;
+    let articleHeight = 250;
     let articleMargin = 10;
 
     let isWide = screenWidth > 768;
     let showSlider = screenWidth < 500;
+
+    const sectionStyle = {
+      borderTop: "1px solid #f2f2f2",
+      borderBottom: "1px solid #f2f2f2",
+      padding: 20,
+      backgroundColor: "#fff",
+      marginBottom: 5
+    };
+
+    const styles = {
+      articleWidth,
+      articleHeight,
+      articleMargin,
+      sectionStyle
+    };
+
+    let topTags = this.state.topTags.slice();
+    let data = topTags.map(tag => {
+      if (tag) {
+        return {
+          x: tag.sourceCount / this.state.batchOfTags.sourceCount,
+          y: tag.term
+        };
+      } else {
+        return {
+          x: 0,
+          y: ""
+        };
+      }
+    });
+
+    const topTag = this.state.topTags[0];
+
+    const renderTopWordsGraph = () => {
+      let sortedData = data.sort((a, b) => {
+        if (a.x > b.x) {
+          return 1;
+        } else if (b.x > a.x) {
+          return -1;
+        } else {
+          return 0;
+        }
+      });
+      return (
+        <div
+          style={{
+            display: "flex",
+            width: "auto",
+            overflowX: "scroll",
+            overflowY: "hidden",
+            padding: "10px 0px 0px 0px",
+            marginLeft: -20
+          }}
+        >
+          {data && (
+            <XYPlot yType="ordinal" xType="linear" height={300} width={300}>
+              <VerticalGridLines />
+              <HorizontalGridLines />
+              <HorizontalBarSeries
+                color={"rgba(46, 228, 246, 0.6)"}
+                opacity={0.5}
+                data={data.slice(data.length - 10)}
+              />
+              <YAxis
+                left={250}
+                style={{
+                  line: { stroke: "rgba(0,0,0,0)" },
+                  ticks: { stroke: "rgba(0,0,0,0)" },
+                  text: {
+                    stroke: "none",
+                    fill: "rgba(0,0,0,0.8)",
+                    fontWeight: 300,
+                    fontSize: 12
+                  }
+                }}
+              />
+              <XAxis
+                tickFormat={v => `${(v * 100).toFixed()}%`}
+                style={{
+                  line: { stroke: "rgba(0,0,0,0)" },
+                  ticks: { stroke: "rgba(0,0,0,0)" },
+                  text: {
+                    stroke: "none",
+                    fill: "rgba(0,0,0,0.4)",
+                    fontWeight: 300,
+                    fontSize: 10
+                  }
+                }}
+              />
+            </XYPlot>
+          )}
+        </div>
+      );
+    };
+
+    const renderTimeAgo = time => {
+      if (!time) {
+        return null;
+      } else {
+        return (
+          <h6
+            style={{
+              margin: 0,
+              textAlign: "right",
+              fontWeight: "light",
+              color: "rgba(0,0,0,0.2)"
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "flex-end"
+              }}
+            >
+              <Icon
+                style={{
+                  marginRight: 3,
+                  color: "rgba(0, 0, 0, 0.3)"
+                }}
+                icon={androidTime}
+                size={12}
+              />{" "}
+              <TimeAgo date={time} />
+            </div>
+          </h6>
+        );
+      }
+    };
 
     return (
       <div
@@ -95,40 +337,65 @@ export default class Dashboard extends Component {
           padding: "20px 0px"
         }}
       >
-        <div
-          style={{
-            borderTop: "1px solid #f2f2f2",
-            borderBottom: "1px solid #f2f2f2",
-            padding: 20,
-            backgroundColor: "#fff",
-            marginBottom: 10
-          }}
-        >
-          <h5 style={{ margin: 0 }}>
-            {`most common words ${this.state.batchOfTags ? "from" : ""} ${
+        {/* ======================================== */}
+        <div style={sectionStyle}>
+          <h5 style={{ margin: "0px 0px 10px 0px" }}>
+            {`Most common words ${this.state.batchOfTags ? "from" : ""} ${
               this.state.batchOfTags ? this.state.batchOfTags.sourceCount : ""
-            } ${this.state.batchOfTags ? "headlines" : ""}`}
+            } ${this.state.batchOfTags ? "recent headlines" : ""}`}
           </h5>
           <TagCloud tags={this.state.topTags} />
+          {renderTimeAgo(
+            this.state.batchOfTags ? this.state.batchOfTags.created_at : null
+          )}
         </div>
-        <div
-          style={{
-            borderTop: "1px solid #f2f2f2",
-            borderBottom: "1px solid #f2f2f2",
-            padding: 20,
-            backgroundColor: "#fff",
-            marginBottom: 10
-          }}
-        >
+
+        {/* ======================================== */}
+        <div style={sectionStyle}>
           <h5 style={{ margin: 0 }}>
-            {`most common words ${this.state.batchOfTags ? "from" : ""} ${
-              this.state.batchOfTags ? this.state.batchOfTags.sourceCount : ""
-            } ${this.state.batchOfTags ? "headlines" : ""}`}
+            % of recent headlines that include the word...
           </h5>
-          {this.state.records.map((record, i) => {
-            return;
-          })}
+          {renderTopWordsGraph()}
+          {renderTimeAgo(
+            this.state.batchOfTags ? this.state.batchOfTags.created_at : null
+          )}
         </div>
+
+        {/* ======================================== */}
+        <div style={sectionStyle}>
+          <h5 style={{ margin: 0 }}>
+            {`Current front pages ${this.state.records ? "of" : ""} ${
+              this.state.records ? this.state.records.length : ""
+            } ${this.state.records ? "news sites" : ""}`}
+          </h5>
+          <div
+            style={{
+              display: "flex",
+              width: "auto",
+              overflowX: "scroll",
+              padding: "20px 0px"
+            }}
+          >
+            {this.state.records.map((record, i) => {
+              return (
+                <SingleFrontPage
+                  key={i}
+                  imageWidth={imageWidth}
+                  record={record}
+                />
+              );
+            })}
+          </div>
+          {renderTimeAgo(this.state.batch ? this.state.batch.created_at : null)}
+        </div>
+
+        {/* ======================================== */}
+        <SingleTopic
+          tag={topTag}
+          sectionStyle={sectionStyle}
+          styles={styles}
+          {...this.state}
+        />
       </div>
     );
   }
