@@ -49,11 +49,6 @@ body::-webkit-scrollbar  {
     display:none !important;;
   }
 
-  .horzRow::-webkit-scrollbar, ::-webkit-scrollbar  {
-    width: 0px !important;
-    /*background-color: rgba(255, 255, 255, 0.03) !important;*/
-    height: 0px !important;
-  }
 }
 
 .main::-webkit-scrollbar, .main::-webkit-scrollbar  {
@@ -93,29 +88,12 @@ body::-webkit-scrollbar-thumb:hover {
 
 
 
+
 .horzRow::-webkit-scrollbar, ::-webkit-scrollbar  {
-  width: 10px;
+  width: 0px !important;
   /*background-color: rgba(255, 255, 255, 0.03) !important;*/
-  height: 10px;
+  height: 0px !important;
 }
-
-/* Track */
-.horzRow::-webkit-scrollbar-track, ::-webkit-scrollbar-track {
-  background-color: rgba(255, 255, 255, 0.01);
-  height: 5px
-}
-
-/* Handle */
-.horzRow::-webkit-scrollbar-thumb, ::-webkit-scrollbar-thumb {
-  background-color: rgba(46, 228, 246, 0.3);
-  border-radius: 50px;
-}
-
-/* Handle on hover */
-.horzRow::-webkit-scrollbar-thumb:hover, ::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(46, 228, 246, 0.6);
-}
-
 .hoverBtn{
   color: rgba(255, 255, 255, 0.4);
   background-color: rgba(255, 255, 255, 0.1);

@@ -36,7 +36,8 @@ export default class Article extends Component {
           borderRadius: 5,
           width: articleWidth,
           margin: 10,
-          flex: "0 0 auto"
+          // flex: "0 0 auto"
+          display: "inline-block"
         }}
       >
         <a
