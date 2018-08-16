@@ -197,9 +197,6 @@ export default class Dashboard extends Component {
     let articleHeight = 250;
     let articleMargin = 10;
 
-    let isWide = screenWidth > 768;
-    let showSlider = screenWidth < 500;
-
     const sectionStyle = {
       borderTop: "1px solid #f2f2f2",
       borderBottom: "1px solid #f2f2f2",
@@ -369,6 +366,7 @@ export default class Dashboard extends Component {
             } ${this.state.records ? "news sites" : ""}`}
           </h5>
           <div
+            className={"horzScroll"}
             style={{
               display: "flex",
               width: "auto",

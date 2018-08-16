@@ -28,6 +28,7 @@ export default class SingleTopic extends Component {
         />
 
         <div
+          className={"horzScroll"}
           style={{
             display: "flex",
             width: "auto",
