@@ -30,7 +30,7 @@ export default class SingleTopic extends Component {
     });
 
     return (
-      <div style={styles.sectionStyle}>
+      <div style={{ ...styles.sectionStyle, ...{ position: "relative" } }}>
         <h2 style={{ margin: 0 }}>{tag ? tag.term : ""}</h2>
         <TagCloud
           tags={tag ? tag.related.slice(1, 10) : []}
@@ -40,17 +40,16 @@ export default class SingleTopic extends Component {
         />
 
         <div
-          // className={"horzRow"}
+          className={"horzRow"}
           style={{
-            overflowY: "hidden",
-            whiteSpace: "nowrap",
-            // display: "flex",
+            display: "flex",
             padding: "20px 0px",
-            // flexDirection: "column",
-            // flexWrap: "wrap",
+            flexDirection: "column",
+            flexWrap: "wrap",
             height: styles.articleHeight + 20,
-            overflowX: "scroll",
-            WebkitOverflowScrolling: "touch"
+            overflowX: "auto",
+            position: "relative"
+
             // width:
             //   filteredPolitics.length *
             //   (styles.articleWidth + styles.articleMargin * 2)

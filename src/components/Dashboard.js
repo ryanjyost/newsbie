@@ -332,6 +332,7 @@ export default class Dashboard extends Component {
           backgroundColor: "#f2f2f2",
           minHeight: "100vh",
           padding: "20px 0px",
+          maxWidth: "100%",
           overflowX: "hidden"
         }}
       >
