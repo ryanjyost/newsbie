@@ -108,7 +108,7 @@ export default class Article extends Component {
                   display: "-webkit-box",
                   WebkitLineClamp: 3,
                   fontWeight: 600,
-                  fontSize: 14,
+                  fontSize: 18,
                   margin: 0
                 }}
               >
@@ -121,7 +121,7 @@ export default class Article extends Component {
                   alignItems: "alignItems",
                   textAlign: "right",
                   padding: "5px 0px 0px 0px",
-                  fontSize: 10,
+                  fontSize: 12,
                   color: "rgba(255, 255, 255, 0.5)",
                   textDecoration: "none",
 

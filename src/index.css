@@ -31,10 +31,10 @@ body {
 }
 
 .horzRow {
-  -webkit-overflow-scrolling: touch;
   flex-wrap: nowrap;
-  overflow-x: auto;
   display: flex;
+  overflow-x: scroll; /* has to be scroll, not auto */
+  -webkit-overflow-scrolling: touch;
 }
 
 body::-webkit-scrollbar  {
@@ -234,5 +234,11 @@ h5 {
   font-weight:600;
 }
 
+.slick-slide {
+  padding-bottom: 10px;
+}
 
+.frontPageSlider {
+  margin-left: 10px;
+}
 

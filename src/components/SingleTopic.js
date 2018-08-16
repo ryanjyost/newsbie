@@ -29,6 +29,8 @@ export default class SingleTopic extends Component {
       );
     });
 
+    let slicedArticles = filteredPolitics.slice(0, 4);
+
     return (
       <div style={{ ...styles.sectionStyle, ...{ position: "relative" } }}>
         <h2 style={{ margin: 0 }}>{tag ? tag.term : ""}</h2>
@@ -40,14 +42,14 @@ export default class SingleTopic extends Component {
         />
 
         <div
-          className={"horzRow"}
+          // className={"horzRow"}
           style={{
             display: "flex",
             padding: "20px 0px",
-            flexDirection: "column",
+            justifyContent: "center",
+            // flexDirection: "column",
             flexWrap: "wrap",
-            height: styles.articleHeight + 20,
-            overflowX: "auto",
+            // overflowX: "auto",
             position: "relative"
 
             // width:
@@ -55,7 +57,7 @@ export default class SingleTopic extends Component {
             //   (styles.articleWidth + styles.articleMargin * 2)
           }}
         >
-          {filteredPolitics.map((article, i) => {
+          {slicedArticles.map((article, i) => {
             return (
               <Article
                 key={i}

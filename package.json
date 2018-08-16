@@ -12,7 +12,7 @@
     "html-entities": "^1.2.1",
     "jquery": "^3.3.1",
     "mobile-detect": "^1.4.2",
-    "react": "^16.4.1",
+    "react": "^16.4.2",
     "react-bootstrap": "^0.32.1",
     "react-d3-basic": "^1.6.11",
     "react-d3-components": "^0.9.1",
@@ -37,6 +37,7 @@
     "react-vis": "^1.10.4",
     "recharts": "^1.1.0",
     "shuffle-array": "^1.0.1",
+    "slick-carousel": "^1.8.1",
     "swipe-js-iso": "^2.0.4"
   },
   "scripts": {

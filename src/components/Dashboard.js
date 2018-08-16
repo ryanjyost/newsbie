@@ -3,6 +3,8 @@ import TagCloud from "./TagCloud";
 import axios from "axios/index";
 import shuffle from "shuffle-array";
 import ReactGA from "react-ga";
+import Slider from "react-slick";
+
 import SingleFrontPage from "./SingleFrontPage";
 import TimeAgo from "react-timeago";
 import { androidTime } from "react-icons-kit/ionicons/androidTime";
@@ -96,6 +98,10 @@ export default class Dashboard extends Component {
         let currentNews = shuffle(res.data.politicsArticles);
         currentNews = currentNews.slice(0, 50);
 
+        let filteredPolitics = res.data.politicsArticles.filter(article => {
+          return article.site.name.toLowerCase() !== "politico";
+        });
+
         let filteredOpinions = res.data.opinionArticles.filter(article => {
           return article.site.name.toLowerCase() !== "cbsnews";
         });
@@ -105,8 +111,8 @@ export default class Dashboard extends Component {
 
         this.setState({
           sites: res.data.sites,
-          politicsArticles: res.data.politicsArticles,
-          opinionArticles: res.data.opinionArticles,
+          politicsArticles: filteredPolitics,
+          opinionArticles: filteredOpinions,
           currentNews,
           currentOpinions
         });
@@ -191,10 +197,10 @@ export default class Dashboard extends Component {
       isLanding
     } = this.state;
 
-    let imageWidth = Math.min(screenWidth - 80, 500);
+    let imageWidth = Math.min(screenWidth - 60, 500);
 
-    let articleWidth = 250;
-    let articleHeight = 250;
+    let articleWidth = Math.min(screenWidth - 50, 300);
+    let articleHeight = articleWidth * 0.75;
     let articleMargin = 10;
 
     const sectionStyle = {
@@ -226,8 +232,6 @@ export default class Dashboard extends Component {
         };
       }
     });
-
-    const topTag = this.state.topTags[0];
 
     const renderTopWordsGraph = () => {
       let sortedData = data.sort((a, b) => {
@@ -326,6 +330,40 @@ export default class Dashboard extends Component {
       }
     };
 
+    const renderFrontPages = () => {
+      const settings = {
+        // dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        // dots: false,
+        arrows: false,
+        className: "frontPageSlider"
+        // infinite: true,
+        // speed: 500,
+        // slidesToShow: 1,
+        // slidesToScroll: 1,
+        // className: "sliderContainer",
+        // centerMode: true,
+        // centerPadding: "0px",
+        // swipeToSlide: true
+      };
+      return (
+        <Slider {...settings} style={{ padding: "20px 0px" }}>
+          {this.state.records.map((record, i) => {
+            return (
+              <SingleFrontPage
+                key={i}
+                imageWidth={imageWidth}
+                record={record}
+              />
+            );
+          })}
+        </Slider>
+      );
+    };
+
     return (
       <div
         style={{
@@ -361,37 +399,33 @@ export default class Dashboard extends Component {
         </div>
 
         {/* ======================================== */}
-        <div style={sectionStyle}>
-          <h5 style={{ margin: 0 }}>
-            {`Current front pages ${this.state.records ? "of" : ""} ${
-              this.state.records ? this.state.records.length : ""
-            } ${this.state.records ? "news sites" : ""}`}
-          </h5>
-          <div
-            className={"horzRow"}
+        <div style={{ ...sectionStyle, ...{ padding: "20px 10px" } }}>
+          <h5
             style={{
+              margin: 0,
+              textAlign: "center",
               display: "flex",
-              width: "auto",
-              overflowX: "scroll",
-              padding: "20px 0px"
+              alignItems: "center",
+              justifyContent: "center"
             }}
           >
-            {this.state.records.map((record, i) => {
-              return (
-                <SingleFrontPage
-                  key={i}
-                  imageWidth={imageWidth}
-                  record={record}
-                />
-              );
-            })}
-          </div>
+            <span style={{ margin: "0px 5px", color: "rgba(0,0,0,0.2)" }}>
+              &larr;
+            </span>
+            {`Current front pages ${this.state.records ? "of" : ""} ${
+              this.state.records ? this.state.records.length : ""
+            } ${this.state.records ? "news sites" : ""}`}{" "}
+            <span style={{ margin: "0px 5px", color: "rgba(0,0,0,0.2)" }}>
+              &rarr;
+            </span>
+          </h5>
+          <div style={{ padding: "20px 0px" }}>{renderFrontPages()}</div>
           {renderTimeAgo(this.state.batch ? this.state.batch.created_at : null)}
         </div>
 
         {/* ======================================== */}
         <SingleTopic
-          tag={topTag}
+          tag={this.state.topTags[0]}
           sectionStyle={sectionStyle}
           styles={styles}
           {...this.state}
