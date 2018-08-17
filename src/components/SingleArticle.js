@@ -35,7 +35,7 @@ export default class Article extends Component {
           boxShadow: "0 3px 8px rgba(0,0,0,0.2), 0 8px 16px rgba(0,0,0,0.4)",
           borderRadius: 5,
           width: articleWidth,
-          margin: 10,
+          margin: "10px",
           flex: "0 0 auto"
         }}
       >

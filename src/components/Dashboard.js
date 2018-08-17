@@ -10,6 +10,7 @@ import TimeAgo from "react-timeago";
 import { androidTime } from "react-icons-kit/ionicons/androidTime";
 import { Icon } from "react-icons-kit";
 import SingleTopic from "./SingleTopic";
+import detectIt from "detect-it";
 import {
   AreaSeries,
   HorizontalBarSeries,
@@ -33,7 +34,8 @@ export default class Dashboard extends Component {
       politicsArticles: [],
       opinionArticles: [],
       currentNews: [],
-      currentOpinions: []
+      currentOpinions: [],
+      touchOnly: detectIt.deviceType === "touchOnly"
     };
   }
 
@@ -199,7 +201,7 @@ export default class Dashboard extends Component {
 
     let imageWidth = Math.min(screenWidth - 60, 500);
 
-    let articleWidth = Math.min(screenWidth - 50, 300);
+    let articleWidth = Math.min(screenWidth - 100, 300);
     let articleHeight = articleWidth * 0.75;
     let articleMargin = 10;
 
@@ -271,7 +273,7 @@ export default class Dashboard extends Component {
                   text: {
                     stroke: "none",
                     fill: "rgba(0,0,0,0.8)",
-                    fontWeight: 300,
+                    fontWeight: 400,
                     fontSize: 12
                   }
                 }}
@@ -334,7 +336,7 @@ export default class Dashboard extends Component {
       const settings = {
         // dots: true,
         infinite: true,
-        speed: 500,
+        speed: 100,
         slidesToShow: 1,
         slidesToScroll: 1,
         // dots: false,

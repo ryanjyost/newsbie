@@ -8,6 +8,7 @@ export default class SingleFrontPage extends Component {
 
   render() {
     const { imageWidth, record } = this.props;
+
     return (
       <a
         href={record.site.url}
