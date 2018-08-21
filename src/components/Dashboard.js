@@ -50,7 +50,7 @@ export default class Dashboard extends Component {
     this.updateDimensions();
 
     axios
-      .get("http://birds-eye-news-api.herokuapp.com/recent_tags")
+      .get("https://birds-eye-news-api.herokuapp.com/recent_tags")
       .then(res => {
         this.setState({
           batchOfTags: res.data.batches[0],
