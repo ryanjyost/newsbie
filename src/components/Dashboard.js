@@ -4,12 +4,15 @@ import axios from "axios/index";
 import shuffle from "shuffle-array";
 import ReactGA from "react-ga";
 import Slider from "react-slick";
+import { curveCatmullRom } from "d3-shape";
+import "../../node_modules/react-vis/dist/style.css";
 
 import SingleFrontPage from "./SingleFrontPage";
 import TimeAgo from "react-timeago";
 import { androidTime } from "react-icons-kit/ionicons/androidTime";
 import { Icon } from "react-icons-kit";
 import SingleTopic from "./SingleTopic";
+import SectionWithLoader from "./SectionWithLoader";
 import detectIt from "detect-it";
 import {
   AreaSeries,
@@ -18,7 +21,8 @@ import {
   VerticalGridLines,
   XAxis,
   XYPlot,
-  YAxis
+  YAxis,
+  LineSeries
 } from "react-vis";
 
 export default class Dashboard extends Component {
@@ -27,6 +31,7 @@ export default class Dashboard extends Component {
     this.state = {
       topTags: [null],
       batchOfTags: null,
+      allTagBatches: [],
       records: [],
       batch: [],
       screenWidth: 0,
@@ -36,38 +41,21 @@ export default class Dashboard extends Component {
       currentNews: [],
       currentOpinions: [],
       touchOnly: detectIt.deviceType === "touchOnly"
+
+      // word trends
     };
   }
 
   componentDidMount() {
     this.updateDimensions();
 
-    let tagPlaceholders = [];
-
-    for (let i = 1; i <= 20; i++) {
-      tagPlaceholders.push(null);
-    }
-
-    this.setState({ topTags: tagPlaceholders });
-
     axios
-      .get("https://birds-eye-news-api.herokuapp.com/recent_tags")
+      .get("http://birds-eye-news-api.herokuapp.com/recent_tags")
       .then(res => {
-        const tags = res.data.batch.tags.sort((a, b) => {
-          let aCount = a ? ("tf" in a ? a.tf : 0) : 0;
-          let bCount = b ? ("tf" in b ? b.tf : 0) : 0;
-          if (aCount < bCount) {
-            return 1;
-          } else if (bCount < aCount) {
-            return -1;
-          } else {
-            return 0;
-          }
-        });
-
         this.setState({
-          batchOfTags: res.data.batch,
-          topTags: tags
+          batchOfTags: res.data.batches[0],
+          allTagBatches: res.data.batches,
+          topTags: res.data.topTags
         });
       })
       .catch(err => console.log(err));
@@ -98,25 +86,21 @@ export default class Dashboard extends Component {
       .get("https://birds-eye-news-api.herokuapp.com/today")
       .then(res => {
         let currentNews = shuffle(res.data.politicsArticles);
-        currentNews = currentNews.slice(0, 50);
 
-        let filteredPolitics = res.data.politicsArticles.filter(article => {
+        let filteredPolitics = currentNews.filter(article => {
           return article.site.name.toLowerCase() !== "politico";
         });
 
-        let filteredOpinions = res.data.opinionArticles.filter(article => {
+        let currentOpinions = shuffle(res.data.opinionArticles);
+
+        let filteredOpinions = currentOpinions.filter(article => {
           return article.site.name.toLowerCase() !== "cbsnews";
         });
-
-        let currentOpinions = shuffle(filteredOpinions);
-        currentOpinions = currentOpinions.slice(0, 50);
 
         this.setState({
           sites: res.data.sites,
           politicsArticles: filteredPolitics,
-          opinionArticles: filteredOpinions,
-          currentNews,
-          currentOpinions
+          opinionArticles: filteredOpinions
         });
       })
       .catch(err => console.log(err));
@@ -217,26 +201,29 @@ export default class Dashboard extends Component {
       articleWidth,
       articleHeight,
       articleMargin,
-      sectionStyle
+      sectionStyle,
+      screenWidth,
+      maxWidth: 768
     };
 
     let topTags = this.state.topTags.slice();
-    let data = topTags.map(tag => {
-      if (tag) {
-        return {
-          x: tag.sourceCount / this.state.batchOfTags.sourceCount,
-          y: tag.term
-        };
-      } else {
-        return {
-          x: 0,
-          y: ""
-        };
-      }
-    });
 
     const renderTopWordsGraph = () => {
-      let sortedData = data.sort((a, b) => {
+      let data = topTags.map(tag => {
+        if (tag) {
+          return {
+            x: tag.sourceCount / this.state.batchOfTags.sourceCount,
+            y: tag.term
+          };
+        } else {
+          return {
+            x: 0,
+            y: ""
+          };
+        }
+      });
+
+      let sorted = data.sort((a, b) => {
         if (a.x > b.x) {
           return 1;
         } else if (b.x > a.x) {
@@ -245,6 +232,7 @@ export default class Dashboard extends Component {
           return 0;
         }
       });
+
       return (
         <div
           style={{
@@ -253,17 +241,23 @@ export default class Dashboard extends Component {
             overflowX: "scroll",
             overflowY: "hidden",
             padding: "10px 0px 0px 0px",
-            marginLeft: -20
+            marginLeft: -20,
+            strokeWidth: 0
           }}
         >
           {data && (
-            <XYPlot yType="ordinal" xType="linear" height={300} width={300}>
+            <XYPlot
+              yType="ordinal"
+              xType="linear"
+              height={300}
+              width={Math.min(styles.screenWidth - 60, styles.maxWidth - 50)}
+            >
               <VerticalGridLines />
               <HorizontalGridLines />
               <HorizontalBarSeries
                 color={"rgba(46, 228, 246, 0.6)"}
                 opacity={0.5}
-                data={data.slice(data.length - 10)}
+                data={sorted.slice(data.length - 10)}
               />
               <YAxis
                 left={250}
@@ -307,7 +301,8 @@ export default class Dashboard extends Component {
               margin: 0,
               textAlign: "right",
               fontWeight: "light",
-              color: "rgba(0,0,0,0.2)"
+              color: "rgba(0,0,0,0.2)",
+              width: "100%"
             }}
           >
             <div
@@ -351,19 +346,45 @@ export default class Dashboard extends Component {
         // centerPadding: "0px",
         // swipeToSlide: true
       };
-      return (
-        <Slider {...settings} style={{ padding: "20px 0px" }}>
-          {this.state.records.map((record, i) => {
-            return (
-              <SingleFrontPage
-                key={i}
-                imageWidth={imageWidth}
-                record={record}
-              />
-            );
-          })}
-        </Slider>
-      );
+      if (touchOnly) {
+        return (
+          <Slider {...settings} style={{ padding: "20px 0px" }}>
+            {this.state.records.map((record, i) => {
+              return (
+                <SingleFrontPage
+                  key={i}
+                  imageWidth={imageWidth}
+                  record={record}
+                />
+              );
+            })}
+          </Slider>
+        );
+      } else {
+        return (
+          <div
+            className={"horzRow"}
+            style={{
+              display: "flex",
+              padding: "20px 0px",
+              overflowX: "auto",
+              position: "relative"
+            }}
+          >
+            {this.state.records.map((record, i) => {
+              return (
+                <div style={{ margin: "0px 10px" }}>
+                  <SingleFrontPage
+                    key={i}
+                    imageWidth={imageWidth}
+                    record={record}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        );
+      }
     };
 
     return (
@@ -371,37 +392,57 @@ export default class Dashboard extends Component {
         style={{
           backgroundColor: "#f2f2f2",
           minHeight: "100vh",
-          padding: "20px 0px",
+          padding: "50px 0px 10px 0px",
           maxWidth: "100%",
-          overflowX: "hidden"
+          overflowX: "hidden",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column"
         }}
       >
         {/* ======================================== */}
-        <div style={sectionStyle}>
-          <h5 style={{ margin: "0px 0px 10px 0px" }}>
-            {`Most common words ${this.state.batchOfTags ? "from" : ""} ${
-              this.state.batchOfTags ? this.state.batchOfTags.sourceCount : ""
-            } ${this.state.batchOfTags ? "recent headlines" : ""}`}
-          </h5>
+        <SectionWithLoader
+          title={`Most common words from ${
+            this.state.batchOfTags ? this.state.batchOfTags.sourceCount : ""
+          } recent headlines`}
+          isLoading={this.state.topTags.length < 2}
+          sectionStyle={{
+            width: Math.min(screenWidth - 50, styles.maxWidth)
+          }}
+          // divStyle={{ width: screenWidth > 768 ? "50%" : "100%" }}
+        >
           <TagCloud tags={this.state.topTags} />
           {renderTimeAgo(
             this.state.batchOfTags ? this.state.batchOfTags.created_at : null
           )}
-        </div>
+        </SectionWithLoader>
 
         {/* ======================================== */}
-        <div style={sectionStyle}>
-          <h5 style={{ margin: 0 }}>
-            % of recent headlines that include the word...
-          </h5>
+        <SectionWithLoader
+          title={`% of recent headlines that include the word...`}
+          isLoading={!this.state.topTags[0]}
+          sectionStyle={{
+            width: Math.min(screenWidth - 50, styles.maxWidth)
+          }}
+        >
           {renderTopWordsGraph()}
           {renderTimeAgo(
             this.state.batchOfTags ? this.state.batchOfTags.created_at : null
           )}
-        </div>
+        </SectionWithLoader>
 
         {/* ======================================== */}
-        <div style={{ ...sectionStyle, ...{ padding: "20px 10px" } }}>
+        <div
+          style={{
+            padding: "20px 0px",
+            backgroundColor: "#fff",
+            marginBottom: 5,
+            width: Math.min(styles.screenWidth - 10, styles.maxWidth + 40),
+            border: "1px solid #e5e5e5",
+            borderRadius: 3
+          }}
+        >
           <h5
             style={{
               margin: 0,
@@ -421,15 +462,35 @@ export default class Dashboard extends Component {
               &rarr;
             </span>
           </h5>
-          <div style={{ padding: "20px 0px" }}>{renderFrontPages()}</div>
-          {renderTimeAgo(this.state.batch ? this.state.batch.created_at : null)}
+          <div style={{ padding: "20px 0px 10px 0px" }}>
+            {renderFrontPages()}
+          </div>
+          <div style={{ padding: "0px 20px" }}>
+            {renderTimeAgo(
+              this.state.batch ? this.state.batch.created_at : null
+            )}
+          </div>
         </div>
 
         {/* ======================================== */}
         <SingleTopic
           tag={this.state.topTags[0]}
-          sectionStyle={sectionStyle}
           styles={styles}
+          tagIndex={0}
+          {...this.state}
+        />
+        {/* ======================================== */}
+        <SingleTopic
+          tag={this.state.topTags[1] ? this.state.topTags[1] : null}
+          styles={styles}
+          tagIndex={1}
+          {...this.state}
+        />
+        {/* ======================================== */}
+        <SingleTopic
+          tag={this.state.topTags[2] ? this.state.topTags[2] : null}
+          styles={styles}
+          tagIndex={2}
           {...this.state}
         />
       </div>

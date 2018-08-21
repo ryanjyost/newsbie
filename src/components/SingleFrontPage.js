@@ -11,11 +11,12 @@ export default class SingleFrontPage extends Component {
 
     return (
       <a
+        target={"_blank"}
         href={record.site.url}
         key={record.id}
         style={{
           // margin: "0px 10px",
-          boxShadow: "0 1px 2px rgba(0,0,0,0.08), 0 4px 8px rgba(0,0,0,0.12)",
+          boxShadow: "0 3px 8px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.4)",
           border: "1px solid #f2f2f2",
           borderRadius: 5,
           display: "block",

@@ -32,7 +32,7 @@ export default class Article extends Component {
     return (
       <div
         style={{
-          boxShadow: "0 3px 8px rgba(0,0,0,0.2), 0 8px 16px rgba(0,0,0,0.4)",
+          boxShadow: "0 3px 8px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.4)",
           borderRadius: 5,
           width: articleWidth,
           margin: "10px",
@@ -40,6 +40,7 @@ export default class Article extends Component {
         }}
       >
         <a
+          target={"_blank"}
           href={
             article
               ? article.link

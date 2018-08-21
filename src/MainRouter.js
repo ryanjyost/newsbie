@@ -13,6 +13,7 @@ import { withRouter } from "react-router";
 
 const TopBar = ({ location }) => {
   let isLanding = location.pathname === "/";
+
   if (location.pathname !== "/dashboard") {
     return (
       <div
@@ -75,7 +76,36 @@ const TopBar = ({ location }) => {
       </div>
     );
   } else {
-    return null;
+    return (
+      <div
+        style={{
+          height: 40,
+          backgroundColor: "rgba(255, 255, 255, 0.95)",
+          borderBottom: "1px solid #e5e5e5",
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          letterSpacing: "0.03em",
+          boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+          position: "fixed",
+          top: 0,
+          zIndex: 100
+        }}
+      >
+        <h5
+          style={{
+            color: "rgb(33, 58, 73)",
+            margin: "20px",
+            letterSpacing: "0.04em"
+          }}
+        >
+          newsbie
+        </h5>
+
+        <h5 style={{ color: "rgb(33, 58, 73)", margin: "20px" }}>newsbie</h5>
+      </div>
+    );
   }
 };
 
