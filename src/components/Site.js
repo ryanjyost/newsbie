@@ -96,6 +96,7 @@ export default class Site extends Component {
         }}
       >
         <a
+          target={"_blank"}
           href={
             record
               ? record.site.url
@@ -223,6 +224,7 @@ export default class Site extends Component {
             }}
           >
             <a
+              target={"_blank"}
               href={
                 record
                   ? record.site.url
