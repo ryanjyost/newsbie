@@ -14,99 +14,99 @@ import { withRouter } from "react-router";
 const TopBar = ({ location }) => {
   let isLanding = location.pathname === "/";
 
-  if (location.pathname !== "/dashboard") {
-    return (
-      <div
+  // if (location.pathname !== "/dashboard") {
+  //   return (
+  //     <div
+  //       style={{
+  //         height: 60,
+  //         backgroundColor: isLanding
+  //           ? "rgba(255, 255, 255, 0.95)"
+  //           : "rgba(33, 58, 73, 0.9)",
+  //         borderBottom: isLanding
+  //           ? "1px solid #e5e5e5"
+  //           : "1px solid rgba(255, 255," + " 255, 0.1)",
+  //         width: "100%",
+  //         display: "flex",
+  //         alignItems: "center",
+  //         justifyContent: "space-between",
+  //         letterSpacing: "0.03em",
+  //         position: "fixed",
+  //         top: 0,
+  //         zIndex: 100
+  //       }}
+  //     >
+  //       <div
+  //         style={{
+  //           display: "flex",
+  //           alignItems: "center",
+  //           justifyContent: "space-between",
+  //           marginLeft: "5%"
+  //         }}
+  //       >
+  //         <h3
+  //           style={{
+  //             color: isLanding
+  //               ? "rgba(33, 58, 73, 0.9)"
+  //               : "rgba(255, 255, 255, 0.8)",
+  //
+  //             fontWeight: "bold"
+  //           }}
+  //         >
+  //           newsbie
+  //         </h3>
+  //       </div>
+  //       <Link
+  //         to={isLanding ? "/demo" : "/"}
+  //         style={{
+  //           backgroundColor: isLanding
+  //             ? "rgba(33, 58, 73, 0.4)"
+  //             : "rgba(46, 228, 246, 0.6)",
+  //           marginRight: "5%",
+  //           padding: "5px 15px",
+  //           fontSize: 14,
+  //           fontWeight: "600",
+  //           color: "#fff",
+  //           borderRadius: 9999,
+  //           textDecoration: "none"
+  //         }}
+  //         className={"cta"}
+  //       >
+  //         {isLanding ? "Try Demo" : "Get the App"}
+  //       </Link>
+  //     </div>
+  //   );
+  // } else {
+  return (
+    <div
+      style={{
+        height: 40,
+        backgroundColor: "rgba(255, 255, 255, 0.95)",
+        borderBottom: "1px solid #e5e5e5",
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        letterSpacing: "0.03em",
+        boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+        position: "fixed",
+        top: 0,
+        zIndex: 100
+      }}
+    >
+      <h5
         style={{
-          height: 60,
-          backgroundColor: isLanding
-            ? "rgba(255, 255, 255, 0.95)"
-            : "rgba(33, 58, 73, 0.9)",
-          borderBottom: isLanding
-            ? "1px solid #e5e5e5"
-            : "1px solid rgba(255, 255," + " 255, 0.1)",
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          letterSpacing: "0.03em",
-          position: "fixed",
-          top: 0,
-          zIndex: 100
+          color: "rgb(33, 58, 73)",
+          margin: "0px 30px",
+          letterSpacing: "0.04em"
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            marginLeft: "5%"
-          }}
-        >
-          <h3
-            style={{
-              color: isLanding
-                ? "rgba(33, 58, 73, 0.9)"
-                : "rgba(255, 255, 255, 0.8)",
+        newsbie
+      </h5>
 
-              fontWeight: "bold"
-            }}
-          >
-            newsbie
-          </h3>
-        </div>
-        <Link
-          to={isLanding ? "/demo" : "/"}
-          style={{
-            backgroundColor: isLanding
-              ? "rgba(33, 58, 73, 0.4)"
-              : "rgba(46, 228, 246, 0.6)",
-            marginRight: "5%",
-            padding: "5px 15px",
-            fontSize: 14,
-            fontWeight: "600",
-            color: "#fff",
-            borderRadius: 9999,
-            textDecoration: "none"
-          }}
-          className={"cta"}
-        >
-          {isLanding ? "Try Demo" : "Get the App"}
-        </Link>
-      </div>
-    );
-  } else {
-    return (
-      <div
-        style={{
-          height: 40,
-          backgroundColor: "rgba(255, 255, 255, 0.95)",
-          borderBottom: "1px solid #e5e5e5",
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          letterSpacing: "0.03em",
-          boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
-          position: "fixed",
-          top: 0,
-          zIndex: 100
-        }}
-      >
-        <h5
-          style={{
-            color: "rgb(33, 58, 73)",
-            margin: "20px",
-            letterSpacing: "0.04em"
-          }}
-        >
-          newsbie
-        </h5>
-
-        <h5 style={{ color: "rgb(33, 58, 73)", margin: "20px" }}>newsbie</h5>
-      </div>
-    );
-  }
+      {/*<h5 style={{ color: "rgb(33, 58, 73)", margin: "20px" }}>newsbie</h5>*/}
+    </div>
+  );
+  // }
 };
 
 class ScrollToTop extends React.Component {
@@ -132,10 +132,10 @@ const MainRouter = () => {
         <ScollToTopWithRouter>
           <TopBarWithRouter />
           <Switch>
-            <Route exact path="/" component={Landing} />
-            <Route path="/demo" component={App} />
-            <Route path="/dashboard" component={Dashboard} />
-            <Route component={Landing} />
+            {/*<Route exact path="/" component={Landing} />*/}
+            {/*<Route path="/demo" component={App} />*/}
+            <Route path="/" component={Dashboard} />
+            <Route component={Dashboard} />
           </Switch>
         </ScollToTopWithRouter>
       </div>

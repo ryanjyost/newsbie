@@ -11,7 +11,7 @@ export default class SectionWithLoader extends Component {
       border: this.props.noStyle ? null : "1px solid #e5e5e5",
       padding: 20,
       backgroundColor: "#fff",
-      marginBottom: this.props.noStyle ? 0 : 5,
+      margin: this.props.noStyle ? 0 : "10px 10px",
       borderRadius: 3
     };
 

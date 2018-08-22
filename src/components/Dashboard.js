@@ -24,12 +24,14 @@ import {
   YAxis,
   LineSeries
 } from "react-vis";
+import $ from "jquery";
 
 export default class Dashboard extends Component {
   constructor(props) {
     super(props);
     this.state = {
       topTags: [null],
+      topics: [],
       batchOfTags: null,
       allTagBatches: [],
       records: [],
@@ -49,17 +51,64 @@ export default class Dashboard extends Component {
   componentDidMount() {
     this.updateDimensions();
 
+    /*
+    * Recent Tags
+    * */
     axios
       .get("https://birds-eye-news-api.herokuapp.com/recent_tags")
       .then(res => {
+        // get top, different topics
+        let topics = [res.data.topTags[0]];
+
+        let tags = res.data.topTags;
+        for (let i = 1; i < tags.length; i++) {
+          let currentTag = tags[i];
+          if (topics.length > 2) {
+            break;
+          } else {
+            let duplicate = topics.find(topic => {
+              let splitTag = currentTag.term.split(" ");
+              // console.log(splitTag);
+              return splitTag.find(word => {
+                console.log(word, topic.term);
+                return word.includes(topic.term) || topic.term.includes(word);
+              });
+            });
+            if (duplicate) {
+              // console.log(duplicate, currentTag);
+              continue;
+            } else {
+              topics.push(currentTag);
+            }
+          }
+        }
+
+        // console.log(topics);
+        for (let batch of res.data.batches) {
+          // console.log(batch);
+          let cohen = batch.tags.find(tag => {
+            return tag.term === "cohen";
+          });
+
+          if (cohen) {
+            console.log(cohen);
+          } else {
+            console.log("NOT FOUND", batch);
+          }
+        }
+
         this.setState({
           batchOfTags: res.data.batches[0],
           allTagBatches: res.data.batches,
-          topTags: res.data.topTags
+          topTags: res.data.topTags,
+          topics
         });
       })
       .catch(err => console.log(err));
 
+    /*
+	 * Front Pages
+	 * */
     axios
       .get(`https://birds-eye-news-api.herokuapp.com/get_front_pages`, {
         Accept: "application/json"
@@ -82,6 +131,9 @@ export default class Dashboard extends Component {
         this.setState({ showError: true });
       });
 
+    /*
+	 * Articles
+	 * */
     axios
       .get("https://birds-eye-news-api.herokuapp.com/today")
       .then(res => {
@@ -107,7 +159,7 @@ export default class Dashboard extends Component {
 
     window.addEventListener(
       "resize",
-      this.throttle(this.updateDimensions.bind(this), 1000)
+      this.throttle(this.updateDimensions.bind(this), 200)
     );
 
     // google analystics
@@ -183,7 +235,7 @@ export default class Dashboard extends Component {
       isLanding
     } = this.state;
 
-    let imageWidth = Math.min(screenWidth - 60, 500);
+    let imageWidth = Math.min(screenWidth - 50, 500);
 
     let articleWidth = Math.min(screenWidth - 100, 300);
     let articleHeight = articleWidth * 0.75;
@@ -194,7 +246,7 @@ export default class Dashboard extends Component {
       borderBottom: "1px solid #f2f2f2",
       padding: 20,
       backgroundColor: "#fff",
-      marginBottom: 5
+      margin: "10px 0px"
     };
 
     const styles = {
@@ -203,7 +255,7 @@ export default class Dashboard extends Component {
       articleMargin,
       sectionStyle,
       screenWidth,
-      maxWidth: 768
+      maxWidth: 1200
     };
 
     let topTags = this.state.topTags.slice();
@@ -250,7 +302,7 @@ export default class Dashboard extends Component {
               yType="ordinal"
               xType="linear"
               height={300}
-              width={Math.min(styles.screenWidth - 60, styles.maxWidth - 50)}
+              width={Math.min(styles.screenWidth - 60, 350)}
             >
               <VerticalGridLines />
               <HorizontalGridLines />
@@ -373,7 +425,7 @@ export default class Dashboard extends Component {
           >
             {this.state.records.map((record, i) => {
               return (
-                <div style={{ margin: "0px 10px" }}>
+                <div key={i} style={{ margin: "0px 10px" }}>
                   <SingleFrontPage
                     key={i}
                     imageWidth={imageWidth}
@@ -397,8 +449,8 @@ export default class Dashboard extends Component {
           overflowX: "hidden",
           display: "flex",
           justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column"
+          alignItems: "stretch",
+          flexWrap: "wrap"
         }}
       >
         {/* ======================================== */}
@@ -408,7 +460,7 @@ export default class Dashboard extends Component {
           } recent headlines`}
           isLoading={this.state.topTags.length < 2}
           sectionStyle={{
-            width: Math.min(screenWidth - 50, styles.maxWidth)
+            width: Math.min(screenWidth - 50, 350)
           }}
           // divStyle={{ width: screenWidth > 768 ? "50%" : "100%" }}
         >
@@ -423,7 +475,7 @@ export default class Dashboard extends Component {
           title={`% of recent headlines that include the word...`}
           isLoading={!this.state.topTags[0]}
           sectionStyle={{
-            width: Math.min(screenWidth - 50, styles.maxWidth)
+            width: Math.min(screenWidth - 50, 350)
           }}
         >
           {renderTopWordsGraph()}
@@ -436,11 +488,11 @@ export default class Dashboard extends Component {
         <div
           style={{
             padding: "20px 0px",
-            backgroundColor: "#fff",
-            marginBottom: 5,
-            width: Math.min(styles.screenWidth - 10, styles.maxWidth + 40),
-            border: "1px solid #e5e5e5",
-            borderRadius: 3
+            margin: 10,
+            // backgroundColor: "#fff",
+            width: Math.min(screenWidth - 20, styles.maxWidth)
+            // border: "1px solid #e5e5e5",
+            // borderRadius: 3
           }}
         >
           <h5
@@ -474,21 +526,21 @@ export default class Dashboard extends Component {
 
         {/* ======================================== */}
         <SingleTopic
-          tag={this.state.topTags[0]}
+          tag={this.state.topics[0] ? this.state.topics[0] : null}
           styles={styles}
           tagIndex={0}
           {...this.state}
         />
         {/* ======================================== */}
         <SingleTopic
-          tag={this.state.topTags[1] ? this.state.topTags[1] : null}
+          tag={this.state.topics[1] ? this.state.topics[1] : null}
           styles={styles}
           tagIndex={1}
           {...this.state}
         />
         {/* ======================================== */}
         <SingleTopic
-          tag={this.state.topTags[2] ? this.state.topTags[2] : null}
+          tag={this.state.topics[2] ? this.state.topics[2] : null}
           styles={styles}
           tagIndex={2}
           {...this.state}

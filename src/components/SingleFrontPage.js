@@ -22,7 +22,8 @@ export default class SingleFrontPage extends Component {
           display: "block",
           height: imageWidth,
           width: imageWidth,
-          margin: "auto"
+          margin: "auto",
+          backgroundColor: "#fcfcfc"
         }}
       >
         <img

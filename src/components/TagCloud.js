@@ -9,7 +9,7 @@ export default class TagCloud extends Component {
   }
 
   render() {
-    let tags = this.props.tags.slice(0, 20);
+    let tags = this.props.tags.slice(0, 30);
     return (
       <div
         style={{
