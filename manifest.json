@@ -1,9 +1,10 @@
 {
   "name": "Newsbie",
   "short_name": "Newsbie",
+  "description": "Simple tools to monitor and analyze the news media.",
   "start_url": "/?utm_source=homescreen",
-  "background_color": "#213A49",
-  "theme_color": "#213A49",
+  "background_color": "#fff",
+  "theme_color": "#2EE4F6",
   "display": "standalone",
   "icons": [
     {
@@ -11,7 +12,7 @@
       "sizes": "36x36",
       "type": "image\/png",
       "density": "0.75"
-    },s
+    },
     {
       "src": "\/android-icon-48x48.png",
       "sizes": "48x48",
