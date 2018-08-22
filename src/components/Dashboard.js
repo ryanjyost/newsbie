@@ -84,18 +84,18 @@ export default class Dashboard extends Component {
         }
 
         // console.log(topics);
-        for (let batch of res.data.batches) {
-          // console.log(batch);
-          let cohen = batch.tags.find(tag => {
-            return tag.term === "cohen";
-          });
-
-          if (cohen) {
-            console.log(cohen);
-          } else {
-            console.log("NOT FOUND", batch);
-          }
-        }
+        // for (let batch of res.data.batches) {
+        //   // console.log(batch);
+        //   let cohen = batch.tags.find(tag => {
+        //     return tag.term === "cohen";
+        //   });
+        //
+        //   if (cohen) {
+        //     console.log(cohen);
+        //   } else {
+        //     console.log("NOT FOUND", batch);
+        //   }
+        // }
 
         this.setState({
           batchOfTags: res.data.batches[0],
