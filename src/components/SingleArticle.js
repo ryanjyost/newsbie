@@ -32,7 +32,7 @@ export default class Article extends Component {
     return (
       <div
         style={{
-          boxShadow: "0 3px 8px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.4)",
+          // boxShadow: "0 3px 8px rgba(0,0,0,0.2), 0 4px 8px rgba(0,0,0,0.4)",
           borderRadius: 5,
           width: articleWidth,
           margin: "10px",
@@ -131,9 +131,7 @@ export default class Article extends Component {
               >
                 {article.site.title}{" "}
                 <span style={{ margin: "0px 5px" }}>&middot;</span>
-                <TimeAgo
-                  date={article.date ? article.date : article.created_at}
-                />
+                <TimeAgo date={article.created_at} />
               </h6>
             </div>
           </div>

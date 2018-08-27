@@ -1,18 +1,18 @@
 import React, { Component } from "react";
-import TagCloud from "./TagCloud";
+import TagCloud from "../TagCloud";
 import axios from "axios/index";
 import shuffle from "shuffle-array";
 import ReactGA from "react-ga";
 import Slider from "react-slick";
 import { curveCatmullRom } from "d3-shape";
-import "../../node_modules/react-vis/dist/style.css";
+import "../../../node_modules/react-vis/dist/style.css";
 
-import SingleFrontPage from "./SingleFrontPage";
+import SingleFrontPage from "../SingleFrontPage";
 import TimeAgo from "react-timeago";
 import { androidTime } from "react-icons-kit/ionicons/androidTime";
 import { Icon } from "react-icons-kit";
-import SingleTopic from "./SingleTopic";
-import SectionWithLoader from "./SectionWithLoader";
+import SingleTopic from "../SingleTopic";
+import SectionWithLoader from "../SectionWithLoader";
 import detectIt from "detect-it";
 import {
   AreaSeries,
@@ -90,11 +90,11 @@ export default class Dashboard extends Component {
             return tag.term === "cohen";
           });
 
-          if (cohen) {
-            console.log(cohen);
-          } else {
-            console.log("NOT FOUND", batch);
-          }
+          // if (cohen) {
+          //   console.log(cohen);
+          // } else {
+          //   console.log("NOT FOUND", batch);
+          // }
         }
 
         this.setState({
@@ -235,18 +235,20 @@ export default class Dashboard extends Component {
       isLanding
     } = this.state;
 
-    let imageWidth = Math.min(screenWidth - 50, 500);
+    let imageWidth = Math.min(screenWidth - 50, 400);
 
     let articleWidth = Math.min(screenWidth - 100, 300);
     let articleHeight = articleWidth * 0.75;
     let articleMargin = 10;
 
     const sectionStyle = {
-      borderTop: "1px solid #f2f2f2",
-      borderBottom: "1px solid #f2f2f2",
-      padding: 20,
+      // border: this.props.noStyle ? null : "1px solid #e5e5e5",
+      padding: 25,
       backgroundColor: "#fff",
-      margin: "10px 0px"
+      margin: "10px 10px",
+      borderRadius: 3,
+      position: "relative",
+      width: "100%"
     };
 
     const styles = {
@@ -255,7 +257,7 @@ export default class Dashboard extends Component {
       articleMargin,
       sectionStyle,
       screenWidth,
-      maxWidth: 1200
+      maxWidth: 900
     };
 
     let topTags = this.state.topTags.slice();
@@ -344,24 +346,25 @@ export default class Dashboard extends Component {
     };
 
     const renderTimeAgo = time => {
-      if (!time) {
+      if (true) {
         return null;
       } else {
         return (
           <h6
             style={{
               margin: 0,
-              textAlign: "right",
+              textAlign: "left",
               fontWeight: "light",
               color: "rgba(0,0,0,0.2)",
-              width: "100%"
+              width: "100%",
+              marginTop: 10
             }}
           >
             <div
               style={{
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "flex-end"
+                justifyContent: "flex-start"
               }}
             >
               <Icon
@@ -418,14 +421,14 @@ export default class Dashboard extends Component {
             className={"horzRow"}
             style={{
               display: "flex",
-              padding: "20px 0px",
+              padding: "20px 20px",
               overflowX: "auto",
               position: "relative"
             }}
           >
             {this.state.records.map((record, i) => {
               return (
-                <div key={i} style={{ margin: "0px 10px" }}>
+                <div key={i} style={{ margin: "0px 15px" }}>
                   <SingleFrontPage
                     key={i}
                     imageWidth={imageWidth}
@@ -444,18 +447,174 @@ export default class Dashboard extends Component {
         style={{
           backgroundColor: "#f2f2f2",
           minHeight: "100vh",
-          padding: "50px 0px 10px 0px",
-          maxWidth: "100%",
+          padding: "60px 0px 10px 0px",
+          width: "100%",
+          maxWidth: 900,
+          margin: "auto",
           overflowX: "hidden",
           display: "flex",
-          justifyContent: "center",
-          alignItems: "stretch",
+          justifyContent: "flex-start",
+          alignItems: "end",
           flexWrap: "wrap"
         }}
       >
+        <div
+          style={{
+            backgroundColor: "#f2f2f2",
+            padding: "0px 0px 0px 0px",
+            width: "100%",
+            overflowX: "hidden",
+            display: "flex",
+            justifyContent: "flex-start",
+            alignItems: "flex-end",
+            flexWrap: "wrap"
+          }}
+        >
+          <div
+            style={{ ...sectionStyle, ...{ marginBottom: 10, maxWidth: 300 } }}
+          >
+            <h5 style={{ margin: 0, color: "rgba(46, 228, 246,1)" }}>
+              welcome to newsbie, where you can
+            </h5>
+            <h2 style={{ margin: 0 }}>
+              monitor, analyze & understand the news media.
+            </h2>
+            <button
+              style={{
+                border: "2px solid rgb(46, 228, 246)",
+                outline: "none",
+                margin: "20px 0px 10px 0px",
+                fontSize: 14,
+                cursor: "pointer",
+                padding: "5px 10px",
+                borderRadius: 3,
+                color: "rgba(0, 0, 0, 0.8)",
+                backgroundColor: "#fff"
+              }}
+            >
+              Take the guided tour
+            </button>
+            {/*<div*/}
+            {/*style={{*/}
+            {/*width: "100%",*/}
+            {/*display: "flex",*/}
+            {/*justifyContent: "center",*/}
+            {/*alignItems: "center",*/}
+            {/*flexDirection: "column",*/}
+            {/*color: "rgba(0,0,0,0.2)"*/}
+            {/*}}*/}
+            {/*>*/}
+            {/*<h5*/}
+            {/*style={{*/}
+            {/*color: "rgba(0,0,0,0.3)",*/}
+            {/*margin: "5px 0px 5px 0px"*/}
+            {/*}}*/}
+            {/*>*/}
+            {/*or just keep scrolling*/}
+            {/*</h5>*/}
+            {/*<h5 style={{ margin: "5px 0px 5px 0px", color: "rgba(0,0,0,0.3)" }}>*/}
+            {/*&darr;*/}
+            {/*</h5>*/}
+            {/*</div>*/}
+          </div>
+          <SectionWithLoader
+            title={null}
+            isLoading={
+              this.state.records.length < 1 || this.state.sites.length < 1
+            }
+            sectionStyle={{
+              width: Math.min(screenWidth - 50, 300),
+              lineHeight: 1.7,
+              fontSize: 15
+            }}
+            loaderHeight={100}
+          >
+            <div>
+              <div>
+                <span
+                  style={{
+                    margin: "0px 5px 0px 0px",
+                    fontSize: 20,
+                    fontWeight: "bold"
+                  }}
+                >
+                  newsbie
+                </span>
+                <span style={{ margin: 0, color: "rgba(0,0,0,0.7)" }}>
+                  collects the <strong>latest political news</strong> headlines
+                  and other data from a
+                </span>
+                <span
+                  style={{
+                    margin: "0px 5px",
+                    fontSize: 20,
+                    color: "rgba(46, 228, 246,1)",
+                    fontWeight: "bold",
+                    marginTop: 5
+                  }}
+                >
+                  balanced, diverse
+                </span>
+                <span style={{ margin: 0, color: "rgba(0,0,0,0.7)" }}>
+                  selection of
+                </span>
+                <span
+                  style={{
+                    margin: "0px 5px",
+                    fontSize: 20,
+                    color: "rgba(46, 228, 246,1)",
+                    fontWeight: "bold"
+                  }}
+                >
+                  {this.state.sites.length}
+                </span>
+                <span style={{ margin: 0, color: "rgba(0,0,0,0.7)" }}>
+                  sources.
+                </span>
+              </div>
+            </div>
+
+            {/*<div*/}
+            {/*style={{*/}
+            {/*width: "100%",*/}
+            {/*display: "flex",*/}
+            {/*justifyContent: "center",*/}
+            {/*alignItems: "center",*/}
+            {/*flexDirection: "column",*/}
+            {/*color: "rgba(0,0,0,0.2)"*/}
+            {/*}}*/}
+            {/*>*/}
+            {/*<h5*/}
+            {/*style={{*/}
+            {/*color: "rgba(0,0,0,0.3)",*/}
+            {/*margin: "5px 0px 5px 0px"*/}
+            {/*}}*/}
+            {/*>*/}
+            {/*or just keep scrolling*/}
+            {/*</h5>*/}
+            {/*<h5 style={{ margin: "5px 0px 5px 0px", color: "rgba(0,0,0,0.3)" }}>*/}
+            {/*&darr;*/}
+            {/*</h5>*/}
+            {/*</div>*/}
+          </SectionWithLoader>
+        </div>
+
+        <div style={{ ...sectionStyle, ...{ marginBottom: 10 } }}>hey</div>
+
+        {/*<h3*/}
+        {/*style={{*/}
+        {/*textAlign: "center",*/}
+        {/*width: "100%",*/}
+        {/*padding: "0px 20px",*/}
+        {/*margin: "25px 0px 10px 0px",*/}
+        {/*color: "rgba(0,0,0,0.8)"*/}
+        {/*}}*/}
+        {/*>*/}
+        {/*bird's eye view*/}
+        {/*</h3>*/}
         {/* ======================================== */}
         <SectionWithLoader
-          title={`Most common words from ${
+          title={`most common words from ${
             this.state.batchOfTags ? this.state.batchOfTags.sourceCount : ""
           } recent headlines`}
           isLoading={this.state.topTags.length < 2}
@@ -488,9 +647,9 @@ export default class Dashboard extends Component {
         <div
           style={{
             padding: "20px 0px",
-            margin: 10,
+            margin: 0,
             // backgroundColor: "#fff",
-            width: Math.min(screenWidth - 20, styles.maxWidth)
+            width: Math.min(screenWidth)
             // border: "1px solid #e5e5e5",
             // borderRadius: 3
           }}
@@ -498,23 +657,14 @@ export default class Dashboard extends Component {
           <h5
             style={{
               margin: 0,
-              textAlign: "center",
               display: "flex",
               alignItems: "center",
-              justifyContent: "center"
+              justifyContent: "center",
+              paddingLeft: 20,
+              color: "rgba(0,0,0,0.4)"
             }}
-          >
-            <span style={{ margin: "0px 5px", color: "rgba(0,0,0,0.2)" }}>
-              &larr;
-            </span>
-            {`Current front pages ${this.state.records ? "of" : ""} ${
-              this.state.records ? this.state.records.length : ""
-            } ${this.state.records ? "news sites" : ""}`}{" "}
-            <span style={{ margin: "0px 5px", color: "rgba(0,0,0,0.2)" }}>
-              &rarr;
-            </span>
-          </h5>
-          <div style={{ padding: "20px 0px 10px 0px" }}>
+          />
+          <div style={{ padding: "20px 0px 0px 0px" }}>
             {renderFrontPages()}
           </div>
           <div style={{ padding: "0px 20px" }}>
@@ -525,26 +675,26 @@ export default class Dashboard extends Component {
         </div>
 
         {/* ======================================== */}
-        <SingleTopic
-          tag={this.state.topics[0] ? this.state.topics[0] : null}
-          styles={styles}
-          tagIndex={0}
-          {...this.state}
-        />
-        {/* ======================================== */}
-        <SingleTopic
-          tag={this.state.topics[1] ? this.state.topics[1] : null}
-          styles={styles}
-          tagIndex={1}
-          {...this.state}
-        />
-        {/* ======================================== */}
-        <SingleTopic
-          tag={this.state.topics[2] ? this.state.topics[2] : null}
-          styles={styles}
-          tagIndex={2}
-          {...this.state}
-        />
+        {/*<SingleTopic*/}
+        {/*tag={this.state.topics[0] ? this.state.topics[0] : null}*/}
+        {/*styles={styles}*/}
+        {/*tagIndex={0}*/}
+        {/*{...this.state}*/}
+        {/*/>*/}
+        {/*/!* ======================================== *!/*/}
+        {/*<SingleTopic*/}
+        {/*tag={this.state.topics[1] ? this.state.topics[1] : null}*/}
+        {/*styles={styles}*/}
+        {/*tagIndex={1}*/}
+        {/*{...this.state}*/}
+        {/*/>*/}
+        {/*/!* ======================================== *!/*/}
+        {/*<SingleTopic*/}
+        {/*tag={this.state.topics[2] ? this.state.topics[2] : null}*/}
+        {/*styles={styles}*/}
+        {/*tagIndex={2}*/}
+        {/*{...this.state}*/}
+        {/*/>*/}
       </div>
     );
   }

@@ -8,18 +8,23 @@ export default class SectionWithLoader extends Component {
 
   render() {
     const sectionStyle = {
-      border: this.props.noStyle ? null : "1px solid #e5e5e5",
-      padding: 20,
+      // border: this.props.noStyle ? null : "1px solid #e5e5e5",
+      padding: 25,
       backgroundColor: "#fff",
       margin: this.props.noStyle ? 0 : "10px 10px",
-      borderRadius: 3
+      borderRadius: 3,
+      position: "relative"
     };
 
     const { isLoading, title } = this.props;
 
     return (
       <div style={{ ...sectionStyle, ...this.props.sectionStyle }}>
-        <h5 style={{ margin: 0 }}>{title}</h5>
+        {title ? (
+          <h5 style={{ margin: 0, marginBottom: 10, color: "rgba(0,0,0,0.6)" }}>
+            {title}
+          </h5>
+        ) : null}
         {!isLoading ? (
           <div
             style={{
@@ -36,7 +41,10 @@ export default class SectionWithLoader extends Component {
           </div>
         ) : (
           <div style={{ width: "100%" }}>
-            <Loader loadingMessage={this.props.loadingMessage} />
+            <Loader
+              loaderHeight={this.props.loaderHeight}
+              loadingMessage={this.props.loadingMessage}
+            />
           </div>
         )}
       </div>

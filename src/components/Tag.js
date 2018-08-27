@@ -186,7 +186,7 @@ export default class Tag extends Component {
 
     return (
       <div key={i} style={{ position: "relative" }}>
-        {hover && Popover()}
+        {/*{hover && Popover()}*/}
         <div
           onClick={() => {
             if (tag) {
