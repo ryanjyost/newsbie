@@ -76,6 +76,7 @@ export default class SingleTag extends Component {
             // flex: "1 1 80px",
             display: "inline-block",
             transition: "background 0.2s",
+            backgroundColor: currentTag && !isCurrent ? "#fafafa" : "",
             boxShadow:
               currentTag && !isCurrent
                 ? ""

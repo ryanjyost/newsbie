@@ -1,6 +1,6 @@
 import React from "react";
 
-const Loader = ({ loadingMessage }) => {
+const Loader = ({ loadingMessage, loaderHeight }) => {
   return (
     <div
       style={{
@@ -8,7 +8,7 @@ const Loader = ({ loadingMessage }) => {
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "column",
-        height: 200,
+        height: loaderHeight ? loaderHeight : 200,
         width: "100%",
         color: "rgba(0, 0, 0, 0.4)",
         fontSize: 14

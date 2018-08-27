@@ -23,6 +23,7 @@ export default class Article extends Component {
       articleMargin,
       index,
       articleWidth,
+      articleHeight,
       isSlider
     } = this.props;
     // console.log(article);
@@ -35,6 +36,7 @@ export default class Article extends Component {
           // flexDirection: "column",
           // alignItems: "center",
           // justifyContent: "center",
+          height: articleHeight,
           width: articleWidth,
           margin: isSlider ? "auto" : `${articleMargin - 1}px`
         }}
@@ -50,13 +52,13 @@ export default class Article extends Component {
           rel="noreferrer"
           key={index}
           style={{
-            margin: !isSlider ? articleMargin - 1 : "",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            height: articleWidth - 40,
-            width: articleWidth - 20,
+            height: articleHeight,
+            width: articleWidth,
             backgroundColor: "rgba(0,0,0,0.5)",
+            borderRadius: 5,
             position: "relative",
             backgroundImage: `url(${
               article
@@ -119,7 +121,7 @@ export default class Article extends Component {
                   display: "-webkit-box",
                   WebkitLineClamp: 3,
                   fontWeight: 600,
-                  fontSize: 22,
+                  fontSize: 18,
                   margin: 0
                 }}
               >

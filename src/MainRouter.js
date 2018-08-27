@@ -8,7 +8,8 @@ import {
 } from "react-router-dom";
 import App from "./App";
 import Landing from "./components/Landing";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./components/pages/Dashboard";
+import Articles from "./components/pages/ArticleSearch";
 import { withRouter } from "react-router";
 
 const TopBar = ({ location }) => {
@@ -87,7 +88,7 @@ const TopBar = ({ location }) => {
         alignItems: "center",
         justifyContent: "center",
         letterSpacing: "0.03em",
-        boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+        // boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
         position: "fixed",
         top: 0,
         zIndex: 100
@@ -134,7 +135,8 @@ const MainRouter = () => {
           <Switch>
             {/*<Route exact path="/" component={Landing} />*/}
             {/*<Route path="/demo" component={App} />*/}
-            <Route path="/" component={Dashboard} />
+            <Route path="/" exact component={Dashboard} />
+            <Route path="/articles" component={Articles} />
             <Route component={Dashboard} />
           </Switch>
         </ScollToTopWithRouter>
