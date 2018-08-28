@@ -28,12 +28,12 @@ export default class ArticleSearch extends Component {
       sites: [],
       touchOnly: detectIt.deviceType === "touchOnly",
 
-      //
       articles: [],
       currentTagFilter: null,
       searchInput: "",
       startDate: null,
-      endDate: moment()
+      endDate: moment(),
+      typeFilter: null
     };
 
     this.entities = new XmlEntities();
@@ -108,9 +108,21 @@ export default class ArticleSearch extends Component {
           return article.site.name.toLowerCase() !== "politico";
         });
 
+        let currentOpinions = shuffle(res.data.opinionArticles);
+
+        let filteredOpinions = currentOpinions.filter(article => {
+          return article.site.name.toLowerCase() !== "cbsnews";
+        });
+
+        let shuffledCombined = shuffle([
+          ...filteredPolitics,
+          ...filteredOpinions
+        ]);
+
         this.setState({
           sites: res.data.sites,
-          articles: filteredPolitics
+          allArticles: shuffledCombined,
+          articles: shuffledCombined.slice(0, 100)
         });
       })
       .catch(err => console.log(err));
@@ -152,11 +164,16 @@ export default class ArticleSearch extends Component {
         }
       )
       .then(res => {
-        console.log(res);
+        this.setState({ articles: shuffle(res.data.articles) });
       })
       .catch(err => console.log(err));
 
-    this.setState({ startDate: formattedStart });
+    this.setState({
+      startDate: startDate,
+      currentTagFilter: null,
+      searchInput: "",
+      typeFilter: null
+    });
   }
 
   handleUpdateEndDate(endDate) {
@@ -173,11 +190,51 @@ export default class ArticleSearch extends Component {
         }
       )
       .then(res => {
-        console.log(res);
+        this.setState({ articles: shuffle(res.data.articles) });
       })
       .catch(err => console.log(err));
 
-    this.setState({ endDate: formattedEnd });
+    this.setState({
+      endDate: endDate,
+      currentTagFilter: null,
+      searchInput: "",
+      typeFilter: null
+    });
+  }
+
+  filterArticles(params) {
+    console.log(params);
+    this.setState({
+      currentTagFilter: params.currentTagFilter,
+      searchInput: params.searchInput,
+      typeFilter: params.typeFilter
+    });
+
+    let articles = this.state.allArticles.filter(article => {
+      let matchesTagFilter = params.currentTagFilter
+        ? article.title
+            .toLowerCase()
+            .includes(params.currentTagFilter.term.toLowerCase()) ||
+          article.summary
+            .toLowerCase()
+            .includes(params.currentTagFilter.term.toLowerCase())
+        : true;
+
+      let matchesSearchFilter = params.searchInput
+        ? article.title
+            .toLowerCase()
+            .includes(params.searchInput.toLowerCase()) ||
+          article.summary
+            .toLowerCase()
+            .includes(params.searchInput.toLowerCase())
+        : true;
+
+      let matchesTypeFilter = params.typeFilter
+        ? article.category === params.typeFilter
+        : true;
+      return matchesTagFilter && matchesSearchFilter && matchesTypeFilter;
+    });
+    this.setState({ articles: articles.slice(0, 100) });
   }
 
   render() {
@@ -185,24 +242,15 @@ export default class ArticleSearch extends Component {
       currentTagFilter,
       searchInput,
       screenWidth,
-      touchOnly
+      touchOnly,
+      typeFilter
     } = this.state;
-    let articles = this.state.articles.filter(article => {
-      let matchesTagFilter = currentTagFilter
-        ? article.title
-            .toLowerCase()
-            .includes(currentTagFilter.term.toLowerCase()) ||
-          article.summary
-            .toLowerCase()
-            .includes(currentTagFilter.term.toLowerCase())
-        : true;
 
-      let matchesSearchFilter = searchInput
-        ? article.title.toLowerCase().includes(searchInput.toLowerCase()) ||
-          article.summary.toLowerCase().includes(searchInput.toLowerCase())
-        : true;
-      return matchesTagFilter && matchesSearchFilter;
-    });
+    const params = {
+      currentTagFilter,
+      searchInput,
+      typeFilter
+    };
 
     const renderDatePickerInput = (props, openCalendar, closeCalendar) => {
       let displayDate = props.value;
@@ -245,21 +293,22 @@ export default class ArticleSearch extends Component {
           <div
             style={{
               display: "flex",
-              justifyContent: "flex-start",
-              alignItems: "center",
+              justifyContent: "center",
+              alignItems: "flex-start",
               maxWidth: 600,
               padding: "20px 0px 0px 20px",
-              flexWrap: "wrap"
+              flexDirection: "column"
             }}
           >
-            <div style={{ margin: "5px 10px" }}>
+            <div style={{ margin: "5px 10px 10px 10px" }}>
               <div
                 style={{
                   display: "flex",
-                  width: 200,
+                  width: 300,
                   backgroundColor: "#fff",
                   borderRadius: 3,
-                  color: "rgba(0,0,0,0.4)"
+                  color: "rgba(0,0,0,0.4)",
+                  padding: "5px 10px"
                 }}
               >
                 <Icon
@@ -270,7 +319,12 @@ export default class ArticleSearch extends Component {
                 <input
                   type={"text"}
                   placeholder={"search articles"}
-                  onChange={e => this.setState({ searchInput: e.target.value })}
+                  onChange={e =>
+                    this.filterArticles({
+                      ...params,
+                      ...{ searchInput: e.target.value }
+                    })
+                  }
                   style={{
                     outline: "none",
                     width: 160,
@@ -283,58 +337,91 @@ export default class ArticleSearch extends Component {
             </div>
             <div
               style={{
-                margin: "5px 10px",
+                margin: "5px 10px 10px 10px",
                 display: "flex",
-                alignItems: "center"
+                width: 300,
+                backgroundColor: "#fff",
+                color: "rgba(0,0,0,0.8)",
+                // padding: "5px 10px",
+                justifyContent: "space-between",
+                borderRadius: 5,
+                fontSize: 14,
+                // border: "1px solid rgba(0,0,0,0.2)",
+                cursor: "pointer"
               }}
             >
-              <Icon
-                style={{ margin: "0px 10px 0px 0px", color: "rgba(0,0,0,0.5)" }}
-                icon={iosCalendarOutline}
-                size={24}
-              />
-              <DatePicker
-                value={this.state.startDate}
-                closeOnSelect
-                onChange={e => {
-                  this.handleUpdateStartDate(e);
-                }}
-                renderInput={(props, openCalendar, closeCalendar) =>
-                  renderDatePickerInput(
-                    props,
-                    openCalendar,
-                    closeCalendar,
-                    "startDate"
-                  )
+              <div
+                onClick={() =>
+                  this.filterArticles({
+                    ...params,
+                    ...{ typeFilter: null }
+                  })
                 }
-              />
-              <div style={{ margin: "0px 10px", color: "rgba(0,0,0,0.3)" }}>
-                to
+                style={{
+                  textAlign: "center",
+                  padding: 5,
+                  flex: 0.33,
+                  borderTopLeftRadius: 5,
+                  borderBottomLeftRadius: 5,
+                  backgroundColor: !typeFilter ? "rgba(0,0,0,0.8)" : "",
+                  color: !typeFilter ? "rgba(255,255,255,1)" : "",
+                  border: "1px solid rgba(0,0,0,0.2)"
+                }}
+              >
+                All
               </div>
-              <DatePicker
-                value={this.state.endDate}
-                closeOnSelect
-                onChange={e => {
-                  this.handleUpdateEndDate(e);
-                }}
-                renderInput={(props, openCalendar, closeCalendar) =>
-                  renderDatePickerInput(
-                    props,
-                    openCalendar,
-                    closeCalendar,
-                    "endDate"
-                  )
+              <div
+                onClick={() =>
+                  this.filterArticles({
+                    ...params,
+                    ...{ typeFilter: "politics" }
+                  })
                 }
-                isValidDate={(currentDate, selectedDate) => {
-                  return currentDate.isBefore(moment());
+                style={{
+                  textAlign: "center",
+                  padding: 5,
+                  flex: 0.33,
+                  backgroundColor:
+                    typeFilter === "politics" ? "rgba(0,0,0,0.8)" : "",
+                  color: typeFilter === "politics" ? "rgba(255,255,255,1)" : "",
+                  border: "1px solid rgba(0,0,0,0.2)"
                 }}
-              />
+              >
+                News
+              </div>
+              <div
+                onClick={() =>
+                  this.filterArticles({
+                    ...params,
+                    ...{ typeFilter: "opinion" }
+                  })
+                }
+                style={{
+                  textAlign: "center",
+                  padding: 5,
+                  flex: 0.33,
+                  borderTopRightRadius: 5,
+                  borderBottomRightRadius: 5,
+                  backgroundColor:
+                    typeFilter === "opinion" ? "rgba(0,0,0,0.8)" : "",
+                  color: typeFilter === "opinion" ? "rgba(255,255,255,1)" : "",
+                  border: "1px solid rgba(0,0,0,0.2)"
+                }}
+              >
+                Opinions
+              </div>
             </div>
-            <div style={{ padding: 20 }}>
+
+            <div style={{ padding: "0px 20px 20px 0px" }}>
               <TagCloud
                 tags={this.state.topTags}
                 isFilter
-                onClickTag={tag => this.setState({ currentTagFilter: tag })}
+                onClickTag={tag =>
+                  this.filterArticles({
+                    ...params,
+                    ...{ currentTagFilter: tag }
+                  })
+                }
                 currentTag={currentTagFilter}
               />
             </div>
@@ -359,7 +446,7 @@ export default class ArticleSearch extends Component {
             // position: "relative"
           }}
         >
-          {articles.map((article, i) => {
+          {this.state.articles.map((article, i) => {
             if (touchOnly) {
               return (
                 <Article
@@ -506,4 +593,152 @@ export default class ArticleSearch extends Component {
       </div>
     );
   }
+}
+
+{
+  /*<div*/
+}
+{
+  /*style={{*/
+}
+{
+  /*margin: "5px 10px",*/
+}
+{
+  /*display: "flex",*/
+}
+{
+  /*alignItems: "center"*/
+}
+{
+  /*}}*/
+}
+{
+  /*>*/
+}
+{
+  /*<Icon*/
+}
+{
+  /*style={{ margin: "0px 10px 0px 0px", color: "rgba(0,0,0,0.5)" }}*/
+}
+{
+  /*icon={iosCalendarOutline}*/
+}
+{
+  /*size={24}*/
+}
+{
+  /*/>*/
+}
+{
+  /*<DatePicker*/
+}
+{
+  /*value={this.state.startDate}*/
+}
+{
+  /*closeOnSelect*/
+}
+{
+  /*onChange={e => {*/
+}
+{
+  /*this.handleUpdateStartDate(e);*/
+}
+{
+  /*}}*/
+}
+{
+  /*renderInput={(props, openCalendar, closeCalendar) =>*/
+}
+{
+  /*renderDatePickerInput(*/
+}
+{
+  /*props,*/
+}
+{
+  /*openCalendar,*/
+}
+{
+  /*closeCalendar,*/
+}
+{
+  /*"startDate"*/
+}
+{
+  /*)*/
+}
+{
+  /*}*/
+}
+{
+  /*/>*/
+}
+{
+  /*<div style={{ margin: "0px 10px", color: "rgba(0,0,0,0.3)" }}>*/
+}
+{
+  /*to*/
+}
+{
+  /*</div>*/
+}
+{
+  /*<DatePicker*/
+}
+{
+  /*value={this.state.endDate}*/
+}
+{
+  /*closeOnSelect*/
+}
+{
+  /*onChange={e => {*/
+}
+{
+  /*this.handleUpdateEndDate(e);*/
+}
+{
+  /*}}*/
+}
+{
+  /*renderInput={(props, openCalendar, closeCalendar) =>*/
+}
+{
+  /*renderDatePickerInput(*/
+}
+{
+  /*props,*/
+}
+{
+  /*openCalendar,*/
+}
+{
+  /*closeCalendar,*/
+}
+{
+  /*"endDate"*/
+}
+{
+  /*)*/
+}
+{
+  /*}*/
+}
+{
+  /*isValidDate={(currentDate, selectedDate) => {*/
+}
+{
+  /*return currentDate.isBefore(moment());*/
+}
+{
+  /*}}*/
+}
+{
+  /*/>*/
+}
+{
+  /*</div>*/
 }

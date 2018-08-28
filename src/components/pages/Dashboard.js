@@ -6,12 +6,13 @@ import ReactGA from "react-ga";
 import Slider from "react-slick";
 import { curveCatmullRom } from "d3-shape";
 import "../../../node_modules/react-vis/dist/style.css";
+import { Link } from "react-router-dom";
 
 import SingleFrontPage from "../SingleFrontPage";
 import TimeAgo from "react-timeago";
 import { androidTime } from "react-icons-kit/ionicons/androidTime";
 import { Icon } from "react-icons-kit";
-import SingleTopic from "../SingleTopic";
+import Loader from "../Loader";
 import SectionWithLoader from "../SectionWithLoader";
 import detectIt from "detect-it";
 import {
@@ -451,10 +452,10 @@ export default class Dashboard extends Component {
           width: "100%",
           maxWidth: 900,
           margin: "auto",
-          overflowX: "hidden",
+          // overflowX: "hidden",
           display: "flex",
-          justifyContent: "flex-start",
-          alignItems: "end",
+          justifyContent: "center",
+          alignItems: "stretch",
           flexWrap: "wrap"
         }}
       >
@@ -465,13 +466,13 @@ export default class Dashboard extends Component {
             width: "100%",
             overflowX: "hidden",
             display: "flex",
-            justifyContent: "flex-start",
-            alignItems: "flex-end",
+            justifyContent: "center",
+            alignItems: "stretch",
             flexWrap: "wrap"
           }}
         >
           <div
-            style={{ ...sectionStyle, ...{ marginBottom: 10, maxWidth: 300 } }}
+            style={{ ...sectionStyle, ...{ marginBottom: 10, maxWidth: 400 } }}
           >
             <h5 style={{ margin: 0, color: "rgba(46, 228, 246,1)" }}>
               welcome to newsbie, where you can
@@ -479,21 +480,6 @@ export default class Dashboard extends Component {
             <h2 style={{ margin: 0 }}>
               monitor, analyze & understand the news media.
             </h2>
-            <button
-              style={{
-                border: "2px solid rgb(46, 228, 246)",
-                outline: "none",
-                margin: "20px 0px 10px 0px",
-                fontSize: 14,
-                cursor: "pointer",
-                padding: "5px 10px",
-                borderRadius: 3,
-                color: "rgba(0, 0, 0, 0.8)",
-                backgroundColor: "#fff"
-              }}
-            >
-              Take the guided tour
-            </button>
             {/*<div*/}
             {/*style={{*/}
             {/*width: "100%",*/}
@@ -517,102 +503,84 @@ export default class Dashboard extends Component {
             {/*</h5>*/}
             {/*</div>*/}
           </div>
-          <SectionWithLoader
-            title={null}
-            isLoading={
-              this.state.records.length < 1 || this.state.sites.length < 1
-            }
-            sectionStyle={{
-              width: Math.min(screenWidth - 50, 300),
-              lineHeight: 1.7,
-              fontSize: 15
-            }}
-            loaderHeight={100}
-          >
-            <div>
-              <div>
-                <span
-                  style={{
-                    margin: "0px 5px 0px 0px",
-                    fontSize: 20,
-                    fontWeight: "bold"
-                  }}
-                >
-                  newsbie
-                </span>
-                <span style={{ margin: 0, color: "rgba(0,0,0,0.7)" }}>
-                  collects the <strong>latest political news</strong> headlines
-                  and other data from a
-                </span>
-                <span
-                  style={{
-                    margin: "0px 5px",
-                    fontSize: 20,
-                    color: "rgba(46, 228, 246,1)",
-                    fontWeight: "bold",
-                    marginTop: 5
-                  }}
-                >
-                  balanced, diverse
-                </span>
-                <span style={{ margin: 0, color: "rgba(0,0,0,0.7)" }}>
-                  selection of
-                </span>
-                <span
-                  style={{
-                    margin: "0px 5px",
-                    fontSize: 20,
-                    color: "rgba(46, 228, 246,1)",
-                    fontWeight: "bold"
-                  }}
-                >
-                  {this.state.sites.length}
-                </span>
-                <span style={{ margin: 0, color: "rgba(0,0,0,0.7)" }}>
-                  sources.
-                </span>
-              </div>
-            </div>
-
-            {/*<div*/}
-            {/*style={{*/}
-            {/*width: "100%",*/}
-            {/*display: "flex",*/}
-            {/*justifyContent: "center",*/}
-            {/*alignItems: "center",*/}
-            {/*flexDirection: "column",*/}
-            {/*color: "rgba(0,0,0,0.2)"*/}
-            {/*}}*/}
-            {/*>*/}
-            {/*<h5*/}
-            {/*style={{*/}
-            {/*color: "rgba(0,0,0,0.3)",*/}
-            {/*margin: "5px 0px 5px 0px"*/}
-            {/*}}*/}
-            {/*>*/}
-            {/*or just keep scrolling*/}
-            {/*</h5>*/}
-            {/*<h5 style={{ margin: "5px 0px 5px 0px", color: "rgba(0,0,0,0.3)" }}>*/}
-            {/*&darr;*/}
-            {/*</h5>*/}
-            {/*</div>*/}
-          </SectionWithLoader>
+          {/*<div*/}
+          {/*style={{*/}
+          {/*...sectionStyle,*/}
+          {/*...{ marginBottom: 10, maxWidth: 400, lineHeight: 1.5 }*/}
+          {/*}}*/}
+          {/*>*/}
+          {/*<div>*/}
+          {/*<span style={{ margin: 0, color: "rgba(0,0,0,0.7)" }}>*/}
+          {/*newsbie*/}
+          {/*</span>*/}
+          {/*<span*/}
+          {/*style={{*/}
+          {/*margin: "0px 5px",*/}
+          {/*fontSize: 16,*/}
+          {/*// color: "rgba(46, 228, 246,1)",*/}
+          {/*fontWeight: "bold",*/}
+          {/*marginTop: 5*/}
+          {/*}}*/}
+          {/*>*/}
+          {/*aggregates & analyzes*/}
+          {/*</span>*/}
+          {/*<span style={{ margin: 0, color: "rgba(0,0,0,0.7)" }}>*/}
+          {/*the latest political news data from a*/}
+          {/*</span>*/}
+          {/*<span*/}
+          {/*style={{*/}
+          {/*margin: "0px 5px",*/}
+          {/*fontSize: 16,*/}
+          {/*// color: "rgba(46, 228, 246,1)",*/}
+          {/*fontWeight: "bold",*/}
+          {/*marginTop: 5*/}
+          {/*}}*/}
+          {/*>*/}
+          {/*balanced, diverse*/}
+          {/*</span>*/}
+          {/*<span style={{ margin: 0, color: "rgba(0,0,0,0.7)" }}>*/}
+          {/*selection of*/}
+          {/*</span>*/}
+          {/*<span*/}
+          {/*style={{*/}
+          {/*margin: "0px 5px",*/}
+          {/*fontSize: 16,*/}
+          {/*// color: "rgba(46, 228, 246,1)",*/}
+          {/*fontWeight: "bold"*/}
+          {/*}}*/}
+          {/*>*/}
+          {/*28*/}
+          {/*</span>*/}
+          {/*<span style={{ margin: 0, color: "rgba(0,0,0,0.7)" }}>*/}
+          {/*media sources.*/}
+          {/*</span>*/}
+          {/*</div>*/}
+          {/*<div style={{ padding: "5px 0px" }}>*/}
+          {/*<span style={{ margin: 0, color: "rgba(0,0,0,0.7)" }}>*/}
+          {/*It's an*/}
+          {/*</span>*/}
+          {/*<span*/}
+          {/*style={{*/}
+          {/*margin: "0px 5px",*/}
+          {/*fontSize: 16,*/}
+          {/*// color: "rgba(46, 228, 246,1)",*/}
+          {/*fontWeight: "bold",*/}
+          {/*marginTop: 5*/}
+          {/*}}*/}
+          {/*>*/}
+          {/*objective, efficient*/}
+          {/*</span>*/}
+          {/*<span style={{ margin: 0, color: "rgba(0,0,0,0.7)" }} />*/}
+          {/*</div>*/}
+          {/*</div>*/}
         </div>
 
-        <div style={{ ...sectionStyle, ...{ marginBottom: 10 } }}>hey</div>
+        <div style={{ ...sectionStyle, ...{ marginBottom: 10 } }}>
+          <Link to={"/articles"}>Find Articles</Link>
+          <br />
+          <Link to={"/front_pages"}>Front Pages</Link>
+        </div>
 
-        {/*<h3*/}
-        {/*style={{*/}
-        {/*textAlign: "center",*/}
-        {/*width: "100%",*/}
-        {/*padding: "0px 20px",*/}
-        {/*margin: "25px 0px 10px 0px",*/}
-        {/*color: "rgba(0,0,0,0.8)"*/}
-        {/*}}*/}
-        {/*>*/}
-        {/*bird's eye view*/}
-        {/*</h3>*/}
-        {/* ======================================== */}
         <SectionWithLoader
           title={`most common words from ${
             this.state.batchOfTags ? this.state.batchOfTags.sourceCount : ""
@@ -644,57 +612,26 @@ export default class Dashboard extends Component {
         </SectionWithLoader>
 
         {/* ======================================== */}
+
         <div
           style={{
-            padding: "20px 0px",
-            margin: 0,
-            // backgroundColor: "#fff",
-            width: Math.min(screenWidth)
-            // border: "1px solid #e5e5e5",
-            // borderRadius: 3
+            margin: "10px 0px",
+            backgroundColor: "#fff",
+            padding: "30px 0px 20px 0px",
+            borderRadius: 3,
+            position: "relative",
+            width: screenWidth
           }}
         >
-          <h5
-            style={{
-              margin: 0,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              paddingLeft: 20,
-              color: "rgba(0,0,0,0.4)"
-            }}
-          />
-          <div style={{ padding: "20px 0px 0px 0px" }}>
-            {renderFrontPages()}
-          </div>
-          <div style={{ padding: "0px 20px" }}>
-            {renderTimeAgo(
-              this.state.batch ? this.state.batch.created_at : null
-            )}
-          </div>
+          {this.state.records.length < 2 ? (
+            <Loader
+              loaderHeight={imageWidth}
+              loadingMessage={"Loading Front Pages"}
+            />
+          ) : (
+            renderFrontPages()
+          )}
         </div>
-
-        {/* ======================================== */}
-        {/*<SingleTopic*/}
-        {/*tag={this.state.topics[0] ? this.state.topics[0] : null}*/}
-        {/*styles={styles}*/}
-        {/*tagIndex={0}*/}
-        {/*{...this.state}*/}
-        {/*/>*/}
-        {/*/!* ======================================== *!/*/}
-        {/*<SingleTopic*/}
-        {/*tag={this.state.topics[1] ? this.state.topics[1] : null}*/}
-        {/*styles={styles}*/}
-        {/*tagIndex={1}*/}
-        {/*{...this.state}*/}
-        {/*/>*/}
-        {/*/!* ======================================== *!/*/}
-        {/*<SingleTopic*/}
-        {/*tag={this.state.topics[2] ? this.state.topics[2] : null}*/}
-        {/*styles={styles}*/}
-        {/*tagIndex={2}*/}
-        {/*{...this.state}*/}
-        {/*/>*/}
       </div>
     );
   }

@@ -19,6 +19,13 @@ body {
   /*user-select: none;*/
 }
 
+ a:active, a:visited {
+   color: inherit; /* blue colors for links too */
+   text-decoration: inherit; /* no underline */
+}
+
+
+
 @media(min-width: 769px) {
   body {
     font-family: 'Lato', sans-serif;

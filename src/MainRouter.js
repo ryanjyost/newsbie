@@ -10,103 +10,81 @@ import App from "./App";
 import Landing from "./components/Landing";
 import Dashboard from "./components/pages/Dashboard";
 import Articles from "./components/pages/ArticleSearch";
+import FrontPageSearch from "./components/pages/FrontPageSearch";
 import { withRouter } from "react-router";
+
+import { ic_home } from "react-icons-kit/md/ic_home";
+import { Icon } from "react-icons-kit";
 
 const TopBar = ({ location }) => {
   let isLanding = location.pathname === "/";
 
-  // if (location.pathname !== "/dashboard") {
-  //   return (
-  //     <div
-  //       style={{
-  //         height: 60,
-  //         backgroundColor: isLanding
-  //           ? "rgba(255, 255, 255, 0.95)"
-  //           : "rgba(33, 58, 73, 0.9)",
-  //         borderBottom: isLanding
-  //           ? "1px solid #e5e5e5"
-  //           : "1px solid rgba(255, 255," + " 255, 0.1)",
-  //         width: "100%",
-  //         display: "flex",
-  //         alignItems: "center",
-  //         justifyContent: "space-between",
-  //         letterSpacing: "0.03em",
-  //         position: "fixed",
-  //         top: 0,
-  //         zIndex: 100
-  //       }}
-  //     >
-  //       <div
-  //         style={{
-  //           display: "flex",
-  //           alignItems: "center",
-  //           justifyContent: "space-between",
-  //           marginLeft: "5%"
-  //         }}
-  //       >
-  //         <h3
-  //           style={{
-  //             color: isLanding
-  //               ? "rgba(33, 58, 73, 0.9)"
-  //               : "rgba(255, 255, 255, 0.8)",
-  //
-  //             fontWeight: "bold"
-  //           }}
-  //         >
-  //           newsbie
-  //         </h3>
-  //       </div>
-  //       <Link
-  //         to={isLanding ? "/demo" : "/"}
-  //         style={{
-  //           backgroundColor: isLanding
-  //             ? "rgba(33, 58, 73, 0.4)"
-  //             : "rgba(46, 228, 246, 0.6)",
-  //           marginRight: "5%",
-  //           padding: "5px 15px",
-  //           fontSize: 14,
-  //           fontWeight: "600",
-  //           color: "#fff",
-  //           borderRadius: 9999,
-  //           textDecoration: "none"
-  //         }}
-  //         className={"cta"}
-  //       >
-  //         {isLanding ? "Try Demo" : "Get the App"}
-  //       </Link>
-  //     </div>
-  //   );
-  // } else {
-  return (
-    <div
-      style={{
-        height: 40,
-        backgroundColor: "rgba(255, 255, 255, 0.95)",
-        borderBottom: "1px solid #e5e5e5",
-        width: "100%",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        letterSpacing: "0.03em",
-        // boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
-        position: "fixed",
-        top: 0,
-        zIndex: 100
-      }}
-    >
-      <h5
+  if (isLanding) {
+    return (
+      <div
         style={{
-          color: "rgb(33, 58, 73)",
-          margin: "0px 30px",
-          letterSpacing: "0.04em"
+          height: 40,
+          backgroundColor: "rgba(255, 255, 255, 0.95)",
+          borderBottom: "1px solid #e5e5e5",
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          letterSpacing: "0.03em",
+          // boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+          position: "fixed",
+          top: 0,
+          zIndex: 100
         }}
       >
-        newsbie
-      </h5>
+        <h4
+          style={{
+            color: "rgb(33, 58, 73)",
+            margin: "0px 30px",
+            letterSpacing: "0.04em",
+            textDecoration: "none"
+          }}
+        >
+          <Link style={{ textDecoration: "none" }} to={"/"}>
+            newsbie
+          </Link>
+        </h4>
+      </div>
+    );
+  } else {
+    return (
+      <div
+        style={{
+          height: 40,
+          backgroundColor: "rgba(255, 255, 255, 0.95)",
+          borderBottom: "1px solid #e5e5e5",
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          letterSpacing: "0.03em",
+          padding: "0px 20px",
+          // boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+          position: "fixed",
+          top: 0,
+          zIndex: 100
+        }}
+      >
+        <Link style={{ textDecoration: "none" }} to={"/"}>
+          {" "}
+          <Icon
+            style={{
+              marginRight: 3,
+              color: "rgba(0, 0, 0, 0.6)"
+            }}
+            icon={ic_home}
+            size={20}
+          />
+        </Link>
+      </div>
+    );
+  }
 
-      {/*<h5 style={{ color: "rgb(33, 58, 73)", margin: "20px" }}>newsbie</h5>*/}
-    </div>
-  );
   // }
 };
 
@@ -137,6 +115,8 @@ const MainRouter = () => {
             {/*<Route path="/demo" component={App} />*/}
             <Route path="/" exact component={Dashboard} />
             <Route path="/articles" component={Articles} />
+            <Route path="/front_pages" component={FrontPageSearch} />
+            <Route path="/old/landing" component={Landing} />
             <Route component={Dashboard} />
           </Switch>
         </ScollToTopWithRouter>
