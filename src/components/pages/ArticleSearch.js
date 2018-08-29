@@ -13,6 +13,7 @@ import "../../../node_modules/react-datetime/css/react-datetime.css";
 import moment from "moment";
 import TimeAgo from "react-timeago";
 import { XmlEntities } from "html-entities";
+import Loader from "../../components/Loader";
 
 export default class ArticleSearch extends Component {
   constructor(props) {
@@ -28,6 +29,7 @@ export default class ArticleSearch extends Component {
       sites: [],
       touchOnly: detectIt.deviceType === "touchOnly",
 
+      allArticles: [],
       articles: [],
       currentTagFilter: null,
       searchInput: "",
@@ -48,50 +50,10 @@ export default class ArticleSearch extends Component {
     axios
       .get("https://birds-eye-news-api.herokuapp.com/recent_tags")
       .then(res => {
-        // get top, different topics
-        let topics = [res.data.topTags[0]];
-
-        let tags = res.data.topTags;
-        for (let i = 1; i < tags.length; i++) {
-          let currentTag = tags[i];
-          if (topics.length > 2) {
-            break;
-          } else {
-            let duplicate = topics.find(topic => {
-              let splitTag = currentTag.term.split(" ");
-              // console.log(splitTag);
-              return splitTag.find(word => {
-                return word.includes(topic.term) || topic.term.includes(word);
-              });
-            });
-            if (duplicate) {
-              // console.log(duplicate, currentTag);
-              continue;
-            } else {
-              topics.push(currentTag);
-            }
-          }
-        }
-
-        // console.log(topics);
-        for (let batch of res.data.batches) {
-          // console.log(batch);
-          let cohen = batch.tags.find(tag => {
-            return tag.term === "cohen";
-          });
-
-          // if (cohen) {
-          //   console.log(cohen);
-          // } else {
-          //   console.log("NOT FOUND", batch);
-          // }
-        }
-
         this.setState({
           batchOfTags: res.data.batches[0],
           allTagBatches: res.data.batches,
-          topTags: res.data.topTags,
-          topics
+          topTags: res.data.topTags
         });
       })
       .catch(err => console.log(err));
@@ -203,7 +165,6 @@ export default class ArticleSearch extends Component {
   }
 
   filterArticles(params) {
-    console.log(params);
     this.setState({
       currentTagFilter: params.currentTagFilter,
       searchInput: params.searchInput,
@@ -278,6 +239,16 @@ export default class ArticleSearch extends Component {
       );
     };
 
+    if (!this.state.batchOfTags && this.state.sites.length < 1) {
+      return (
+        <div>
+          <Loader
+            loaderHeight={"100vh"}
+            loadingMessage={"Loading recent articles..."}
+          />
+        </div>
+      );
+    }
     return (
       <div
         style={{

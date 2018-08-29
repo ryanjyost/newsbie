@@ -71,7 +71,6 @@ export default class Dashboard extends Component {
               let splitTag = currentTag.term.split(" ");
               // console.log(splitTag);
               return splitTag.find(word => {
-                console.log(word, topic.term);
                 return word.includes(topic.term) || topic.term.includes(word);
               });
             });

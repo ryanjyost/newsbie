@@ -71,7 +71,8 @@ export default class TagCloud extends Component {
                 border: "1px solid #f2f2f2",
                 height: 20,
                 marginTop: 3,
-                marginLeft: 5
+                marginLeft: 5,
+                backgroundColor: "#fcfcfc"
               }}
             >
               <span style={{ transform: "rotate(45deg)", marginRight: 3 }}>
