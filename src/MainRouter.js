@@ -52,6 +52,18 @@ const TopBar = ({ location }) => {
       </div>
     );
   } else {
+    let title = "newsbie";
+
+    switch (location.pathname) {
+      case "/front_pages":
+        title = "front pages";
+        break;
+      case "/articles":
+        title = "articles";
+        break;
+      default:
+        break;
+    }
     return (
       <div
         style={{
@@ -62,20 +74,41 @@ const TopBar = ({ location }) => {
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
-          letterSpacing: "0.03em",
-          padding: "0px 20px",
+          letterSpacing: "0.02em",
+          // padding: "0px 20px",
           // boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
           position: "fixed",
           top: 0,
           zIndex: 100
         }}
       >
-        <Link style={{ textDecoration: "none" }} to={"/"}>
+        <Link
+          style={{
+            textDecoration: "none",
+            marginLeft: 20,
+            fontSize: 10,
+            width: 100
+          }}
+          to={"/"}
+        >
+          {" "}
+          &larr; &nbsp;Back Home
+        </Link>
+        <div
+          style={{ fontSize: 14, cursor: "pointer" }}
+          onClick={() => window.scrollTo(0, 0)}
+        >
+          {title}
+        </div>
+        <Link
+          style={{ textDecoration: "none", marginRight: 20, width: 100 }}
+          to={"/"}
+        >
           {" "}
           <Icon
             style={{
               marginRight: 3,
-              color: "rgba(0, 0, 0, 0.6)"
+              color: "rgba(0, 0, 0, 0)"
             }}
             icon={ic_home}
             size={20}

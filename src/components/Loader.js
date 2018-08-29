@@ -21,7 +21,7 @@ const Loader = ({ loadingMessage, loaderHeight }) => {
       {/*height="100"*/}
       {/*width="100"*/}
       {/*/>*/}
-      <div style={{ marginTop: 10, maxWidth: 200 }} className="loader" />
+      <div style={{ marginTop: 20, maxWidth: 200 }} className="loader" />
     </div>
   );
 };
