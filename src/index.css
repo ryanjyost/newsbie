@@ -17,11 +17,38 @@ body {
   /*-moz-user-select: none;*/
   /*-ms-user-select: none;*/
   /*user-select: none;*/
+  height: 100%;
+  overflow: auto;
 }
 
  a:active, a:visited {
    color: inherit; /* blue colors for links too */
    text-decoration: inherit; /* no underline */
+}
+
+html, body {
+  height: 100%;
+}
+
+.overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+.overlay-content {
+  height: 100%;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+
+
+.background-content{
+  height: 100%;
+  overflow: auto;
 }
 
 
@@ -195,12 +222,27 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .articleSearchItem {
-    border:1px solid rgba(0,0,0,0);
-    text-decoration:none !important;
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+  cursor:pointer;
 }
 
 .articleSearchItem:hover {
-    border:1px solid rgba(0,0,0,0.2);
+  box-shadow: 0 3px 6px rgba(0,0,0,0.08), 0 3px 6px rgba(0,0,0,0.12);
+  cursor:pointer;
+}
+
+.shadow {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.12);
+}
+
+.shadowHover {
+  transition: all 0.3s cubic-bezier(.25, .8, .25, 1);
+  cursor:pointer;
+}
+
+.shadowHover:hover {
+  box-shadow: 0 3px 6px rgba(0,0,0,0.08), 0 3px 6px rgba(0,0,0,0.12);
+  cursor:pointer;
 }
 
 .noTextDecoration {
@@ -287,3 +329,4 @@ h5 {
   95% {left: 120%;}
   to {left: 100%;}
 }
+

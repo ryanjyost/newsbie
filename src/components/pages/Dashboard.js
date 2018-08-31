@@ -56,7 +56,9 @@ export default class Dashboard extends Component {
     * Recent Tags
     * */
     axios
-      .get("https://birds-eye-news-api.herokuapp.com/recent_tags")
+      .get("https://birds-eye-news-api.herokuapp.com/recent_tags", {
+        Accept: "application/json"
+      })
       .then(res => {
         // get top, different topics
         let topics = [res.data.topTags[0]];
@@ -135,7 +137,9 @@ export default class Dashboard extends Component {
 	 * Articles
 	 * */
     axios
-      .get("https://birds-eye-news-api.herokuapp.com/today")
+      .get("https://birds-eye-news-api.herokuapp.com/today", {
+        Accept: "application/json"
+      })
       .then(res => {
         let currentNews = shuffle(res.data.politicsArticles);
 
@@ -578,6 +582,7 @@ export default class Dashboard extends Component {
           <Link to={"/articles"}>Find Articles</Link>
           <br />
           <Link to={"/front_pages"}>Front Pages</Link>
+          <Link to={"/sources"}>Sources</Link>
         </div>
 
         <SectionWithLoader

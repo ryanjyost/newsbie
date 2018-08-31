@@ -445,8 +445,8 @@ export default class ArticleSearch extends Component {
                     height: 100,
                     width: "100%",
                     margin: "0px 0px 10px 0px",
-                    borderTopRightRadius: 5,
-                    borderBottomRightRadius: 5
+                    borderRadius: 5,
+                    textDecoration: "none"
                   }}
                   href={
                     article

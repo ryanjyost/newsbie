@@ -122,7 +122,8 @@ export default class FrontPageSearch extends Component {
       ? this.state.siteFilter.name
       : null;
 
-    let frontPages = shuffle(this.state.records);
+    // let frontPages = shuffle(this.state.records);
+    let frontPages = this.state.records;
 
     if (currentSiteFilter && timeFilter) {
       let ts = Math.round(new Date().getTime() / 1000);
@@ -167,10 +168,24 @@ export default class FrontPageSearch extends Component {
     } else {
       if (timeFilter) {
         let ts = Math.round(new Date().getTime() / 1000);
-        let tsYesterday = ts - timeFilter * 3600;
-        let currentBatch = this.state.batches.find(batch => {
-          return batch.id < tsYesterday * 1000;
-        });
+        let targetTime = (ts - timeFilter * 3600) * 1000;
+        let currentBatch = this.state.batches[0],
+          smallestDiff = targetTime;
+
+        for (let batch of this.state.batches) {
+          let diff = targetTime - batch.id;
+          if (diff < 0) {
+            continue;
+          } else {
+            if (diff < smallestDiff) {
+              smallestDiff = diff;
+              currentBatch = batch;
+              // console.log(currentBatch);
+            } else {
+              continue;
+            }
+          }
+        }
 
         frontPages = this.state.sites.map(site => {
           return {
@@ -181,7 +196,7 @@ export default class FrontPageSearch extends Component {
           };
         });
 
-        frontPages = shuffle(frontPages);
+        // frontPages = shuffle(frontPages);
       }
     }
 
