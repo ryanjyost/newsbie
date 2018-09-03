@@ -9,6 +9,7 @@ import "../../../node_modules/react-vis/dist/style.css";
 import { Link } from "react-router-dom";
 
 import SingleFrontPage from "../SingleFrontPage";
+import TopWordsChart from "../TopWordsChart";
 import TimeAgo from "react-timeago";
 import { androidTime } from "react-icons-kit/ionicons/androidTime";
 import { Icon } from "react-icons-kit";
@@ -609,7 +610,11 @@ export default class Dashboard extends Component {
             width: Math.min(screenWidth - 50, 350)
           }}
         >
-          {renderTopWordsGraph()}
+          <TopWordsChart
+            topTags={this.state.topTags}
+            batchOfTags={this.state.batchOfTags}
+            styles={styles}
+          />
           {renderTimeAgo(
             this.state.batchOfTags ? this.state.batchOfTags.created_at : null
           )}

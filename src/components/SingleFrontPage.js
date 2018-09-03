@@ -12,7 +12,7 @@ export default class SingleFrontPage extends Component {
     return (
       <a
         target={"_blank"}
-        href={record.site.url}
+        href={`https://d1dzf0mjm4jp11.cloudfront.net/${record.image}`}
         key={record.id}
         style={{
           // margin: "0px 10px",
