@@ -50,7 +50,7 @@ export default class FrontPageSearch extends Component {
       });
 
     axios
-      .get(`http://localhost:8000/search_front_pages`, {
+      .get(`https://birds-eye-news-api.herokuapp.com/search_front_pages`, {
         Accept: "application/json"
       })
       .then(response => {

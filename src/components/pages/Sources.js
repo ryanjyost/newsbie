@@ -13,7 +13,7 @@ export default class Sources extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:8000/sources")
+      .get("https://birds-eye-news-api.herokuapp.com/sources")
       .then(res => {
         let sorted = res.data.sources.sort((a, b) => {
           if (a.title.replace("The ", "") > b.title.replace("The ", "")) {

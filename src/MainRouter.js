@@ -164,9 +164,10 @@ class TopBar extends React.Component {
             style={{
               maxWidth: 600,
               margin: "auto",
-              padding: "20px 20px",
+              padding: "10px 20px",
               display: "flex",
-              flexWrap: "wrap"
+              flexWrap: "wrap",
+              justifyContent: "center"
             }}
           >
             {sources
