@@ -128,7 +128,7 @@ export default class ArticleSearch extends Component {
 
     axios
       .get(
-        `http://localhost:8000/articles?start=${formattedStart}&end=${formattedEnd}`,
+        `https://birds-eye-news-api.herokuapp.com/articles?start=${formattedStart}&end=${formattedEnd}`,
         {
           Accept: "application/json"
         }
@@ -154,7 +154,7 @@ export default class ArticleSearch extends Component {
 
     axios
       .get(
-        `http://localhost:8000/articles?start=${formattedStart}&end=${formattedEnd}`,
+        `https://birds-eye-news-api.herokuapp.com/articles?start=${formattedStart}&end=${formattedEnd}`,
         {
           Accept: "application/json"
         }

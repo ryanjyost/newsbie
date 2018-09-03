@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eaad3f9b-385c-4760-bbaf-b9ee01a5c1fb" name="Default" comment="progress">
-      <change afterPath="$PROJECT_DIR$/src/components/TopWordsChart.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/sources.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/MainRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/MainRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SingleFrontPage.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SingleFrontPage.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/pages/ArticleSearch.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/ArticleSearch.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/pages/Dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/Dashboard.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/pages/FrontPageSearch.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/FrontPageSearch.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/pages/SingleSource.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/SingleSource.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/pages/Sources.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/Sources.js" afterDir="false" />
@@ -35,7 +31,7 @@
         <entry file="file://$PROJECT_DIR$/src/components/pages/SingleSource.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="230">
-              <caret line="369" column="28" lean-forward="true" selection-start-line="369" selection-start-column="28" selection-end-line="369" selection-end-column="28" />
+              <caret line="374" column="28" selection-start-line="374" selection-start-column="28" selection-end-line="374" selection-end-column="28" />
               <folding>
                 <element signature="e#369#408#0" />
                 <element signature="e#1749#6621#0" />
@@ -113,8 +109,8 @@
       <file leaf-file-name="MainRouter.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/MainRouter.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="265">
-              <caret line="119" column="31" lean-forward="true" selection-start-line="119" selection-start-column="31" selection-end-line="119" selection-end-column="31" />
+            <state relative-caret-position="331">
+              <caret line="167" column="30" lean-forward="true" selection-start-line="167" selection-start-column="30" selection-end-line="167" selection-end-column="30" />
               <folding>
                 <element signature="n#!!block;n#constructor#0;n#TopBar#0" />
                 <element signature="e#875#892#0" />
@@ -122,8 +118,6 @@
                 <element signature="e#1745#3202#0" />
                 <element signature="e#3863#4630#0" />
                 <element signature="e#4067#4330#0" />
-                <element signature="n#ScrollToTop#0" />
-                <element signature="n#!!block;n#componentDidUpdate#0;n#ScrollToTop#0" />
                 <element signature="e#5858#5943#0" />
                 <element signature="n#!!block;n#render#0;n#ScrollToTop#0" />
                 <element signature="n#MainRouter#0" />
@@ -155,7 +149,7 @@
         <entry file="file://$PROJECT_DIR$/src/components/pages/FrontPageSearch.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="271">
-              <caret line="286" column="24" lean-forward="true" selection-start-line="286" selection-start-column="24" selection-end-line="286" selection-end-column="24" />
+              <caret line="286" column="24" selection-start-line="286" selection-start-column="24" selection-end-line="286" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -180,13 +174,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>get_head</find>
-      <find>get_latest</find>
-      <find>today</find>
-      <find>/now</find>
-      <find>cloudf</find>
-      <find>box-s</find>
-      <find>boxSha</find>
       <find>&lt;Loader</find>
       <find>box-sha</find>
       <find>&lt;link</find>
@@ -210,6 +197,13 @@
       <find>400</find>
       <find>70</find>
       <find>SingleFront</find>
+      <find>localhost:800</find>
+      <find>birds</find>
+      <find>http://localhost:8000</find>
+      <find>localhost:80</find>
+      <find>https://birds-eye-news-api.herokuapp.com</find>
+      <find>localhost:8000</find>
+      <find>localhos</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -217,6 +211,7 @@
       <replace>245</replace>
       <replace>horzRow</replace>
       <replace>shadowHover</replace>
+      <replace>https://birds-eye-news-api.herokuapp.com</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -397,7 +392,7 @@
       <workItem from="1535671240945" duration="27446000" />
       <workItem from="1535809413147" duration="2920000" />
       <workItem from="1535820415146" duration="5052000" />
-      <workItem from="1535977804999" duration="12509000" />
+      <workItem from="1535977804999" duration="13131000" />
     </task>
     <task id="LOCAL-00001" summary="progress">
       <created>1533179196867</created>
@@ -424,7 +419,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="383840000" />
+    <option name="totallyTimeSpent" value="384462000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1278" height="777" extended-state="6" />
@@ -437,9 +432,10 @@
       <window_info id="npm" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32680723" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.3313253" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2224919" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2224919" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3298193" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
@@ -450,7 +446,6 @@
       <window_info anchor="bottom" id="Messages" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" />
     </layout>
     <layout-to-restore>
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -1107,7 +1102,7 @@
     <entry file="file://$PROJECT_DIR$/src/components/pages/SingleSource.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="230">
-          <caret line="369" column="28" lean-forward="true" selection-start-line="369" selection-start-column="28" selection-end-line="369" selection-end-column="28" />
+          <caret line="374" column="28" selection-start-line="374" selection-start-column="28" selection-end-line="374" selection-end-column="28" />
           <folding>
             <element signature="e#369#408#0" />
             <element signature="e#1749#6621#0" />
@@ -1191,14 +1186,14 @@
     <entry file="file://$PROJECT_DIR$/src/components/pages/FrontPageSearch.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="271">
-          <caret line="286" column="24" lean-forward="true" selection-start-line="286" selection-start-column="24" selection-end-line="286" selection-end-column="24" />
+          <caret line="286" column="24" selection-start-line="286" selection-start-column="24" selection-end-line="286" selection-end-column="24" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/MainRouter.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="265">
-          <caret line="119" column="31" lean-forward="true" selection-start-line="119" selection-start-column="31" selection-end-line="119" selection-end-column="31" />
+        <state relative-caret-position="331">
+          <caret line="167" column="30" lean-forward="true" selection-start-line="167" selection-start-column="30" selection-end-line="167" selection-end-column="30" />
           <folding>
             <element signature="n#!!block;n#constructor#0;n#TopBar#0" />
             <element signature="e#875#892#0" />
@@ -1206,8 +1201,6 @@
             <element signature="e#1745#3202#0" />
             <element signature="e#3863#4630#0" />
             <element signature="e#4067#4330#0" />
-            <element signature="n#ScrollToTop#0" />
-            <element signature="n#!!block;n#componentDidUpdate#0;n#ScrollToTop#0" />
             <element signature="e#5858#5943#0" />
             <element signature="n#!!block;n#render#0;n#ScrollToTop#0" />
             <element signature="n#MainRouter#0" />
