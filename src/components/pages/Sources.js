@@ -15,23 +15,17 @@ export default class Sources extends Component {
     axios
       .get("http://localhost:8000/sources")
       .then(res => {
-        let sorted = res.data.sources
-          .filter(site => {
-            return (
-              site.name !== "bloomberg" && site.name !== "thewashingtonpost"
-            );
-          })
-          .sort((a, b) => {
-            if (a.title.replace("The ", "") > b.title.replace("The ", "")) {
-              return 1;
-            } else if (
-              b.title.replace("The ", "") > a.title.replace("The ", "")
-            ) {
-              return -1;
-            } else {
-              return 0;
-            }
-          });
+        let sorted = res.data.sources.sort((a, b) => {
+          if (a.title.replace("The ", "") > b.title.replace("The ", "")) {
+            return 1;
+          } else if (
+            b.title.replace("The ", "") > a.title.replace("The ", "")
+          ) {
+            return -1;
+          } else {
+            return 0;
+          }
+        });
 
         this.setState({ sources: sorted });
       })
@@ -76,7 +70,8 @@ export default class Sources extends Component {
               flexWrap: "wrap",
               alignItems: "center",
               justifyContent: "center",
-              maxWidth: 600
+              maxWidth: 900,
+              paddingBottom: 20
             }}
           >
             {this.state.sources.map((source, i) => {
@@ -96,6 +91,28 @@ export default class Sources extends Component {
                 </Link>
               );
             })}
+          </div>
+          <div
+            style={{
+              borderTop: "1px solid rgba(0,0,0,0.1)",
+              paddingTop: 10,
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              textAlign: "center",
+              marginTop: 50,
+              margin: "0px 20px"
+            }}
+          >
+            Not seeing a source you want?<br />
+            <a
+              style={{ marginTop: 10 }}
+              href={"mailto:ryanjyost@gmail.com?subject=New source for Newsbie"}
+            >
+              Email me about it
+            </a>
           </div>
         </div>
       );

@@ -14,6 +14,7 @@ export default class FrontPageSearch extends Component {
     this.state = {
       records: [],
       batches: [],
+      batch: null,
       screenWidth: 0,
       sites: [],
       siteFilter: null,
@@ -49,7 +50,7 @@ export default class FrontPageSearch extends Component {
       });
 
     axios
-      .get(`https://birds-eye-news-api.herokuapp.com/search_front_pages`, {
+      .get(`http://localhost:8000/search_front_pages`, {
         Accept: "application/json"
       })
       .then(response => {
@@ -118,22 +119,40 @@ export default class FrontPageSearch extends Component {
 
   render() {
     const { screenWidth, timeFilter } = this.state;
-    let currentSiteFilter = this.state.siteFilter
-      ? this.state.siteFilter.name
-      : null;
+
+    const { isSingleSource } = this.props;
+    let currentSiteFilter = isSingleSource
+      ? this.props.source.name
+      : this.state.siteFilter
+        ? this.state.siteFilter.name
+        : null;
 
     // let frontPages = shuffle(this.state.records);
-    let frontPages = this.state.records;
+    let frontPages = isSingleSource
+      ? this.props.batches[0].records.map(record => {
+          return {
+            id: this.props.batches[0].id,
+            batch: this.props.batches[0].id,
+            site: isSingleSource ? this.props.source : this.state.siteFilter,
+            image: `${currentSiteFilter}/${currentSiteFilter}_${
+              this.props.batches[0].id
+            }`
+          };
+        })
+      : this.state.records;
+
+    let batches = isSingleSource ? this.props.batches : this.state.batches;
 
     if (currentSiteFilter && timeFilter) {
       let ts = Math.round(new Date().getTime() / 1000);
       let tsYesterday = ts - (timeFilter + 1) * 3600;
-      let filteredBatches = this.state.batches.filter(batch => {
+      let filteredBatches = batches.filter(batch => {
         return batch.id >= tsYesterday * 1000;
       });
+
       frontPages = filteredBatches
         .filter((batch, i) => {
-          return i === 0 || i % 4 === 0;
+          return i === 0 || i % (4 * 12) === 0;
         })
         .map(batch => {
           return {
@@ -153,7 +172,7 @@ export default class FrontPageSearch extends Component {
           }
         });
     } else if (currentSiteFilter) {
-      frontPages = this.state.batches
+      frontPages = batches
         .filter((batch, i) => {
           return i === 0 || i % 4 === 0;
         })
@@ -169,10 +188,10 @@ export default class FrontPageSearch extends Component {
       if (timeFilter) {
         let ts = Math.round(new Date().getTime() / 1000);
         let targetTime = (ts - timeFilter * 3600) * 1000;
-        let currentBatch = this.state.batches[0],
+        let currentBatch = batches[0],
           smallestDiff = targetTime;
 
-        for (let batch of this.state.batches) {
+        for (let batch of batches) {
           let diff = targetTime - batch.id;
           if (diff < 0) {
             continue;
@@ -261,7 +280,9 @@ export default class FrontPageSearch extends Component {
                 ) : null}
                 <SingleFrontPage
                   key={i}
-                  imageWidth={Math.min(screenWidth - 40, 400)}
+                  imageWidth={
+                    !screenWidth ? 300 : Math.min(screenWidth - 40, 400)
+                  }
                   record={record}
                   noLink
                 />
@@ -272,7 +293,10 @@ export default class FrontPageSearch extends Component {
       );
     };
 
-    if (this.state.sites.length < 1 && this.state.records.length < 1) {
+    if (
+      !isSingleSource &&
+      (this.state.sites.length < 1 || frontPages.length < 1)
+    ) {
       return (
         <div>
           <Loader
@@ -285,7 +309,9 @@ export default class FrontPageSearch extends Component {
       return (
         <div
           style={{
-            padding: "50px 0px 0px 0px",
+            padding: this.props.isSingleSource
+              ? "0px 0px 0px 0px"
+              : "50px 0px 0px 0px",
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
@@ -306,7 +332,9 @@ export default class FrontPageSearch extends Component {
           >
             <div
               style={{
-                margin: "5px 10px 10px 20px",
+                margin: isSingleSource
+                  ? "5px 10px 10px 0px"
+                  : "5px 10px 10px 20px",
                 display: "flex",
                 width: 300,
                 backgroundColor: "#fff",
@@ -335,65 +363,75 @@ export default class FrontPageSearch extends Component {
                 recent
               </div>
               <div
-                onClick={() => this.setState({ timeFilter: 12 })}
+                onClick={() => this.setState({ timeFilter: 24 })}
                 style={{
                   textAlign: "center",
                   padding: 5,
                   flex: 0.33,
-                  backgroundColor: timeFilter === 12 ? "rgba(0,0,0,0.8)" : "",
-                  color: timeFilter === 12 ? "rgba(255,255,255,1)" : "",
+                  backgroundColor: timeFilter === 24 ? "rgba(0,0,0,0.8)" : "",
+                  color: timeFilter === 24 ? "rgba(255,255,255,1)" : "",
                   border: "1px solid rgba(0,0,0,0.2)"
                 }}
               >
-                12 hours ago
+                a day ago
               </div>
               <div
-                onClick={() => this.setState({ timeFilter: 24 })}
+                onClick={() => this.setState({ timeFilter: 24 * 7 })}
                 style={{
                   textAlign: "center",
                   padding: 5,
                   flex: 0.33,
                   borderTopRightRadius: 5,
                   borderBottomRightRadius: 5,
-                  backgroundColor: timeFilter === 24 ? "rgba(0,0,0,0.8)" : "",
-                  color: timeFilter === 24 ? "rgba(255,255,255,1)" : "",
+                  backgroundColor:
+                    timeFilter === 24 * 7 ? "rgba(0,0,0,0.8)" : "",
+                  color: timeFilter === 24 * 7 ? "rgba(255,255,255,1)" : "",
                   border: "1px solid rgba(0,0,0,0.2)"
                 }}
               >
-                24 hours ago
+                a week ago
               </div>
             </div>
-            <div
-              style={{ display: "flex", flexWrap: "wrap", padding: "0px 20px" }}
-            >
-              {this.state.sites.map(site => {
-                return siteItem(site);
-              })}
-              {this.state.siteFilter ? (
-                <div
-                  onClick={() => this.setState({ siteFilter: null })}
-                  style={{
-                    padding: "3px 6px",
-                    color: "rgba(0,0,0,1)",
-                    fontSize: 10,
-                    borderRadius: 5,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    cursor: "pointer",
-                    border: "1px solid #f2f2f2",
-                    height: 20,
-                    marginTop: 3,
-                    marginLeft: 5,
-                    backgroundColor: "#fcfcfc"
-                  }}
-                >
-                  <span style={{ transform: "rotate(45deg)", marginRight: 3 }}>
-                    +
-                  </span>Clear Filter
-                </div>
-              ) : null}
-            </div>
+
+            {!this.props.isSingleSource && (
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  padding: "0px 20px"
+                }}
+              >
+                {this.state.sites.map(site => {
+                  return siteItem(site);
+                })}
+                {this.state.siteFilter ? (
+                  <div
+                    onClick={() => this.setState({ siteFilter: null })}
+                    style={{
+                      padding: "3px 6px",
+                      color: "rgba(0,0,0,1)",
+                      fontSize: 10,
+                      borderRadius: 5,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      cursor: "pointer",
+                      border: "1px solid #f2f2f2",
+                      height: 20,
+                      marginTop: 3,
+                      marginLeft: 5,
+                      backgroundColor: "#fcfcfc"
+                    }}
+                  >
+                    <span
+                      style={{ transform: "rotate(45deg)", marginRight: 3 }}
+                    >
+                      +
+                    </span>Clear Filter
+                  </div>
+                ) : null}
+              </div>
+            )}
           </div>
 
           {!currentSiteFilter && this.state.batch ? (
@@ -420,7 +458,13 @@ export default class FrontPageSearch extends Component {
                 icon={androidTime}
                 size={14}
               />{" "}
-              <TimeAgo date={new Date(frontPages[0].batch)} />
+              {/*<TimeAgo*/}
+              {/*date={*/}
+              {/*new Date(*/}
+              {/*frontPages.length < 1 ? null : frontPages[0][0].batch*/}
+              {/*)*/}
+              {/*}*/}
+              {/*/>*/}
             </div>
           ) : null}
           {renderBatch()}

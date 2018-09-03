@@ -44,50 +44,58 @@ export default class ArticleSearch extends Component {
   componentDidMount() {
     this.updateDimensions();
 
-    /*
-		* Recent Tags
-		* */
-    axios
-      .get("https://birds-eye-news-api.herokuapp.com/recent_tags")
-      .then(res => {
-        this.setState({
-          batchOfTags: res.data.batches[0],
-          allTagBatches: res.data.batches,
-          topTags: res.data.topTags
-        });
-      })
-      .catch(err => console.log(err));
-
-    /*
-	 * Articles
+    if (!this.props.isSingleSource) {
+      /*
+	 * Recent Tags
 	 * */
-    axios
-      .get("https://birds-eye-news-api.herokuapp.com/today")
-      .then(res => {
-        let currentNews = shuffle(res.data.politicsArticles);
+      axios
+        .get("https://birds-eye-news-api.herokuapp.com/recent_tags")
+        .then(res => {
+          this.setState({
+            batchOfTags: res.data.batches[0],
+            allTagBatches: res.data.batches,
+            topTags: res.data.topTags
+          });
+        })
+        .catch(err => console.log(err));
 
-        let filteredPolitics = currentNews.filter(article => {
-          return article.site.name.toLowerCase() !== "politico";
-        });
+      /*
+		 * Articles
+		 * */
+      axios
+        .get("https://birds-eye-news-api.herokuapp.com/today")
+        .then(res => {
+          let currentNews = shuffle(res.data.politicsArticles);
 
-        let currentOpinions = shuffle(res.data.opinionArticles);
+          let filteredPolitics = currentNews.filter(article => {
+            return article.site.name.toLowerCase() !== "politico";
+          });
 
-        let filteredOpinions = currentOpinions.filter(article => {
-          return article.site.name.toLowerCase() !== "cbsnews";
-        });
+          let currentOpinions = shuffle(res.data.opinionArticles);
 
-        let shuffledCombined = shuffle([
-          ...filteredPolitics,
-          ...filteredOpinions
-        ]);
+          let filteredOpinions = currentOpinions.filter(article => {
+            return article.site.name.toLowerCase() !== "cbsnews";
+          });
 
-        this.setState({
-          sites: res.data.sites,
-          allArticles: shuffledCombined,
-          articles: shuffledCombined.slice(0, 100)
-        });
-      })
-      .catch(err => console.log(err));
+          let shuffledCombined = shuffle([
+            ...filteredPolitics,
+            ...filteredOpinions
+          ]);
+
+          this.setState({
+            sites: res.data.sites,
+            allArticles: shuffledCombined,
+            articles: shuffledCombined.slice(0, 100)
+          });
+        })
+        .catch(err => console.log(err));
+    } else {
+      this.setState({
+        articles: this.props.articles,
+        allArticles: this.props.articles,
+        topTags: this.props.tags
+      });
+    }
 
     // window.addEventListener(
     //   "resize",
@@ -207,6 +215,8 @@ export default class ArticleSearch extends Component {
       typeFilter
     } = this.state;
 
+    const { isSingleSource } = this.props;
+
     const params = {
       currentTagFilter,
       searchInput,
@@ -239,7 +249,7 @@ export default class ArticleSearch extends Component {
       );
     };
 
-    if (!this.state.batchOfTags && this.state.sites.length < 1) {
+    if (this.state.topTags.length < 1 && this.state.sites.length < 1) {
       return (
         <div>
           <Loader
@@ -252,7 +262,7 @@ export default class ArticleSearch extends Component {
     return (
       <div
         style={{
-          padding: "50px 0px 0px 0px",
+          padding: isSingleSource ? "0px" : "50px 0px 0px 0px",
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
@@ -260,14 +270,22 @@ export default class ArticleSearch extends Component {
           flexWrap: "wrap"
         }}
       >
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: isSingleSource ? "flex-start" : "center",
+            width: "100%"
+          }}
+        >
           <div
             style={{
               display: "flex",
               justifyContent: "center",
               alignItems: "flex-start",
               maxWidth: 600,
-              padding: "20px 0px 0px 20px",
+              padding: isSingleSource
+                ? "10px 0px 0px 0px"
+                : "20px 0px 0px 20px",
               flexDirection: "column"
             }}
           >
