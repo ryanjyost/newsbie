@@ -41,14 +41,9 @@ export default class SingleSource extends Component {
 
   componentDidMount() {
     axios
-      .get(
-        `https://birds-eye-news-api.herokuapp.com/sources/${
-          this.props.match.params.source
-        }`,
-        {
-          Accept: "application/json"
-        }
-      )
+      .get(`http://localhost:8000/sources/${this.props.match.params.source}`, {
+        Accept: "application/json"
+      })
       .then(res => {
         this.setState({ ...this.state, ...res.data });
       })

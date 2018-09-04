@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 import App from "./App";
 import Landing from "./components/Landing";
+import ToolMenu from "./components/ToolMenu";
 import Dashboard from "./components/pages/Dashboard";
 import Articles from "./components/pages/ArticleSearch";
 import FrontPageSearch from "./components/pages/FrontPageSearch";
@@ -21,6 +22,7 @@ import { search } from "react-icons-kit/fa/search";
 import { newspaperO } from "react-icons-kit/fa/newspaperO";
 import { Icon } from "react-icons-kit";
 import sources from "./sources";
+import SourceCloud from "./components/SourceCloud";
 
 class TopBar extends React.Component {
   constructor(props) {
@@ -32,30 +34,6 @@ class TopBar extends React.Component {
 
   render() {
     const { menuOpen } = this.props;
-
-    const siteItem = site => {
-      return (
-        <Link
-          to={`/sources/${site.name}`}
-          key={site.name}
-          onClick={() => this.setState({ siteFilter: site })}
-          className={"hoverBtn singleTag"}
-          style={{
-            fontSize: 12,
-            borderRadius: 3,
-            margin: "3px 3px",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "5px 12px",
-            display: "inline-block",
-            transition: "background 0.2s",
-            boxShadow: "0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.12)"
-          }}
-        >
-          {site.title}
-        </Link>
-      );
-    };
 
     const renderTools = () => {
       const SingleTool = ({ link, title, desc, icon }) => {
@@ -170,21 +148,7 @@ class TopBar extends React.Component {
               justifyContent: "center"
             }}
           >
-            {sources
-              .sort((a, b) => {
-                if (a.title.replace("The ", "") > b.title.replace("The ", "")) {
-                  return 1;
-                } else if (
-                  b.title.replace("The ", "") > a.title.replace("The ", "")
-                ) {
-                  return -1;
-                } else {
-                  return 0;
-                }
-              })
-              .map(site => {
-                return siteItem(site);
-              })}
+            <SourceCloud />
           </div>
         </div>
       );
@@ -260,7 +224,7 @@ class TopBar extends React.Component {
             />
           </div>
         </div>
-        {menuOpen ? renderTools() : null}
+        {menuOpen ? <ToolMenu /> : null}
       </div>
     );
   }

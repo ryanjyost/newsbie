@@ -9,6 +9,7 @@ import "../../../node_modules/react-vis/dist/style.css";
 import { Link } from "react-router-dom";
 
 import SingleFrontPage from "../SingleFrontPage";
+import ToolMenu from "../ToolMenu";
 import TopWordsChart from "../TopWordsChart";
 import TimeAgo from "react-timeago";
 import { androidTime } from "react-icons-kit/ionicons/androidTime";
@@ -476,7 +477,11 @@ export default class Dashboard extends Component {
           }}
         >
           <div
-            style={{ ...sectionStyle, ...{ marginBottom: 10, maxWidth: 400 } }}
+            className={"shadow"}
+            style={{
+              ...sectionStyle,
+              ...{ marginBottom: 10, maxWidth: 350, flexWrap: "wrap" }
+            }}
           >
             <h5 style={{ margin: 0, color: "rgba(46, 228, 246,1)" }}>
               welcome to newsbie, where you can
@@ -484,106 +489,10 @@ export default class Dashboard extends Component {
             <h2 style={{ margin: 0 }}>
               monitor, analyze & understand the news media.
             </h2>
-            {/*<div*/}
-            {/*style={{*/}
-            {/*width: "100%",*/}
-            {/*display: "flex",*/}
-            {/*justifyContent: "center",*/}
-            {/*alignItems: "center",*/}
-            {/*flexDirection: "column",*/}
-            {/*color: "rgba(0,0,0,0.2)"*/}
-            {/*}}*/}
-            {/*>*/}
-            {/*<h5*/}
-            {/*style={{*/}
-            {/*color: "rgba(0,0,0,0.3)",*/}
-            {/*margin: "5px 0px 5px 0px"*/}
-            {/*}}*/}
-            {/*>*/}
-            {/*or just keep scrolling*/}
-            {/*</h5>*/}
-            {/*<h5 style={{ margin: "5px 0px 5px 0px", color: "rgba(0,0,0,0.3)" }}>*/}
-            {/*&darr;*/}
-            {/*</h5>*/}
-            {/*</div>*/}
           </div>
-          {/*<div*/}
-          {/*style={{*/}
-          {/*...sectionStyle,*/}
-          {/*...{ marginBottom: 10, maxWidth: 400, lineHeight: 1.5 }*/}
-          {/*}}*/}
-          {/*>*/}
-          {/*<div>*/}
-          {/*<span style={{ margin: 0, color: "rgba(0,0,0,0.7)" }}>*/}
-          {/*newsbie*/}
-          {/*</span>*/}
-          {/*<span*/}
-          {/*style={{*/}
-          {/*margin: "0px 5px",*/}
-          {/*fontSize: 16,*/}
-          {/*// color: "rgba(46, 228, 246,1)",*/}
-          {/*fontWeight: "bold",*/}
-          {/*marginTop: 5*/}
-          {/*}}*/}
-          {/*>*/}
-          {/*aggregates & analyzes*/}
-          {/*</span>*/}
-          {/*<span style={{ margin: 0, color: "rgba(0,0,0,0.7)" }}>*/}
-          {/*the latest political news data from a*/}
-          {/*</span>*/}
-          {/*<span*/}
-          {/*style={{*/}
-          {/*margin: "0px 5px",*/}
-          {/*fontSize: 16,*/}
-          {/*// color: "rgba(46, 228, 246,1)",*/}
-          {/*fontWeight: "bold",*/}
-          {/*marginTop: 5*/}
-          {/*}}*/}
-          {/*>*/}
-          {/*balanced, diverse*/}
-          {/*</span>*/}
-          {/*<span style={{ margin: 0, color: "rgba(0,0,0,0.7)" }}>*/}
-          {/*selection of*/}
-          {/*</span>*/}
-          {/*<span*/}
-          {/*style={{*/}
-          {/*margin: "0px 5px",*/}
-          {/*fontSize: 16,*/}
-          {/*// color: "rgba(46, 228, 246,1)",*/}
-          {/*fontWeight: "bold"*/}
-          {/*}}*/}
-          {/*>*/}
-          {/*28*/}
-          {/*</span>*/}
-          {/*<span style={{ margin: 0, color: "rgba(0,0,0,0.7)" }}>*/}
-          {/*media sources.*/}
-          {/*</span>*/}
-          {/*</div>*/}
-          {/*<div style={{ padding: "5px 0px" }}>*/}
-          {/*<span style={{ margin: 0, color: "rgba(0,0,0,0.7)" }}>*/}
-          {/*It's an*/}
-          {/*</span>*/}
-          {/*<span*/}
-          {/*style={{*/}
-          {/*margin: "0px 5px",*/}
-          {/*fontSize: 16,*/}
-          {/*// color: "rgba(46, 228, 246,1)",*/}
-          {/*fontWeight: "bold",*/}
-          {/*marginTop: 5*/}
-          {/*}}*/}
-          {/*>*/}
-          {/*objective, efficient*/}
-          {/*</span>*/}
-          {/*<span style={{ margin: 0, color: "rgba(0,0,0,0.7)" }} />*/}
-          {/*</div>*/}
-          {/*</div>*/}
-        </div>
-
-        <div style={{ ...sectionStyle, ...{ marginBottom: 10 } }}>
-          <Link to={"/articles"}>Find Articles</Link>
-          <br />
-          <Link to={"/front_pages"}>Front Pages</Link>
-          <Link to={"/sources"}>Sources</Link>
+          <div style={{ maxWidth: 400 }}>
+            <ToolMenu hideSourceMenu />
+          </div>
         </div>
 
         <SectionWithLoader

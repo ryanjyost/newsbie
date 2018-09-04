@@ -19,7 +19,10 @@ export default class SectionWithLoader extends Component {
     const { isLoading, title } = this.props;
 
     return (
-      <div style={{ ...sectionStyle, ...this.props.sectionStyle }}>
+      <div
+        className={"shadow"}
+        style={{ ...sectionStyle, ...this.props.sectionStyle }}
+      >
         {title ? (
           <h5 style={{ margin: 0, marginBottom: 10, color: "rgba(0,0,0,0.6)" }}>
             {title}
