@@ -128,18 +128,19 @@ export default class FrontPageSearch extends Component {
         : null;
 
     // let frontPages = shuffle(this.state.records);
-    let frontPages = isSingleSource
-      ? this.props.batches[0].records.map(record => {
-          return {
-            id: this.props.batches[0].id,
-            batch: this.props.batches[0].id,
-            site: isSingleSource ? this.props.source : this.state.siteFilter,
-            image: `${currentSiteFilter}/${currentSiteFilter}_${
-              this.props.batches[0].id
-            }`
-          };
-        })
-      : this.state.records;
+    let frontPages =
+      isSingleSource && this.props.batches.length > 0
+        ? this.props.batches[0].records.map(record => {
+            return {
+              id: this.props.batches[0].id,
+              batch: this.props.batches[0].id,
+              site: isSingleSource ? this.props.source : this.state.siteFilter,
+              image: `${currentSiteFilter}/${currentSiteFilter}_${
+                this.props.batches[0].id
+              }`
+            };
+          })
+        : this.state.records;
 
     let batches = isSingleSource ? this.props.batches : this.state.batches;
 
@@ -174,7 +175,7 @@ export default class FrontPageSearch extends Component {
     } else if (currentSiteFilter) {
       frontPages = batches
         .filter((batch, i) => {
-          return i === 0 || i % 4 === 0;
+          return i === 0 || i % (4 * 12) === 0;
         })
         .map(batch => {
           return {
@@ -458,13 +459,11 @@ export default class FrontPageSearch extends Component {
                 icon={androidTime}
                 size={14}
               />{" "}
-              {/*<TimeAgo*/}
-              {/*date={*/}
-              {/*new Date(*/}
-              {/*frontPages.length < 1 ? null : frontPages[0][0].batch*/}
-              {/*)*/}
-              {/*}*/}
-              {/*/>*/}
+              <TimeAgo
+                date={
+                  new Date(frontPages.length < 1 ? null : frontPages[0].batch)
+                }
+              />
             </div>
           ) : null}
           {renderBatch()}

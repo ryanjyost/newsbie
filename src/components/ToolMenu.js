@@ -31,7 +31,8 @@ export default class ToolMenu extends Component {
             margin: 5,
             width: 300,
             height: 50,
-            backgroundColor: "#fff"
+            backgroundColor: "#fff",
+            color: "rgba(0,0,0,0.9)"
             // flexDirection: "column",
             // alignItems: "center"
           }}
@@ -80,7 +81,9 @@ export default class ToolMenu extends Component {
         className={hideSourceMenu ? "" : "overlay-content"}
         style={{
           width: "100%",
-          padding: hideSourceMenu ? "0px" : "20px 0px 50px 0px"
+          padding: hideSourceMenu ? "0px" : "20px 0px 50px 0px",
+          maxWidth: hideSourceMenu ? "" : 800,
+          margin: "auto"
           // display: "flex",
           // flexWrap: "wrap",
           // alignItems: "flex-start",
@@ -99,33 +102,38 @@ export default class ToolMenu extends Component {
         >
           <SingleTool
             link={"/articles"}
-            title={"Article Finder"}
+            title={"Article Explorer"}
             desc={
-              "Search + filter hundreds of articles from dozens of" +
-              " sources."
+              "Easily navigate the latest news + opinions with this powerful, flexible tool."
             }
             icon={search}
           />
           <SingleTool
             link={"/front_pages"}
-            title={"Browse Front Pages"}
+            title={"Front Page Browser"}
             desc={
-              "Watch the news develop over time and compare the ways it's being covered."
+              "Your bird's-eye view of the media landscape that helps you fly above the bullsh*t."
             }
             icon={newspaperO}
           />
           <SingleTool
             link={"/sources"}
-            title={"Explore Sources"}
+            title={"Source Analyzer"}
             desc={
-              "Find patterns and potential biases that will make you a better" +
+              "Discover patterns and potential biases that will make you a better" +
               " news reader. "
             }
             icon={ic_visibility}
           />
         </div>
         {!this.props.hideSourceMenu && (
-          <div>
+          <div
+            style={{
+              borderTop: "1px solid rgba(0,0,0,0.2)",
+              padding: "5px 0px",
+              margin: "10px 0px"
+            }}
+          >
             <h5
               style={{
                 width: "100%",

@@ -29,6 +29,7 @@ export default class SingleSource extends Component {
     this.state = {
       source: null,
       tags: [],
+      batches: [],
       politicsTags: [],
       opinionTags: [],
       sourceCount: null,

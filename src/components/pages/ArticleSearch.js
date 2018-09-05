@@ -249,7 +249,7 @@ export default class ArticleSearch extends Component {
       );
     };
 
-    if (this.state.topTags.length < 1 && this.state.sites.length < 1) {
+    if (!this.state.topTags[0] && this.state.sites.length < 1) {
       return (
         <div>
           <Loader
