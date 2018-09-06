@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { FormGroup, ControlLabel, FormControl } from "react-bootstrap";
 import TagCloud from "../TagCloud";
 import axios from "axios/index";
 import shuffle from "shuffle-array";
@@ -10,6 +11,7 @@ import { Link } from "react-router-dom";
 
 import SingleFrontPage from "../SingleFrontPage";
 import ToolMenu from "../ToolMenu";
+import UserAuth from "../UserAuth";
 import TopWordsChart from "../TopWordsChart";
 import TimeAgo from "react-timeago";
 import { androidTime } from "react-icons-kit/ionicons/androidTime";
@@ -483,12 +485,17 @@ export default class Dashboard extends Component {
               ...{ marginBottom: 10, maxWidth: 350, flexWrap: "wrap" }
             }}
           >
-            <h5 style={{ margin: 0, color: "rgba(46, 228, 246,1)" }}>
-              welcome to newsbie, where you can
-            </h5>
-            <h2 style={{ margin: 0 }}>
-              monitor, analyze & understand the news media.
-            </h2>
+            <div>
+              <h5 style={{ margin: 0, color: "rgba(46, 228, 246,1)" }}>
+                welcome to newsbie, where you can
+              </h5>
+              <h2 style={{ margin: 0 }}>
+                monitor, analyze & understand the news media.
+              </h2>
+            </div>
+            <div>
+              <UserAuth />
+            </div>
           </div>
           <div style={{ maxWidth: 400 }}>
             <ToolMenu hideSourceMenu />
