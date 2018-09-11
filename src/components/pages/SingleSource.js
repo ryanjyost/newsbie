@@ -31,26 +31,26 @@ export default class SingleSource extends Component {
       tags: [],
       batches: [],
       politicsTags: [],
+      aboveAverageTags: [],
       opinionTags: [],
       sourceCount: null,
       opinionArticles: [],
       politicsArticles: [],
       combinedArticles: [],
-      view: "analysis"
+      view: "analysis",
+      hideAnalysis: false
     };
   }
 
   componentDidMount() {
     axios
-      .get(
-        `https://birds-eye-news-api.herokuapp.com/sources/${
-          this.props.match.params.source
-        }`,
-        {
-          Accept: "application/json"
-        }
-      )
+      .get(`http://localhost:8000/sources/${this.props.match.params.source}`, {
+        Accept: "application/json"
+      })
       .then(res => {
+        if (res.data.tags.length < 2) {
+          this.setState({ view: "articles", hideAnalysis: true });
+        }
         this.setState({ ...this.state, ...res.data });
       })
       .catch(err => console.log(err));
@@ -269,7 +269,7 @@ export default class SingleSource extends Component {
             }}
             // divStyle={{ width: screenWidth > 768 ? "50%" : "100%" }}
           >
-            <TagCloud tags={this.state.tags} />
+            <TagCloud tags={this.state.tags} showPercentageFreq />
           </SectionWithLoader>
           <SectionWithLoader
             title={`% of recent headlines that include the word...`}
@@ -284,6 +284,26 @@ export default class SingleSource extends Component {
               topTags={this.state.tags}
               batchOfTags={{ sourceCount: this.state.combinedArticles.length }}
             />
+          </SectionWithLoader>
+          <SectionWithLoader
+            title={
+              <div>
+                <span style={{ marginRight: 3 }}>{`words that ${
+                  this.state.source.title
+                }`}</span>
+                has been using{" "}
+                <span style={{ color: "#26C521" }}>more than average</span>
+              </div>
+            }
+            isLoading={this.state.aboveAverageTags.length < 2}
+            sectionStyle={{
+              margin: "10px 0px 10px 5px",
+              maxWidth: 350
+              // width: Math.min(this.props.screenWidth - 80, 350)
+            }}
+            // divStyle={{ width: screenWidth > 768 ? "50%" : "100%" }}
+          >
+            <TagCloud tags={this.state.aboveAverageTags} showDiffToAvg />
           </SectionWithLoader>
         </div>
       );
@@ -425,7 +445,9 @@ export default class SingleSource extends Component {
                   // borderBottom: "2px solid rgba(0,0,0,0.3)"
                 }}
               >
-                <Tab text={"Analysis"} view={"analysis"} icon={areaChart} />
+                {!this.state.hideAnalysis && (
+                  <Tab text={"Analysis"} view={"analysis"} icon={areaChart} />
+                )}
                 <Tab text={"Articles"} view={"articles"} icon={pencil} />
                 <Tab
                   text={"Front Pages"}

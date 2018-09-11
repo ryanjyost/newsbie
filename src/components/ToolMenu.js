@@ -118,10 +118,9 @@ export default class ToolMenu extends Component {
           />
           <SingleTool
             link={"/sources"}
-            title={"Source Analyzer"}
+            title={"Source Reports"}
             desc={
-              "Discover patterns and potential biases that will make you a better" +
-              " news reader. "
+              "Dive deep into specific sources. Discover patterns + potential biases."
             }
             icon={ic_visibility}
           />

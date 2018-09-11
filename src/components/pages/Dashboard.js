@@ -478,34 +478,40 @@ export default class Dashboard extends Component {
             flexWrap: "wrap"
           }}
         >
-          <div
-            className={"shadow"}
-            style={{
-              ...sectionStyle,
-              ...{ marginBottom: 10, maxWidth: 350, flexWrap: "wrap" }
-            }}
-          >
-            <div>
-              <h5 style={{ margin: 0, color: "rgba(46, 228, 246,1)" }}>
-                welcome to newsbie, where you can
-              </h5>
-              <h2 style={{ margin: 0 }}>
-                monitor, analyze & understand the news media.
-              </h2>
+          {/* SIGN UP SIGN IN */}
+          {!this.props.user ? (
+            <div
+              className={"shadow"}
+              style={{
+                ...sectionStyle,
+                ...{ maxWidth: 350, flexWrap: "wrap" }
+              }}
+            >
+              <div>
+                <h5 style={{ margin: 0, color: "rgba(46, 228, 246,1)" }}>
+                  welcome to newsbie, where you can
+                </h5>
+                <h2 style={{ margin: 0 }}>
+                  monitor, analyze & understand the news media.
+                </h2>
+              </div>
+              <div>
+                <UserAuth updateUser={user => this.props.updateUser(user)} />
+              </div>
             </div>
-            <div>
-              <UserAuth />
-            </div>
-          </div>
-          <div style={{ maxWidth: 400 }}>
+          ) : null}
+
+          <div>
             <ToolMenu hideSourceMenu />
           </div>
         </div>
 
         <SectionWithLoader
-          title={`most common words from ${
+          title={`most common words in ${
             this.state.batchOfTags ? this.state.batchOfTags.sourceCount : ""
-          } recent headlines`}
+          } recent headlines from ${
+            this.state.sites.length > 0 ? this.state.sites.length : ""
+          } sources`}
           isLoading={this.state.topTags.length < 2}
           sectionStyle={{
             width: Math.min(screenWidth - 50, 350)
@@ -517,6 +523,16 @@ export default class Dashboard extends Component {
             this.state.batchOfTags ? this.state.batchOfTags.created_at : null
           )}
         </SectionWithLoader>
+
+        {/*<h4*/}
+        {/*style={{*/}
+        {/*margin: "50px 0px 10px 0px",*/}
+        {/*textAlign: "center"*/}
+        {/*// width: "100%"*/}
+        {/*}}*/}
+        {/*>*/}
+        {/*How's it being covered?*/}
+        {/*</h4>*/}
 
         {/* ======================================== */}
         <SectionWithLoader
@@ -537,11 +553,10 @@ export default class Dashboard extends Component {
         </SectionWithLoader>
 
         {/* ======================================== */}
-
         <div
           style={{
             margin: "10px 0px",
-            backgroundColor: "#fff",
+            backgroundColor: "#fafafa",
             padding: "30px 0px 20px 0px",
             borderRadius: 3,
             position: "relative",
@@ -557,6 +572,17 @@ export default class Dashboard extends Component {
             renderFrontPages()
           )}
         </div>
+
+        {/* ======================================== */}
+        <SectionWithLoader
+          title={`% of recent headlines that include the word...`}
+          isLoading={false}
+          // sectionStyle={{
+          //   width: Math.min(screenWidth - 50, 350)
+          // }}
+        >
+          hey
+        </SectionWithLoader>
       </div>
     );
   }

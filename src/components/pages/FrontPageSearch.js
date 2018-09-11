@@ -284,7 +284,7 @@ export default class FrontPageSearch extends Component {
                   imageWidth={
                     !screenWidth ? 300 : Math.min(screenWidth - 40, 400)
                   }
-                  record={record}
+                  record={{ ...record, ...{ source: this.props.source } }}
                   noLink
                 />
               </div>

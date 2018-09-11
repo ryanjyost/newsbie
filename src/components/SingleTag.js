@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import { Popover } from "react-bootstrap";
 import $ from "jquery";
-import Icon from "react-icons-kit";
-import { wikipediaW } from "react-icons-kit/fa/wikipediaW";
-import { frownO } from "react-icons-kit/fa/frownO";
-import { ic_close } from "react-icons-kit/md/ic_close";
+import numeral from "numeral";
 
 export default class SingleTag extends Component {
   constructor(props) {
@@ -40,13 +37,44 @@ export default class SingleTag extends Component {
   }
 
   render() {
-    const { tag, i, currentTag } = this.props;
+    const { tag, i, currentTag, vsAverage } = this.props;
     const { hover } = this.state;
 
     let url = tag ? tag.term.replace(/ /g, "+") : "";
     const isCurrent = this.props.currentTag
       ? this.props.currentTag.term === tag.term
       : false;
+
+    const renderPercentageFreq = tag => {
+      return (
+        <div style={{ marginLeft: 5, color: "rgba(0,0,0,0.4)", fontSize: 12 }}>
+          {numeral(tag.percentageFreq).format("0.0%")}
+        </div>
+      );
+    };
+
+    const renderDiffToAvg = tag => {
+      return (
+        <div
+          style={{
+            marginLeft: 5,
+            color: "#26C521",
+            fontSize: 12,
+            display: "flex",
+            alignItems: "baseline"
+          }}
+        >
+          {"average" in tag ? (
+            <span>{`${numeral(1 + tag.average.percentageDiff).format(
+              "0.0"
+            )}x`}</span>
+          ) : (
+            <span>&infin;</span>
+          )}
+        </div>
+      );
+    };
+
     return (
       <div key={i} style={{ position: "relative" }}>
         {/*{hover && Popover()}*/}
@@ -85,22 +113,6 @@ export default class SingleTag extends Component {
             // transform: "skew(-20deg)" /* SKEW */
           }}
         >
-          {/*<div*/}
-          {/*style={{*/}
-          {/*display: "inline-block",*/}
-          {/*backgroundColor: "rgba(255, 255, 255, 0.1)",*/}
-          {/*// backgroundColor: "red",*/}
-          {/*transition: "background 0.2s",*/}
-          {/*transform: "skew(-10deg)",*/}
-          {/*width: this.state.loadWidth,*/}
-          {/*height: "100%",*/}
-          {/*position: "absolute",*/}
-          {/*borderRadius: 3,*/}
-          {/*bottom: 0,*/}
-          {/*left: 0*/}
-          {/*// height: "100%"*/}
-          {/*}}*/}
-          {/*/>*/}
           <div
             style={{
               display: "flex",
@@ -111,9 +123,8 @@ export default class SingleTag extends Component {
             }}
           >
             {tag ? tag.term : ""}{" "}
-            {/*<span style={{ marginLeft: 10, color: "#a4a4a4", fontSize: 12 }}>*/}
-            {/*{tag ? tag.tf : ""}*/}
-            {/*</span>*/}
+            {this.props.showPercentageFreq && renderPercentageFreq(tag)}
+            {this.props.showDiffToAvg && renderDiffToAvg(tag)}
           </div>
         </a>
       </div>
