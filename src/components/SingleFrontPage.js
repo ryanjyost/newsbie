@@ -8,11 +8,10 @@ export default class SingleFrontPage extends Component {
 
   render() {
     const { imageWidth, record } = this.props;
-
     return (
       <a
-        target={"_blank"}
-        href={`https://d1dzf0mjm4jp11.cloudfront.net/${record.image}`}
+        // target={"_blank"}
+        href={record.site ? record.site.url : ""}
         key={record.id}
         style={{
           // margin: "0px 10px",

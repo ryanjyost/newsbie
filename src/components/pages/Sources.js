@@ -111,7 +111,7 @@ export default class Sources extends Component {
               style={{ marginTop: 10 }}
               href={"mailto:ryanjyost@gmail.com?subject=New source for Newsbie"}
             >
-              Email me about it
+              Email me about it @ ryanjyost@gmail.com
             </a>
           </div>
         </div>

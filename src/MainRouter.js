@@ -14,15 +14,12 @@ import Articles from "./components/pages/ArticleSearch";
 import FrontPageSearch from "./components/pages/FrontPageSearch";
 import Sources from "./components/pages/Sources";
 import SingleSource from "./components/pages/SingleSource";
+import Chyrons from "./components/pages/Chyrons";
 import { withRouter } from "react-router";
-
 import { ic_menu } from "react-icons-kit/md/ic_menu";
 import { ic_close } from "react-icons-kit/md/ic_close";
-import { search } from "react-icons-kit/fa/search";
-import { newspaperO } from "react-icons-kit/fa/newspaperO";
 import { Icon } from "react-icons-kit";
-import sources from "./sources";
-import SourceCloud from "./components/SourceCloud";
+import withAuth from "./components/hoc/withAuth";
 
 class TopBar extends React.Component {
   constructor(props) {
@@ -33,7 +30,34 @@ class TopBar extends React.Component {
   }
 
   render() {
-    const { menuOpen } = this.props;
+    const { menuOpen, location } = this.props;
+    let title = "";
+    if (menuOpen) {
+      title = "Menu";
+    } else {
+      switch (location.pathname) {
+        case "/":
+          title = "Dashboard";
+          break;
+        case "/articles":
+          title = "Article Finder";
+          break;
+        case "/sources":
+          title = "Sources";
+          break;
+        case "/chyrons":
+          title = "Chyrons";
+          break;
+        default:
+          break;
+      }
+    }
+
+    if (title === "") {
+      if (location.pathname.includes("/sources/")) {
+        title = "Source Report";
+      }
+    }
 
     return (
       <div
@@ -83,14 +107,35 @@ class TopBar extends React.Component {
               cursor: "pointer",
               marginLeft: 10,
               display: "flex",
-              alignItems: "center"
+              width: 100
             }}
             onClick={() => window.scrollTo(0, 0)}
           >
             <img src={"/images/ms-icon-310x310.png"} height={30} width={30} />
+            <span
+              style={{
+                textDecoration: "none",
+                fontSize: 10,
+                color: "rgba(0,0,0,0.5)",
+                marginLeft: 3
+              }}
+            >
+              beta
+            </span>
           </Link>
           <div
-            style={{ cursor: "pointer" }}
+            onClick={() => window.scrollTo(0, 0)}
+            style={{ fontSize: 14, cursor: "pointer" }}
+          >
+            {title}
+          </div>
+          <div
+            style={{
+              cursor: "pointer",
+              width: 100,
+              display: "flex",
+              justifyContent: "flex-end"
+            }}
             onClick={() => {
               this.props.updateState("menuOpen", !menuOpen);
             }}
@@ -133,7 +178,8 @@ class MainRouter extends React.Component {
     super(props);
     this.state = {
       menuOpen: false,
-      screenWidth: 0
+      screenWidth: 0,
+      user: "user"
     };
   }
 
@@ -175,7 +221,23 @@ class MainRouter extends React.Component {
     };
   }
 
+  updateUser(user) {
+    alert("updated!");
+    this.setState({ user });
+  }
+
   render() {
+    const { user } = this.state;
+
+    const withAuthAndUser = Component => {
+      return withAuth(Component, user, this.updateUser.bind(this));
+    };
+
+    const ArticlesWithAuth = withAuthAndUser(Articles);
+    const FrontPagesWithAuth = withAuthAndUser(FrontPageSearch);
+    const SourcesWithAuth = withAuthAndUser(Sources);
+    const SingleSourceWithAuth = withAuthAndUser(SingleSource);
+
     return (
       <Router>
         <div>
@@ -190,11 +252,40 @@ class MainRouter extends React.Component {
               <Switch>
                 {/*<Route exact path="/" component={Landing} />*/}
                 {/*<Route path="/demo" component={App} />*/}
-                <Route path="/" exact component={Dashboard} />
-                <Route path="/articles" component={Articles} />
-                <Route path="/front_pages" component={FrontPageSearch} />
-                <Route path="/sources" exact component={Sources} />
-                <Route path="/sources/:source" component={SingleSource} />
+                <Route
+                  path="/"
+                  exact
+                  render={props => (
+                    <Dashboard
+                      {...props}
+                      user={user}
+                      updateUser={user => {
+                        this.setState({ user });
+                      }}
+                    />
+                  )}
+                />
+                <Route
+                  path="/articles"
+                  render={props => <ArticlesWithAuth {...props} />}
+                />
+                <Route
+                  path="/front_pages"
+                  render={props => <FrontPagesWithAuth {...props} />}
+                />
+                <Route
+                  path="/sources"
+                  exact
+                  render={props => <SourcesWithAuth {...props} />}
+                />
+                <Route
+                  path="/sources/:source"
+                  render={props => <SingleSourceWithAuth {...props} />}
+                />
+                <Route
+                  path="/chyrons"
+                  render={props => <Chyrons {...props} />}
+                />
                 <Route path="/old/landing" component={Landing} />
                 <Route component={Dashboard} />
               </Switch>
