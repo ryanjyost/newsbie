@@ -46,6 +46,7 @@
     "react-vis": "^1.10.4",
     "recharts": "^1.1.0",
     "shuffle-array": "^1.0.1",
+    "simple-statistics": "^6.1.0",
     "slick-carousel": "^1.8.1",
     "swipe-js-iso": "^2.0.4"
   },

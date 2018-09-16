@@ -39,6 +39,7 @@ export default class TagCloud extends Component {
         }
       });
     }
+
     return (
       <div
         style={{
@@ -55,16 +56,6 @@ export default class TagCloud extends Component {
             // maxWidth: 600,
           }}
         >
-          {/*let topTags = res.data.batch.tags.sort((a,b) => {*/}
-          {/*if(a.tf > b.tf){*/}
-          {/*return 1*/}
-          {/*} else if(b.tf > a.tf){*/}
-          {/*return -1*/}
-          {/*} else {*/}
-          {/*return 0*/}
-          {/*}*/}
-          {/*})*/}
-
           {tags.slice(0, 30).map((tag, i) => {
             return (
               <SingleTag

@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import { FormGroup, ControlLabel, FormControl } from "react-bootstrap";
 import TagCloud from "../TagCloud";
+import WordCloud from "../WordCloud";
 import axios from "axios/index";
 import shuffle from "shuffle-array";
 import ReactGA from "react-ga";
 import Slider from "react-slick";
-import { curveCatmullRom } from "d3-shape";
 import "../../../node_modules/react-vis/dist/style.css";
-import { Link } from "react-router-dom";
 
 import SingleFrontPage from "../SingleFrontPage";
 import ToolMenu from "../ToolMenu";
@@ -20,16 +19,14 @@ import Loader from "../Loader";
 import SectionWithLoader from "../SectionWithLoader";
 import detectIt from "detect-it";
 import {
-  AreaSeries,
   HorizontalBarSeries,
   HorizontalGridLines,
   VerticalGridLines,
   XAxis,
   XYPlot,
-  YAxis,
-  LineSeries
+  YAxis
 } from "react-vis";
-import $ from "jquery";
+import { mean, standardDeviation, zScore, median } from "simple-statistics";
 
 export default class Dashboard extends Component {
   constructor(props) {
@@ -502,7 +499,7 @@ export default class Dashboard extends Component {
           ) : null}
 
           <div>
-            <ToolMenu hideSourceMenu />
+            <ToolMenu hideSourceMenu user={this.props.user} />
           </div>
         </div>
 
@@ -518,7 +515,24 @@ export default class Dashboard extends Component {
           }}
           // divStyle={{ width: screenWidth > 768 ? "50%" : "100%" }}
         >
-          <TagCloud tags={this.state.topTags} />
+          <WordCloud
+            shuffle
+            list={this.state.topTags
+              .sort((a, b) => {
+                if (a.tf > b.tf) {
+                  return -1;
+                } else if (b.tf > a.tf) {
+                  return 1;
+                } else {
+                  return 0;
+                }
+              })
+              .slice(0, 30)}
+            valProperty={"tf"}
+            calcValue={word => {
+              return word.tf / this.state.batchOfTags.sourceCount;
+            }}
+          />
           {renderTimeAgo(
             this.state.batchOfTags ? this.state.batchOfTags.created_at : null
           )}

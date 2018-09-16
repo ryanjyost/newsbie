@@ -17,9 +17,9 @@ export default class SourceCloud extends Component {
           onClick={() => this.setState({ siteFilter: site })}
           className={"hoverBtn singleTag"}
           style={{
-            fontSize: 12,
+            fontSize: 16,
             borderRadius: 3,
-            margin: "3px 3px",
+            margin: "5px 5px",
             alignItems: "center",
             justifyContent: "center",
             padding: "5px 12px",
@@ -34,12 +34,16 @@ export default class SourceCloud extends Component {
     };
     return (
       <div
+        className={"shadow"}
         style={{
           margin: "auto",
           // padding: "10px 20px",
           display: "flex",
           flexWrap: "wrap",
-          justifyContent: "center"
+          justifyContent: "center",
+          backgroundColor: "rgba(0,0,0,0.02)",
+          padding: 10,
+          borderRadius: 3
         }}
       >
         {" "}
