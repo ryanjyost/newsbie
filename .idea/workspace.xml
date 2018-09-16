@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="eaad3f9b-385c-4760-bbaf-b9ee01a5c1fb" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="eaad3f9b-385c-4760-bbaf-b9ee01a5c1fb" name="Default" comment="git ignore" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -96,20 +93,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="firebase.js" pinned="false" current-in-tab="false">
+          <file leaf-file-name="firebase.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/firebase/firebase.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="380">
-                  <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/.gitignore">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="320">
-                  <caret line="16" column="21" lean-forward="true" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
+                <state relative-caret-position="360">
+                  <caret line="18" column="16" lean-forward="true" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="16" />
                 </state>
               </provider>
             </entry>
@@ -406,7 +394,7 @@
       <workItem from="1536528501790" duration="1649000" />
       <workItem from="1536537584933" duration="4548000" />
       <workItem from="1536619223652" duration="16877000" />
-      <workItem from="1536702207394" duration="26021000" />
+      <workItem from="1536702207394" duration="26233000" />
     </task>
     <task id="LOCAL-00001" summary="progress">
       <created>1533179196867</created>
@@ -464,15 +452,21 @@
       <option name="project" value="LOCAL" />
       <updated>1537122449183</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="git ignore">
+      <created>1537123232355</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1537123232355</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="477518000" />
+    <option name="totallyTimeSpent" value="477730000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="777" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
@@ -480,8 +474,8 @@
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.3298193" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32680723" />
       <window_info id="npm" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32831326" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24394184" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.32831326" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24394184" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3298193" />
@@ -532,7 +526,8 @@
     <MESSAGE value="checking in" />
     <MESSAGE value="CHYRONS" />
     <MESSAGE value="bunch of improvements" />
-    <option name="LAST_COMMIT_MESSAGE" value="bunch of improvements" />
+    <MESSAGE value="git ignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="git ignore" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -644,13 +639,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="180">
           <caret line="25" column="11" lean-forward="true" selection-start-line="25" selection-start-column="11" selection-end-line="25" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.env">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="100">
-          <caret line="5" column="42" lean-forward="true" selection-start-line="5" selection-start-column="42" selection-end-line="5" selection-end-column="42" />
         </state>
       </provider>
     </entry>
@@ -1466,17 +1454,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/firebase/firebase.js">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+        <state relative-caret-position="440">
+          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="file://$PROJECT_DIR$/.env">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="320">
-          <caret line="16" column="21" lean-forward="true" selection-start-line="16" selection-start-column="21" selection-end-line="16" selection-end-column="21" />
+        <state relative-caret-position="100">
+          <caret line="5" column="42" lean-forward="true" selection-start-line="5" selection-start-column="42" selection-end-line="5" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/firebase/firebase.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="18" column="16" lean-forward="true" selection-start-line="18" selection-start-column="16" selection-end-line="18" selection-end-column="16" />
         </state>
       </provider>
     </entry>
