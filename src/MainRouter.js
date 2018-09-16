@@ -13,7 +13,9 @@ import Dashboard from "./components/pages/Dashboard";
 import Articles from "./components/pages/ArticleSearch";
 import FrontPageSearch from "./components/pages/FrontPageSearch";
 import Sources from "./components/pages/Sources";
+import UserAuthPage from "./components/pages/UserAuthPage";
 import SingleSource from "./components/pages/SingleSource";
+import TopNews from "./components/pages/TopNews";
 import Chyrons from "./components/pages/Chyrons";
 import { withRouter } from "react-router";
 import { ic_menu } from "react-icons-kit/md/ic_menu";
@@ -37,16 +39,22 @@ class TopBar extends React.Component {
     } else {
       switch (location.pathname) {
         case "/":
-          title = "Dashboard";
+          title = "newsbie";
           break;
         case "/articles":
-          title = "Article Finder";
+          title = "Articles";
+          break;
+        case "/front_pages":
+          title = "Front Pages";
           break;
         case "/sources":
           title = "Sources";
           break;
         case "/chyrons":
           title = "Chyrons";
+          break;
+        case "/top_news":
+          title = "Top News";
           break;
         default:
           break;
@@ -150,7 +158,7 @@ class TopBar extends React.Component {
             />
           </div>
         </div>
-        {menuOpen ? <ToolMenu /> : null}
+        {menuOpen ? <ToolMenu user={this.props.user} /> : null}
       </div>
     );
   }
@@ -229,14 +237,9 @@ class MainRouter extends React.Component {
   render() {
     const { user } = this.state;
 
-    const withAuthAndUser = Component => {
-      return withAuth(Component, user, this.updateUser.bind(this));
-    };
-
-    const ArticlesWithAuth = withAuthAndUser(Articles);
-    const FrontPagesWithAuth = withAuthAndUser(FrontPageSearch);
-    const SourcesWithAuth = withAuthAndUser(Sources);
-    const SingleSourceWithAuth = withAuthAndUser(SingleSource);
+    // const withAuthAndUser = Component => {
+    //   return withAuth(Component, user, this.updateUser.bind(this));
+    // };
 
     return (
       <Router>
@@ -247,16 +250,13 @@ class MainRouter extends React.Component {
             <TopBarWithRouter
               updateState={(key, value) => this.setState({ [key]: value })}
               menuOpen={this.state.menuOpen}
+              user={user}
             />
             <div>
-              <Switch>
-                {/*<Route exact path="/" component={Landing} />*/}
-                {/*<Route path="/demo" component={App} />*/}
+              {!user ? (
                 <Route
-                  path="/"
-                  exact
                   render={props => (
-                    <Dashboard
+                    <UserAuthPage
                       {...props}
                       user={user}
                       updateUser={user => {
@@ -265,30 +265,52 @@ class MainRouter extends React.Component {
                     />
                   )}
                 />
-                <Route
-                  path="/articles"
-                  render={props => <ArticlesWithAuth {...props} />}
-                />
-                <Route
-                  path="/front_pages"
-                  render={props => <FrontPagesWithAuth {...props} />}
-                />
-                <Route
-                  path="/sources"
-                  exact
-                  render={props => <SourcesWithAuth {...props} />}
-                />
-                <Route
-                  path="/sources/:source"
-                  render={props => <SingleSourceWithAuth {...props} />}
-                />
-                <Route
-                  path="/chyrons"
-                  render={props => <Chyrons {...props} />}
-                />
-                <Route path="/old/landing" component={Landing} />
-                <Route component={Dashboard} />
-              </Switch>
+              ) : (
+                <Switch>
+                  {/*<Route exact path="/" component={Landing} />*/}
+                  {/*<Route path="/demo" component={App} />*/}
+                  <Route
+                    path="/"
+                    exact
+                    render={props => (
+                      <Dashboard
+                        {...props}
+                        user={user}
+                        updateUser={user => {
+                          this.setState({ user });
+                        }}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/articles"
+                    render={props => <Articles {...props} />}
+                  />
+                  <Route
+                    path="/front_pages"
+                    render={props => <FrontPageSearch {...props} />}
+                  />
+                  <Route
+                    path="/sources"
+                    exact
+                    render={props => <Sources {...props} />}
+                  />
+                  <Route
+                    path="/sources/:source"
+                    render={props => <SingleSource {...props} />}
+                  />
+                  <Route
+                    path="/chyrons"
+                    render={props => <Chyrons {...props} />}
+                  />
+                  <Route
+                    path="/top_news"
+                    render={props => <TopNews {...props} />}
+                  />
+                  <Route path="/old/landing" component={Landing} />
+                  <Route component={Dashboard} />
+                </Switch>
+              )}
             </div>
           </ScollToTopWithRouter>
         </div>

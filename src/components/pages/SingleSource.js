@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Loader from "../Loader";
 import TopWordsChart from "../TopWordsChart";
 import TagCloud from "../TagCloud";
+import WordCloud from "../WordCloud";
 import ArticleSearch from "../pages/ArticleSearch";
 import FrontPageSearch from "../pages/FrontPageSearch";
 import SectionWithLoader from "../SectionWithLoader";
@@ -264,12 +265,30 @@ export default class SingleSource extends Component {
             isLoading={this.state.tags.length < 2}
             sectionStyle={{
               margin: "10px 0px 10px 5px",
-              maxWidth: 350
+              width: "100%",
+              maxWidth: 600
               // width: Math.min(this.props.screenWidth - 80, 350)
             }}
             // divStyle={{ width: screenWidth > 768 ? "50%" : "100%" }}
           >
-            <TagCloud tags={this.state.tags} showPercentageFreq />
+            {/*<TagCloud tags={this.state.tags} showPercentageFreq />*/}
+            <WordCloud
+              shuffle
+              list={this.state.tags
+                .sort((a, b) => {
+                  if (a.percentageFreq > b.percentageFreq) {
+                    return -1;
+                  } else if (b.percentageFreq > a.percentageFreq) {
+                    return 1;
+                  } else {
+                    return 0;
+                  }
+                })
+                .slice(0, 30)}
+              calcValue={word => {
+                return word.percentageFreq;
+              }}
+            />
           </SectionWithLoader>
           <SectionWithLoader
             title={`% of recent headlines that include the word...`}

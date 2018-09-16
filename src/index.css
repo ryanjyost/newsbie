@@ -2,6 +2,12 @@
   color: #527991
 }
 
+/** {*/
+  /*-moz-box-sizing: content-box;*/
+  /*-webkit-box-sizing: content-box;*/
+  /*box-sizing: content-box;*/
+/*}*/
+
 html, body {
   height: 100%;
 }
@@ -224,6 +230,15 @@ body::-webkit-scrollbar-thumb:hover {
   color: rgba(255, 255, 255, 0.9);
   background-color: rgba(255, 255, 255, 0.2);
   text-decoration: none;
+}
+
+.wordCloudLink {
+  text-decoration:none;
+}
+
+
+.wordCloudLink:hover {
+  text-decoration:underline !important;
 }
 
 .article {

@@ -10,6 +10,7 @@ import shuffle from "shuffle-array";
 import CircularProgressbar from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import numeral from "numeral";
+import WordCloud from "../WordCloud";
 
 export default class Chyrons extends Component {
   constructor(props) {
@@ -128,7 +129,7 @@ export default class Chyrons extends Component {
             }}
             onClick={() => this.setState({ showHelper: false })}
             icon={ic_close}
-            size={26}
+            size={18}
           />
           <h1 style={{ margin: "5px 0px" }}>chyrons</h1>
           <p style={{ margin: "0px 0px 10px 0px", color: "rgba(0,0,0,0.7)" }}>
@@ -174,26 +175,22 @@ export default class Chyrons extends Component {
             alignItems: "baseline"
           }}
         >
-          {list.map((tag, i) => {
-            return (
-              <div
-                key={i}
-                style={{
-                  padding: 3,
-                  color: randomColor([
-                    { min: 60, max: 82 },
-                    { min: 100, max: 121 },
-                    { min: 120, max: 145 },
-                    { min: 0.5, max: 1 }
-                  ]),
-                  fontSize: Math.max(Math.min((tag.tf / denom) * 150, 50), 14),
-                  textAlign: "center"
-                }}
-              >
-                {tag.term}
-              </div>
-            );
-          })}
+          <WordCloud
+            list={list
+              .sort((a, b) => {
+                if (a.tf > b.tf) {
+                  return -1;
+                } else if (b.tf > a.tf) {
+                  return 1;
+                } else {
+                  return 0;
+                }
+              })
+              .slice(0, 30)}
+            calcValue={word => {
+              return word.tf;
+            }}
+          />
         </div>
       );
     };
@@ -204,48 +201,56 @@ export default class Chyrons extends Component {
       });
 
       return (
-        <div
+        <Col
+          xs={12}
+          sm={4}
           key={source.name}
           style={{
-            display: "flex",
-            justifyContent: "flex-start",
-            alignItems: "center",
-            flexDirection: "column",
-            borerRadius: 3,
-            padding: 20,
-            backgroundColor: "rgba(255,255,255,1)",
-            margin: "5px 10px 20px 10px",
-            maxWidth: 300
+            padding: 5
           }}
-          className={"shadow"}
         >
           <div
+            className={"shadow"}
             style={{
-              width: "100%",
-              padding: "0px 10px",
-              marginBottom: 10,
               display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center"
+              justifyContent: "flex-start",
+              alignItems: "center",
+              flexDirection: "column",
+              borerRadius: 3,
+              padding: 20,
+              backgroundColor: "rgba(255,255,255,1)",
+              margin: "0px 5px 0px 5px",
+              height: "100%"
             }}
           >
-            <img
-              src={`https://d1dzf0mjm4jp11.cloudfront.net/logos/${
-                source.image
-              }`}
-              height={20}
-            />
             <div
               style={{
-                fontSize: 14,
-                color: "rgba(0,0,0,0.4)"
+                width: "100%",
+                padding: "0px 10px",
+                marginBottom: 10,
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center"
               }}
             >
-              {source.title}
+              <img
+                src={`https://d1dzf0mjm4jp11.cloudfront.net/logos/${
+                  source.image
+                }`}
+                height={20}
+              />
+              <div
+                style={{
+                  fontSize: 14,
+                  color: "rgba(0,0,0,0.4)"
+                }}
+              >
+                {source.title}
+              </div>
             </div>
+            {renderCloud(this.state.tags[name], countBySource[name])}
           </div>
-          {renderCloud(this.state.tags[name], countBySource[name])}
-        </div>
+        </Col>
       );
     };
 
@@ -329,7 +334,6 @@ export default class Chyrons extends Component {
     };
 
     const renderComparison = (overlap, source1, source2) => {
-      console.log(overlap);
       let first = sources.find(source => {
         return source.name === source1;
       });
@@ -347,112 +351,153 @@ export default class Chyrons extends Component {
       }
 
       return (
-        <div
+        <Col
+          xs={12}
+          sm={4}
+          key={`${source1}${source2}`}
           style={{
-            display: "flex",
-            justifyContent: "flex-start",
-            alignItems: "flex-start",
-            flexDirection: "column",
-            borerRadius: 3,
-            padding: 20,
-            backgroundColor: "rgba(255,255,255,1)",
-            margin: "5px 10px 20px 10px",
-            width: "100%",
-            maxWidth: 300
+            padding: 5
           }}
-          className={"shadow"}
         >
           <div
+            className={"shadow"}
             style={{
               display: "flex",
+              justifyContent: "flex-start",
               alignItems: "center",
-              justifyContent: "center",
-              width: "100%",
-              marginBottom: 20
+              flexDirection: "column",
+              borerRadius: 3,
+              padding: 20,
+              backgroundColor: "rgba(255,255,255,1)",
+              margin: "0px 5px 0px 5px",
+              height: "100%"
             }}
           >
             <div
               style={{
-                fontSize: 18,
-                fontWeight: "bold",
-                marginRight: 10,
-                color: "rgba(0,0,0,0.9)",
-                textAlign: "right",
-                width: 100
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+                marginBottom: 20
               }}
             >
-              {first.title}
-            </div>
-            <div style={{ color: "rgba(0,0,0,0.3)" }}>vs.</div>
-            <div
-              style={{
-                fontSize: 18,
-                fontWeight: "bold",
-                marginLeft: 10,
-                color: "rgba(0,0,0,0.9)",
-                width: 100
-              }}
-            >
-              {second.title}
-            </div>
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "100%",
-              marginBottom: 10
-            }}
-          >
-            <div style={{ width: 150, margin: "0px 0px 0px 0px" }}>
-              <CircularProgressbar
-                percentage={overlap.percentage * 100}
-                text={numeral(overlap.percentage).format("0%")}
-                styles={{
-                  path: { stroke: "rgba(46, 228, 246,1)" },
-                  text: {
-                    // Tweak text color:
-                    fill: "rgba(0,0,0,0.9)",
-                    // Tweak text size:
-                    fontSize: "30px"
-                  }
-                }}
-              />
-            </div>
-            <div
-              style={{
-                marginLeft: 10,
-                color: "rgba(0,0,0,0.4)",
-                fontSize: 14,
-                lineHeight: 1.5
-              }}
-            >
-              similarity between{" "}
-              <strong
+              <div
                 style={{
-                  color: "rgba(0,0,0,0.6)"
+                  fontSize: 18,
+                  fontWeight: "bold",
+                  marginRight: 10,
+                  color: "rgba(0,0,0,0.9)",
+                  textAlign: "right",
+                  width: 100
                 }}
               >
                 {first.title}
-              </strong>{" "}
-              and{" "}
-              <strong
+              </div>
+              <div style={{ color: "rgba(0,0,0,0.3)" }}>vs.</div>
+              <div
                 style={{
-                  color: "rgba(0,0,0,0.6)"
+                  fontSize: 18,
+                  fontWeight: "bold",
+                  marginLeft: 10,
+                  color: "rgba(0,0,0,0.9)",
+                  width: 100
                 }}
               >
                 {second.title}
-              </strong>{" "}
-              chyron topics in the past {this.state.timeFilter} hours
+              </div>
             </div>
+
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+                marginBottom: 10
+              }}
+            >
+              <div style={{ width: 150, margin: "0px 0px 0px 0px" }}>
+                <CircularProgressbar
+                  percentage={overlap.percentage * 100}
+                  text={numeral(overlap.percentage).format("0%")}
+                  styles={{
+                    path: { stroke: "rgba(46, 228, 246,1)" },
+                    text: {
+                      // Tweak text color:
+                      fill: "rgba(0,0,0,0.9)",
+                      // Tweak text size:
+                      fontSize: "30px"
+                    }
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  marginLeft: 10,
+                  color: "rgba(0,0,0,0.4)",
+                  fontSize: 14,
+                  lineHeight: 1.5
+                }}
+              >
+                overlap in chyron topics between{" "}
+                <strong
+                  style={{
+                    color: "rgba(0,0,0,0.6)"
+                  }}
+                >
+                  {first.title}
+                </strong>{" "}
+                and{" "}
+                <strong
+                  style={{
+                    color: "rgba(0,0,0,0.6)"
+                  }}
+                >
+                  {second.title}
+                </strong>{" "}
+                in the past {this.state.timeFilter} hours
+              </div>
+            </div>
+            <WordCloud
+              list={overlap.words
+                .sort((a, b) => {
+                  if (a.tf > b.tf) {
+                    return -1;
+                  } else if (b.tf > a.tf) {
+                    return 1;
+                  } else {
+                    return 0;
+                  }
+                })
+                .slice(0, 30)}
+              calcValue={word => {
+                return Math.max(
+                  Math.min(
+                    (word.tf / (overlap.words.length / overlap.percentage)) *
+                      150,
+                    30
+                  ),
+                  11
+                );
+              }}
+            />
+            {/*{renderCloud(*/}
+            {/*overlap.words*/}
+            {/*.sort((a, b) => {*/}
+            {/*if (a.tf > b.tf) {*/}
+            {/*return -1;*/}
+            {/*} else if (b.tf > a.tf) {*/}
+            {/*return 1;*/}
+            {/*} else {*/}
+            {/*return 0;*/}
+            {/*}*/}
+            {/*})*/}
+            {/*.slice(0, 30),*/}
+            {/*overlap.words.length / overlap.percentage*/}
+            {/*)}*/}
           </div>
-          {renderCloud(
-            overlap.words,
-            overlap.words.length / overlap.percentage
-          )}
-        </div>
+        </Col>
       );
     };
 
@@ -468,7 +513,6 @@ export default class Chyrons extends Component {
       >
         {this.state.showHelper && renderHelper()}
         <Row>{renderFilter()}</Row>
-
         {this.state.tags && this.state.overlap ? (
           <div
             style={{
@@ -478,23 +522,22 @@ export default class Chyrons extends Component {
               justifyContent: "center"
             }}
           >
-            <div
+            <Row
               style={{
-                padding: "0px 10px",
-                display: "flex",
-                justifyContent: "center",
-                flexWrap: "wrap"
+                padding: "0px 10px"
+                // display: "flex",
+                // alignItems: "stretch"
               }}
             >
               {this.state.chyronSources.map(chyron => {
                 return renderSource(chyron);
               })}
-            </div>
+            </Row>
 
             <h4 style={{ margin: "30px 10px 10px 10px", textAlign: "center" }}>
-              How do the three major news networks compare?
+              Are the 3 major news networks covering the same topics?
             </h4>
-            <div
+            <Row
               style={{
                 padding: "0px 10px",
                 display: "flex",
@@ -519,7 +562,7 @@ export default class Chyrons extends Component {
                 "cnn",
                 "msnbc"
               )}
-            </div>
+            </Row>
           </div>
         ) : (
           <div>

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { Popover } from "react-bootstrap";
+import CircularProgressbar from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 import $ from "jquery";
 import numeral from "numeral";
 

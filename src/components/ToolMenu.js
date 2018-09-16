@@ -10,6 +10,9 @@ import {
 import { search } from "react-icons-kit/fa/search";
 import { newspaperO } from "react-icons-kit/fa/newspaperO";
 import { ic_visibility } from "react-icons-kit/md/ic_visibility";
+import { tv } from "react-icons-kit/fa/tv";
+import { lock } from "react-icons-kit/fa/lock";
+import { globe } from "react-icons-kit/fa/globe";
 import { Icon } from "react-icons-kit";
 
 export default class ToolMenu extends Component {
@@ -19,7 +22,7 @@ export default class ToolMenu extends Component {
   }
 
   render() {
-    const { hideSourceMenu } = this.props;
+    const { hideSourceMenu, user } = this.props;
 
     const SingleTool = ({ link, title, desc, icon }) => {
       return (
@@ -29,16 +32,30 @@ export default class ToolMenu extends Component {
             textDecoration: "none",
             display: "inline-block",
             margin: 5,
-            width: 300,
-            height: 50,
+            width: 350,
+            // height: 50,
             backgroundColor: "#fff",
-            color: "rgba(0,0,0,0.9)"
+            color: "rgba(0,0,0,0.9)",
+            position: "relative",
+            opacity: user ? 1 : 0.9
             // flexDirection: "column",
             // alignItems: "center"
           }}
           className={"shadow shadowHover"}
           to={link}
         >
+          {!this.props.user && (
+            <Icon
+              style={{
+                position: "absolute",
+                top: 5,
+                right: 5,
+                color: "rgba(0, 0, 0, 0.3)"
+              }}
+              icon={lock}
+              size={16}
+            />
+          )}
           <div
             style={{
               display: "flex",
@@ -101,8 +118,16 @@ export default class ToolMenu extends Component {
           }}
         >
           <SingleTool
+            link={"/top_news"}
+            title={"Top News Breakdown"}
+            desc={
+              "Stay on top of the latest news stories. Gain insights you can't get anywhere else."
+            }
+            icon={globe}
+          />
+          <SingleTool
             link={"/articles"}
-            title={"Article Explorer"}
+            title={"Navigate Articles"}
             desc={
               "Easily navigate the latest news + opinions with this powerful, flexible tool."
             }
@@ -110,7 +135,7 @@ export default class ToolMenu extends Component {
           />
           <SingleTool
             link={"/front_pages"}
-            title={"Front Page Browser"}
+            title={"Browse Front Pages"}
             desc={
               "Your bird's-eye view of the media landscape that helps you fly above the bullsh*t."
             }
@@ -118,17 +143,23 @@ export default class ToolMenu extends Component {
           />
           <SingleTool
             link={"/sources"}
-            title={"Source Reports"}
+            title={"Explore News Sources"}
             desc={
               "Dive deep into specific sources. Discover patterns + potential biases."
             }
             icon={ic_visibility}
           />
+          <SingleTool
+            link={"/chyrons"}
+            title={"Compare News Channels"}
+            desc={"Dissect chyron data from FOX, CNN and MSNBC."}
+            icon={tv}
+          />
         </div>
         {!this.props.hideSourceMenu && (
           <div
             style={{
-              borderTop: "1px solid rgba(0,0,0,0.2)",
+              // borderTop: "1px solid rgba(0,0,0,0.2)",
               padding: "5px 0px",
               margin: "10px 0px"
             }}
