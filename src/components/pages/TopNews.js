@@ -26,6 +26,7 @@ export default class TopNews extends Component {
   }
 
   render() {
+    //testing
     if (!this.state.topics.length) {
       return (
         <div>
