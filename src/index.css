@@ -236,7 +236,6 @@ body::-webkit-scrollbar-thumb:hover {
   text-decoration:none;
 }
 
-
 .wordCloudLink:hover {
   text-decoration:underline !important;
 }
@@ -275,6 +274,11 @@ body::-webkit-scrollbar-thumb:hover {
 
 .noTextDecoration {
   text-decoration: none !important;
+}
+
+.linkWithHover:hover {
+  text-decoration: underline !important;
+  cursor: pointer;
 }
 
 .cta {

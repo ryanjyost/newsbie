@@ -45,6 +45,7 @@
     "react-twitter-auth": "0.0.12",
     "react-vis": "^1.10.4",
     "recharts": "^1.1.0",
+    "sanitize-html": "^1.19.0",
     "shuffle-array": "^1.0.1",
     "simple-statistics": "^6.1.0",
     "slick-carousel": "^1.8.1",

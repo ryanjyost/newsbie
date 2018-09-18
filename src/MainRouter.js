@@ -187,12 +187,17 @@ class MainRouter extends React.Component {
     this.state = {
       menuOpen: false,
       screenWidth: 0,
-      user: "user"
+      user: null
     };
   }
 
   componentDidMount() {
     this.updateDimensions();
+
+    let user = JSON.parse(window.localStorage.getItem("user"));
+    if (user) {
+      this.setState({ user });
+    }
 
     window.addEventListener(
       "resize",
@@ -230,8 +235,9 @@ class MainRouter extends React.Component {
   }
 
   updateUser(user) {
-    alert("updated!");
+    console.log("update");
     this.setState({ user });
+    window.localStorage.setItem("user", JSON.stringify(user));
   }
 
   render() {
@@ -260,7 +266,7 @@ class MainRouter extends React.Component {
                       {...props}
                       user={user}
                       updateUser={user => {
-                        this.setState({ user });
+                        this.updateUser(user);
                       }}
                     />
                   )}
