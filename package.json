@@ -9,7 +9,6 @@
     "axios": "^0.18.0",
     "d3": "^5.5.0",
     "detect-it": "^3.0.5",
-    "dotenv": "^6.0.0",
     "firebase": "^5.4.2",
     "html-entities": "^1.2.1",
     "jquery": "^3.3.1",
