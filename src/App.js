@@ -16,9 +16,6 @@ import TimeAgo from "react-timeago";
 import { androidTime } from "react-icons-kit/ionicons/androidTime";
 import { Icon } from "react-icons-kit";
 import ReactGA from "react-ga";
-import dotenv from "dotenv";
-
-dotenv.config();
 
 class App extends Component {
   constructor(props) {
