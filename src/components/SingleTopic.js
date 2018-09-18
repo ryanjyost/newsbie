@@ -348,7 +348,7 @@ export default class SingleTopic extends Component {
         <Row>
           <Col style={{ lineHeight: 1.2, padding: "10px 20px" }}>
             <h5 style={{ margin: "20px 0px 3px 0px" }}>
-              terms related
+              terms related{" "}
               <span style={{ color: "rgba(0,0,0,0.5)" }}>
                 to {topic.main.term}
               </span>
