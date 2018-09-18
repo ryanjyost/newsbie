@@ -15,7 +15,7 @@ export default class TopNews extends Component {
 
   componentDidMount() {
     axios
-      .get(`http://localhost:8000/top_news`, {
+      .get(`https://birds-eye-news-api.herokuapp.com/top_news`, {
         Accept: "application/json"
       })
       .then(res => {

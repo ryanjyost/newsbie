@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="eaad3f9b-385c-4760-bbaf-b9ee01a5c1fb" name="Default" comment="dotenv">
+    <list default="true" id="eaad3f9b-385c-4760-bbaf-b9ee01a5c1fb" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/pages/Chyrons.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/Chyrons.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/pages/SingleSource.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/SingleSource.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/pages/TopNews.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/TopNews.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -99,8 +103,8 @@
       <file leaf-file-name="package.json" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/package.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="52" column="14" lean-forward="true" selection-start-line="52" selection-start-column="14" selection-end-line="52" selection-end-column="14" />
+            <state relative-caret-position="280">
+              <caret line="14" column="23" lean-forward="true" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
             </state>
           </provider>
         </entry>
@@ -109,7 +113,7 @@
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="283">
-              <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+              <caret line="22" selection-start-line="22" selection-end-line="22" />
             </state>
           </provider>
         </entry>
@@ -127,7 +131,7 @@
         <entry file="file://$PROJECT_DIR$/.env">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="100">
-              <caret line="5" column="36" lean-forward="true" selection-start-line="5" selection-start-column="36" selection-end-line="5" selection-end-column="36" />
+              <caret line="5" column="36" selection-start-line="5" selection-start-column="36" selection-end-line="5" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -225,8 +229,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>localhost:8000</find>
-      <find>localhost:</find>
       <find>fron</find>
       <find>Find</find>
       <find>clock</find>
@@ -255,6 +257,8 @@
       <find>maxwid</find>
       <find>how of</find>
       <find>LineClamp</find>
+      <find>birds</find>
+      <find>localhost</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -465,7 +469,7 @@
       <workItem from="1536537584933" duration="4548000" />
       <workItem from="1536619223652" duration="16877000" />
       <workItem from="1536702207394" duration="26021000" />
-      <workItem from="1537146819034" duration="16124000" />
+      <workItem from="1537146819034" duration="16532000" />
     </task>
     <task id="LOCAL-00001" summary="progress">
       <created>1533179196867</created>
@@ -558,11 +562,18 @@
       <option name="project" value="LOCAL" />
       <updated>1537242799055</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="dotenv fixes">
+      <created>1537243514899</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1537243514899</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="502696000" />
+    <option name="totallyTimeSpent" value="503104000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="777" extended-state="6" />
@@ -574,8 +585,8 @@
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.3298193" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32680723" />
       <window_info id="npm" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.32831326" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24798061" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.32831326" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24798061" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.3298193" />
@@ -630,7 +641,8 @@
     <MESSAGE value="merging" />
     <MESSAGE value="trying to deploy" />
     <MESSAGE value="dotenv" />
-    <option name="LAST_COMMIT_MESSAGE" value="dotenv" />
+    <MESSAGE value="dotenv fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="dotenv fixes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1643,14 +1655,14 @@
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="283">
-          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
+          <caret line="22" selection-start-line="22" selection-end-line="22" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/.env">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="100">
-          <caret line="5" column="36" lean-forward="true" selection-start-line="5" selection-start-column="36" selection-end-line="5" selection-end-column="36" />
+          <caret line="5" column="36" selection-start-line="5" selection-start-column="36" selection-end-line="5" selection-end-column="36" />
         </state>
       </provider>
     </entry>
@@ -1663,8 +1675,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="52" column="14" lean-forward="true" selection-start-line="52" selection-start-column="14" selection-end-line="52" selection-end-column="14" />
+        <state relative-caret-position="280">
+          <caret line="14" column="23" lean-forward="true" selection-start-line="14" selection-start-column="23" selection-end-line="14" selection-end-column="23" />
         </state>
       </provider>
     </entry>

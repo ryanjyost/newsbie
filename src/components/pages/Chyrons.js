@@ -33,7 +33,7 @@ export default class Chyrons extends Component {
   handleTimeFilter(hours) {
     this.setState({ timeFilter: hours, tags: null, overlap: null });
     axios
-      .get(`http://localhost:8000/chyrons/${hours}`, {
+      .get(`https://birds-eye-news-api.herokuapp.com/chyrons/${hours}`, {
         Accept: "application/json"
       })
       .then(res => {
