@@ -13,16 +13,16 @@ import Dashboard from "./components/pages/Dashboard";
 import Articles from "./components/pages/ArticleSearch";
 import FrontPageSearch from "./components/pages/FrontPageSearch";
 import Sources from "./components/pages/Sources";
+import UserAuthPage from "./components/pages/UserAuthPage";
 import SingleSource from "./components/pages/SingleSource";
+import TopNews from "./components/pages/TopNews";
+import Chyrons from "./components/pages/Chyrons";
 import { withRouter } from "react-router";
-
 import { ic_menu } from "react-icons-kit/md/ic_menu";
 import { ic_close } from "react-icons-kit/md/ic_close";
-import { search } from "react-icons-kit/fa/search";
-import { newspaperO } from "react-icons-kit/fa/newspaperO";
 import { Icon } from "react-icons-kit";
-import sources from "./sources";
-import SourceCloud from "./components/SourceCloud";
+import ReactGA from "react-ga";
+import store from "store";
 
 class TopBar extends React.Component {
   constructor(props) {
@@ -33,7 +33,40 @@ class TopBar extends React.Component {
   }
 
   render() {
-    const { menuOpen } = this.props;
+    const { menuOpen, location } = this.props;
+    let title = "";
+    if (menuOpen) {
+      title = "Menu";
+    } else {
+      switch (location.pathname) {
+        case "/":
+          title = "newsbie";
+          break;
+        case "/articles":
+          title = "Articles";
+          break;
+        case "/front_pages":
+          title = "Front Pages";
+          break;
+        case "/sources":
+          title = "Sources";
+          break;
+        case "/chyrons":
+          title = "Chyrons";
+          break;
+        case "/top_news":
+          title = "Top News";
+          break;
+        default:
+          break;
+      }
+    }
+
+    if (title === "") {
+      if (location.pathname.includes("/sources/")) {
+        title = "Source Report";
+      }
+    }
 
     return (
       <div
@@ -83,14 +116,35 @@ class TopBar extends React.Component {
               cursor: "pointer",
               marginLeft: 10,
               display: "flex",
-              alignItems: "center"
+              width: 100
             }}
             onClick={() => window.scrollTo(0, 0)}
           >
             <img src={"/images/ms-icon-310x310.png"} height={30} width={30} />
+            <span
+              style={{
+                textDecoration: "none",
+                fontSize: 10,
+                color: "rgba(0,0,0,0.5)",
+                marginLeft: 3
+              }}
+            >
+              beta
+            </span>
           </Link>
           <div
-            style={{ cursor: "pointer" }}
+            onClick={() => window.scrollTo(0, 0)}
+            style={{ fontSize: 14, cursor: "pointer" }}
+          >
+            {title}
+          </div>
+          <div
+            style={{
+              cursor: "pointer",
+              width: 100,
+              display: "flex",
+              justifyContent: "flex-end"
+            }}
             onClick={() => {
               this.props.updateState("menuOpen", !menuOpen);
             }}
@@ -105,7 +159,7 @@ class TopBar extends React.Component {
             />
           </div>
         </div>
-        {menuOpen ? <ToolMenu /> : null}
+        {menuOpen ? <ToolMenu user={this.props.user} /> : null}
       </div>
     );
   }
@@ -133,17 +187,30 @@ class MainRouter extends React.Component {
     super(props);
     this.state = {
       menuOpen: false,
-      screenWidth: 0
+      screenWidth: 0,
+      user: null
     };
   }
 
   componentDidMount() {
     this.updateDimensions();
 
+    let user = store.get("user");
+    if (user) {
+      this.setState({ user });
+    }
+
     window.addEventListener(
       "resize",
       this.throttle(this.updateDimensions.bind(this), 200)
     );
+
+    this.initReactGA();
+  }
+
+  initReactGA() {
+    ReactGA.initialize("UA-97014671-5");
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
   updateDimensions() {
@@ -175,7 +242,19 @@ class MainRouter extends React.Component {
     };
   }
 
+  updateUser(user) {
+    console.log("update");
+    this.setState({ user });
+    store.set("user", user);
+  }
+
   render() {
+    const { user } = this.state;
+
+    // const withAuthAndUser = Component => {
+    //   return withAuth(Component, user, this.updateUser.bind(this));
+    // };
+
     return (
       <Router>
         <div>
@@ -185,19 +264,67 @@ class MainRouter extends React.Component {
             <TopBarWithRouter
               updateState={(key, value) => this.setState({ [key]: value })}
               menuOpen={this.state.menuOpen}
+              user={user}
             />
             <div>
-              <Switch>
-                {/*<Route exact path="/" component={Landing} />*/}
-                {/*<Route path="/demo" component={App} />*/}
-                <Route path="/" exact component={Dashboard} />
-                <Route path="/articles" component={Articles} />
-                <Route path="/front_pages" component={FrontPageSearch} />
-                <Route path="/sources" exact component={Sources} />
-                <Route path="/sources/:source" component={SingleSource} />
-                <Route path="/old/landing" component={Landing} />
-                <Route component={Dashboard} />
-              </Switch>
+              {!user ? (
+                <Route
+                  render={props => (
+                    <UserAuthPage
+                      {...props}
+                      user={user}
+                      updateUser={user => {
+                        this.updateUser(user);
+                      }}
+                    />
+                  )}
+                />
+              ) : (
+                <Switch>
+                  {/*<Route exact path="/" component={Landing} />*/}
+                  {/*<Route path="/demo" component={App} />*/}
+                  <Route
+                    path="/"
+                    exact
+                    render={props => (
+                      <Dashboard
+                        {...props}
+                        user={user}
+                        updateUser={user => {
+                          this.setState({ user });
+                        }}
+                      />
+                    )}
+                  />
+                  <Route
+                    path="/articles"
+                    render={props => <Articles {...props} />}
+                  />
+                  <Route
+                    path="/front_pages"
+                    render={props => <FrontPageSearch {...props} />}
+                  />
+                  <Route
+                    path="/sources"
+                    exact
+                    render={props => <Sources {...props} />}
+                  />
+                  <Route
+                    path="/sources/:source"
+                    render={props => <SingleSource {...props} />}
+                  />
+                  <Route
+                    path="/chyrons"
+                    render={props => <Chyrons {...props} />}
+                  />
+                  <Route
+                    path="/top_news"
+                    render={props => <TopNews {...props} />}
+                  />
+                  <Route path="/old/landing" component={Landing} />
+                  <Route component={Dashboard} />
+                </Switch>
+              )}
             </div>
           </ScollToTopWithRouter>
         </div>

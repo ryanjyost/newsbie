@@ -24,7 +24,7 @@ export default class SectionWithLoader extends Component {
         style={{ ...sectionStyle, ...this.props.sectionStyle }}
       >
         {title ? (
-          <h5 style={{ margin: 0, marginBottom: 10, color: "rgba(0,0,0,0.6)" }}>
+          <h5 style={{ margin: 0, marginBottom: 10, color: "rgba(0,0,0,0.5)" }}>
             {title}
           </h5>
         ) : null}
@@ -41,6 +41,7 @@ export default class SectionWithLoader extends Component {
             }}
           >
             {this.props.children}
+            {/*<div>sign up to dive deeper &rarr;</div>*/}
           </div>
         ) : (
           <div style={{ width: "100%" }}>

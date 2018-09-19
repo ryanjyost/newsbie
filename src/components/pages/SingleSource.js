@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import Loader from "../Loader";
 import TopWordsChart from "../TopWordsChart";
 import TagCloud from "../TagCloud";
+import WordCloud from "../WordCloud";
 import ArticleSearch from "../pages/ArticleSearch";
 import FrontPageSearch from "../pages/FrontPageSearch";
 import SectionWithLoader from "../SectionWithLoader";
@@ -31,12 +32,14 @@ export default class SingleSource extends Component {
       tags: [],
       batches: [],
       politicsTags: [],
+      aboveAverageTags: [],
       opinionTags: [],
       sourceCount: null,
       opinionArticles: [],
       politicsArticles: [],
       combinedArticles: [],
-      view: "analysis"
+      view: "analysis",
+      hideAnalysis: false
     };
   }
 
@@ -51,6 +54,9 @@ export default class SingleSource extends Component {
         }
       )
       .then(res => {
+        if (res.data.tags.length < 2) {
+          this.setState({ view: "articles", hideAnalysis: true });
+        }
         this.setState({ ...this.state, ...res.data });
       })
       .catch(err => console.log(err));
@@ -264,12 +270,30 @@ export default class SingleSource extends Component {
             isLoading={this.state.tags.length < 2}
             sectionStyle={{
               margin: "10px 0px 10px 5px",
-              maxWidth: 350
+              width: "100%",
+              maxWidth: 600
               // width: Math.min(this.props.screenWidth - 80, 350)
             }}
             // divStyle={{ width: screenWidth > 768 ? "50%" : "100%" }}
           >
-            <TagCloud tags={this.state.tags} />
+            {/*<TagCloud tags={this.state.tags} showPercentageFreq />*/}
+            <WordCloud
+              shuffle
+              list={this.state.tags
+                .sort((a, b) => {
+                  if (a.percentageFreq > b.percentageFreq) {
+                    return -1;
+                  } else if (b.percentageFreq > a.percentageFreq) {
+                    return 1;
+                  } else {
+                    return 0;
+                  }
+                })
+                .slice(0, 30)}
+              calcValue={word => {
+                return word.percentageFreq;
+              }}
+            />
           </SectionWithLoader>
           <SectionWithLoader
             title={`% of recent headlines that include the word...`}
@@ -284,6 +308,26 @@ export default class SingleSource extends Component {
               topTags={this.state.tags}
               batchOfTags={{ sourceCount: this.state.combinedArticles.length }}
             />
+          </SectionWithLoader>
+          <SectionWithLoader
+            title={
+              <div>
+                <span style={{ marginRight: 3 }}>{`words that ${
+                  this.state.source.title
+                }`}</span>
+                has been using{" "}
+                <span style={{ color: "#26C521" }}>more than average</span>
+              </div>
+            }
+            isLoading={this.state.aboveAverageTags.length < 2}
+            sectionStyle={{
+              margin: "10px 0px 10px 5px",
+              maxWidth: 350
+              // width: Math.min(this.props.screenWidth - 80, 350)
+            }}
+            // divStyle={{ width: screenWidth > 768 ? "50%" : "100%" }}
+          >
+            <TagCloud tags={this.state.aboveAverageTags} showDiffToAvg />
           </SectionWithLoader>
         </div>
       );
@@ -425,7 +469,9 @@ export default class SingleSource extends Component {
                   // borderBottom: "2px solid rgba(0,0,0,0.3)"
                 }}
               >
-                <Tab text={"Analysis"} view={"analysis"} icon={areaChart} />
+                {!this.state.hideAnalysis && (
+                  <Tab text={"Analysis"} view={"analysis"} icon={areaChart} />
+                )}
                 <Tab text={"Articles"} view={"articles"} icon={pencil} />
                 <Tab
                   text={"Front Pages"}

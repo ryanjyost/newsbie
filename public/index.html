@@ -7,13 +7,13 @@
 
     <!-- Place this data between the <head> tags of your website -->
     <title>Newsbie</title>
-    <meta name="description" content="A balanced, efficient way to stay informed." />
+    <meta name="description" content="Monitor, analyze and understand the news media." />
 
     <!-- Twitter Card data -->
     <meta name="twitter:card" content="summary">
     <meta name="twitter:site" content="@ryanjyost">
     <meta name="twitter:title" content="Newsbie">
-    <meta name="twitter:description" content="A balanced, efficient way to stay informed.">
+    <meta name="twitter:description" content="Monitor, analyze and understand the news media.">
     <meta name="twitter:creator" content="@ryanjyost">
     <!-- Twitter Summary card images must be at least 120x120px -->
     <meta name="twitter:image"
@@ -25,7 +25,7 @@
     <meta property="og:url" content="https://www.newsbie.io/" />
     <meta property="og:image"
           content="https://res.cloudinary.com/ryanjyost/image/upload/v1530579641/newsbie-logo-large.png" />
-    <meta property="og:description" content="A balanced, efficient way to stay informed." />
+    <meta property="og:description" content="Monitor, analyze and understand the news media." />
     <meta property="og:site_name" content="Newsbie" />
     <!--
       manifest.json provides metadata used when your web app is added to the
@@ -42,6 +42,9 @@
     <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">-->
     <link rel="stylesheet" type="text/css" charset="UTF-8" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <!--<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css"-->
           <!--integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">-->
@@ -77,9 +80,9 @@
     <div id="div">
       <!--<h4 id="text">Loading the news...</h4>-->
       <img
-              src="https://res.cloudinary.com/ryanjyost/image/upload/v1530579641/newsbie-logo-large.png"
-              height="180px"
-              width="180px"
+        src="https://res.cloudinary.com/ryanjyost/image/upload/v1530579641/newsbie-logo-large.png"
+        height="180px"
+        width="180px"
       />
     </div>
   </div>
@@ -93,19 +96,7 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-    <script src="https://www.gstatic.com/firebasejs/5.4.2/firebase.js"></script>
-    <script>
-          // Initialize Firebase
-          var config = {
-              apiKey: "AIzaSyBuyobxyxU_10GoGW4ulA2zGerIe5mUB3g",
-              authDomain: "newsbie-217.firebaseapp.com",
-              databaseURL: "https://newsbie-217.firebaseio.com",
-              projectId: "newsbie-217",
-              storageBucket: "newsbie-217.appspot.com",
-              messagingSenderId: "970393953070"
-          };
-          firebase.initializeApp(config);
-    </script>
+
     <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script>
   </body>
 </html>

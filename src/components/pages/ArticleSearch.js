@@ -249,7 +249,11 @@ export default class ArticleSearch extends Component {
       );
     };
 
-    if (!this.state.topTags[0] && this.state.sites.length < 1) {
+    if (
+      // !this.state.topTags[0] ||
+      this.state.sites.length < 1 &&
+      !isSingleSource
+    ) {
       return (
         <div>
           <Loader
@@ -369,7 +373,7 @@ export default class ArticleSearch extends Component {
                 style={{
                   textAlign: "center",
                   padding: 5,
-                  flex: 0.33,
+                  flex: 0.34,
                   backgroundColor:
                     typeFilter === "politics" ? "rgba(0,0,0,0.8)" : "",
                   color: typeFilter === "politics" ? "rgba(255,255,255,1)" : "",
@@ -400,7 +404,6 @@ export default class ArticleSearch extends Component {
                 Opinions
               </div>
             </div>
-
             <div style={{ padding: "0px 20px 20px 0px" }}>
               <TagCloud
                 tags={this.state.topTags}
@@ -468,10 +471,12 @@ export default class ArticleSearch extends Component {
                   }}
                   href={
                     article
-                      ? article.link
-                        ? article.link.replace(/^http:\/\//i, "https://")
-                        : "https://res.cloudinary.com/ryanjyost/image/upload/v1530579641/newsbie-logo-large.png"
-                      : "https://res.cloudinary.com/ryanjyost/image/upload/v1530579641/newsbie-logo-large.png"
+                      ? article.link || article.guid
+                        ? article.link.includes("rss")
+                          ? article.guid.replace(/^http:\/\//i, "https://")
+                          : article.link.replace(/^http:\/\//i, "https://")
+                        : null
+                      : null
                   }
                   rel="noreferrer"
                 >

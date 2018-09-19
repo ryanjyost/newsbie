@@ -57,15 +57,12 @@ export default class FrequencyLineGraph extends Component {
 
   render() {
     return (
-      <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+      <div style={{ width: "100%", display: "flex" }}>
         {" "}
         <XYPlot
-          width={Math.min(
-            this.props.styles.screenWidth - 50,
-            this.props.styles.maxWidth - 50
-          )}
+          width={this.props.width || 300}
           height={150}
-          style={{ strokeWidth: 1, marginLeft: 0, paddingTop: 10 }}
+          style={{ strokeWidth: 1, marginLeft: -10, paddingTop: 10 }}
         >
           <VerticalGridLines />
           <HorizontalGridLines hideLine />

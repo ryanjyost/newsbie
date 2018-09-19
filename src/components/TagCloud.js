@@ -9,7 +9,37 @@ export default class TagCloud extends Component {
   }
 
   render() {
-    let tags = this.props.tags.slice(0, 30);
+    let tags = this.props.tags;
+    if (this.props.showDiffToAvg) {
+      tags = tags.sort((a, b) => {
+        if (!("average" in a) && "average" in b) {
+          return -1;
+        } else if (!("average" in b) && "average" in a) {
+          return 1;
+        } else if (!("average" in b) && !("average" in a)) {
+          return 0;
+        } else {
+          if (a.average.percentageDiff > b.average.percentageDiff) {
+            return -1;
+          } else if (a.average.percentageDiff < b.average.percentageDiff) {
+            return 1;
+          } else {
+            return 0;
+          }
+        }
+      });
+    } else if (this.props.showPercentageFreq) {
+      tags = tags.sort((a, b) => {
+        if (a.percentageFreq > b.percentageFreq) {
+          return -1;
+        } else if (a.percentageFreq < b.percentageFreq) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+    }
+
     return (
       <div
         style={{
@@ -26,17 +56,7 @@ export default class TagCloud extends Component {
             // maxWidth: 600,
           }}
         >
-          {/*let topTags = res.data.batch.tags.sort((a,b) => {*/}
-          {/*if(a.tf > b.tf){*/}
-          {/*return 1*/}
-          {/*} else if(b.tf > a.tf){*/}
-          {/*return -1*/}
-          {/*} else {*/}
-          {/*return 0*/}
-          {/*}*/}
-          {/*})*/}
-
-          {tags.map((tag, i) => {
+          {tags.slice(0, 30).map((tag, i) => {
             return (
               <SingleTag
                 key={i}
@@ -53,6 +73,8 @@ export default class TagCloud extends Component {
                 }
                 isFilter={this.props.isFilter}
                 currentTag={this.props.currentTag}
+                showDiffToAvg={this.props.showDiffToAvg}
+                showPercentageFreq={this.props.showPercentageFreq}
               />
             );
           })}

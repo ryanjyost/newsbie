@@ -44,8 +44,10 @@ export default class Article extends Component {
         <a
           href={
             article
-              ? article.link
-                ? article.link.replace(/^http:\/\//i, "https://")
+              ? article.link || article.guid
+                ? article.link.includes("rss")
+                  ? article.guid.replace(/^http:\/\//i, "https://")
+                  : article.link.replace(/^http:\/\//i, "https://")
                 : "https://res.cloudinary.com/ryanjyost/image/upload/v1530579641/newsbie-logo-large.png"
               : "https://res.cloudinary.com/ryanjyost/image/upload/v1530579641/newsbie-logo-large.png"
           }

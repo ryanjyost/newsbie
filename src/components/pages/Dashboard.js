@@ -1,15 +1,17 @@
 import React, { Component } from "react";
+import { Row, Col } from "react-bootstrap";
 import TagCloud from "../TagCloud";
+import WordCloud from "../WordCloud";
 import axios from "axios/index";
 import shuffle from "shuffle-array";
 import ReactGA from "react-ga";
 import Slider from "react-slick";
-import { curveCatmullRom } from "d3-shape";
 import "../../../node_modules/react-vis/dist/style.css";
-import { Link } from "react-router-dom";
 
 import SingleFrontPage from "../SingleFrontPage";
+import TopNews from "./TopNews";
 import ToolMenu from "../ToolMenu";
+import UserAuth from "../UserAuth";
 import TopWordsChart from "../TopWordsChart";
 import TimeAgo from "react-timeago";
 import { androidTime } from "react-icons-kit/ionicons/androidTime";
@@ -18,16 +20,14 @@ import Loader from "../Loader";
 import SectionWithLoader from "../SectionWithLoader";
 import detectIt from "detect-it";
 import {
-  AreaSeries,
   HorizontalBarSeries,
   HorizontalGridLines,
   VerticalGridLines,
   XAxis,
   XYPlot,
-  YAxis,
-  LineSeries
+  YAxis
 } from "react-vis";
-import $ from "jquery";
+import { mean, standardDeviation, zScore, median } from "simple-statistics";
 
 export default class Dashboard extends Component {
   constructor(props) {
@@ -160,6 +160,15 @@ export default class Dashboard extends Component {
           politicsArticles: filteredPolitics,
           opinionArticles: filteredOpinions
         });
+      })
+      .catch(err => console.log(err));
+
+    axios
+      .get(`https://birds-eye-news-api.herokuapp.com/top_news`, {
+        Accept: "application/json"
+      })
+      .then(res => {
+        this.setState({ topics: res.data.topics, batches: res.data.batches });
       })
       .catch(err => console.log(err));
 
@@ -448,14 +457,18 @@ export default class Dashboard extends Component {
       }
     };
 
+    const renderTopNews = () => {
+      return <TopNews topicCount={1} />;
+    };
+
     return (
-      <div
+      <Row
         style={{
           backgroundColor: "#f2f2f2",
           minHeight: "100vh",
           padding: "60px 0px 10px 0px",
           width: "100%",
-          maxWidth: 900,
+          maxWidth: 1200,
           margin: "auto",
           // overflowX: "hidden",
           display: "flex",
@@ -464,7 +477,7 @@ export default class Dashboard extends Component {
           flexWrap: "wrap"
         }}
       >
-        <div
+        <Row
           style={{
             backgroundColor: "#f2f2f2",
             padding: "0px 0px 0px 0px",
@@ -476,65 +489,121 @@ export default class Dashboard extends Component {
             flexWrap: "wrap"
           }}
         >
-          <div
-            className={"shadow"}
-            style={{
-              ...sectionStyle,
-              ...{ marginBottom: 10, maxWidth: 350, flexWrap: "wrap" }
-            }}
-          >
-            <h5 style={{ margin: 0, color: "rgba(46, 228, 246,1)" }}>
-              welcome to newsbie, where you can
-            </h5>
-            <h2 style={{ margin: 0 }}>
-              monitor, analyze & understand the news media.
-            </h2>
-          </div>
-          <div style={{ maxWidth: 400 }}>
-            <ToolMenu hideSourceMenu />
-          </div>
-        </div>
+          {/* SIGN UP SIGN IN */}
 
-        <SectionWithLoader
-          title={`most common words from ${
-            this.state.batchOfTags ? this.state.batchOfTags.sourceCount : ""
-          } recent headlines`}
-          isLoading={this.state.topTags.length < 2}
-          sectionStyle={{
-            width: Math.min(screenWidth - 50, 350)
+          {!this.props.user ? (
+            <Row
+              className={"shadow"}
+              style={{
+                ...sectionStyle,
+                ...{
+                  flexWrap: "wrap",
+                  display: "flex",
+                  maxWidth: 900,
+                  alignItems: "center"
+                }
+              }}
+            >
+              <Col xs={12} sm={5}>
+                <h5 style={{ margin: 0, color: "rgba(46, 228, 246,1)" }}>
+                  <strong>welcome to newsbie, where you can</strong>
+                </h5>
+                <h2 style={{ margin: 0 }}>
+                  <strong>monitor, analyze & understand the news media.</strong>
+                </h2>
+              </Col>
+              <Col
+                xs={12}
+                sm={7}
+                style={{
+                  maxWidth: 400
+                }}
+              >
+                <UserAuth updateUser={user => this.props.updateUser(user)} />
+              </Col>
+            </Row>
+          ) : null}
+
+          <div style={{ marginTop: 10 }}>
+            <ToolMenu hideSourceMenu user={this.props.user} />
+          </div>
+        </Row>
+
+        <Row
+          style={{
+            alignItems: "stretch",
+            display: "flex",
+            flexWrap: "wrap",
+            padding: "20px 10px",
+            justifyContent: "center",
+            maxWidth: 1000
           }}
-          // divStyle={{ width: screenWidth > 768 ? "50%" : "100%" }}
         >
-          <TagCloud tags={this.state.topTags} />
-          {renderTimeAgo(
-            this.state.batchOfTags ? this.state.batchOfTags.created_at : null
-          )}
-        </SectionWithLoader>
+          <Col sm={6} style={{ marginBottom: 10 }}>
+            <SectionWithLoader
+              title={`most common words in ${
+                this.state.batchOfTags ? this.state.batchOfTags.sourceCount : ""
+              } recent headlines from ${
+                this.state.sites.length > 0 ? this.state.sites.length : ""
+              } sources`}
+              isLoading={this.state.topTags.length < 2}
+              sectionStyle={{
+                height: "100%"
+              }}
+              // divStyle={{ width: screenWidth > 768 ? "50%" : "100%" }}
+            >
+              <WordCloud
+                shuffle
+                list={this.state.topTags
+                  .sort((a, b) => {
+                    if (a.tf > b.tf) {
+                      return -1;
+                    } else if (b.tf > a.tf) {
+                      return 1;
+                    } else {
+                      return 0;
+                    }
+                  })
+                  .slice(0, 30)}
+                valProperty={"tf"}
+                calcValue={word => {
+                  return word.tf / this.state.batchOfTags.sourceCount;
+                }}
+              />
+              {renderTimeAgo(
+                this.state.batchOfTags
+                  ? this.state.batchOfTags.created_at
+                  : null
+              )}
+            </SectionWithLoader>
+          </Col>
+          <Col sm={6} style={{ marginBottom: 10 }}>
+            <SectionWithLoader
+              title={`% of recent headlines that include the word...`}
+              isLoading={!this.state.topTags[0]}
+              sectionStyle={{
+                height: "100%"
+              }}
+            >
+              <TopWordsChart
+                topTags={this.state.topTags}
+                batchOfTags={this.state.batchOfTags}
+                styles={styles}
+              />
+              {renderTimeAgo(
+                this.state.batchOfTags
+                  ? this.state.batchOfTags.created_at
+                  : null
+              )}
+            </SectionWithLoader>
+          </Col>
+        </Row>
 
         {/* ======================================== */}
-        <SectionWithLoader
-          title={`% of recent headlines that include the word...`}
-          isLoading={!this.state.topTags[0]}
-          sectionStyle={{
-            width: Math.min(screenWidth - 50, 350)
-          }}
-        >
-          <TopWordsChart
-            topTags={this.state.topTags}
-            batchOfTags={this.state.batchOfTags}
-            styles={styles}
-          />
-          {renderTimeAgo(
-            this.state.batchOfTags ? this.state.batchOfTags.created_at : null
-          )}
-        </SectionWithLoader>
-
-        {/* ======================================== */}
-
         <div
           style={{
             margin: "10px 0px",
-            backgroundColor: "#fff",
+            backgroundColor: "#fafafa",
             padding: "30px 0px 20px 0px",
             borderRadius: 3,
             position: "relative",
@@ -550,7 +619,9 @@ export default class Dashboard extends Component {
             renderFrontPages()
           )}
         </div>
-      </div>
+
+        {renderTopNews()}
+      </Row>
     );
   }
 }
