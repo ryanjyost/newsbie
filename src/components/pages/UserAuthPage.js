@@ -28,6 +28,7 @@ export default class UserAuthPage extends Component {
             justifyContent: "flex-start",
             alignItems: "center",
             paddingTop: 100,
+            paddingBottom: 100,
             flexDirection: "column",
             minHeight: "100vh",
             width: "100%"
