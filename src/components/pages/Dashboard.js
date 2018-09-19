@@ -168,7 +168,6 @@ export default class Dashboard extends Component {
         Accept: "application/json"
       })
       .then(res => {
-        console.log(res.data);
         this.setState({ topics: res.data.topics, batches: res.data.batches });
       })
       .catch(err => console.log(err));
@@ -501,7 +500,7 @@ export default class Dashboard extends Component {
                   flexWrap: "wrap",
                   display: "flex",
                   maxWidth: 900,
-                  alignItems: "baseline"
+                  alignItems: "center"
                 }
               }}
             >
@@ -525,7 +524,7 @@ export default class Dashboard extends Component {
             </Row>
           ) : null}
 
-          <div>
+          <div style={{ marginTop: 10 }}>
             <ToolMenu hideSourceMenu user={this.props.user} />
           </div>
         </Row>

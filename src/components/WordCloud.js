@@ -31,11 +31,13 @@ export default class WordCloud extends Component {
 
     const randomColor = ranges => {
       const getRandom = ({ max, min }) => {
-        return Math.random() * (max - min) + min;
+        let random = Math.random() * (max - min) + min;
+        console.log();
+        return random;
       };
-      return `rgba(${getRandom(ranges[0])}, ${getRandom(
-        ranges[1]
-      )}, ${getRandom(ranges[2])}, ${getRandom(ranges[3])})`;
+      return `rgba(${Math.floor(getRandom(ranges[0]))}, ${Math.floor(
+        getRandom(ranges[1])
+      )}, ${Math.floor(getRandom(ranges[2]))}, ${getRandom(ranges[3])})`;
     };
 
     return (

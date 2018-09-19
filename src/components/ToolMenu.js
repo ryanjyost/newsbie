@@ -194,7 +194,7 @@ export default class ToolMenu extends Component {
             link={
               "https://join.slack.com/t/newsbie/shared_invite/enQtNDM4MzY3NTY4MzA2LWI2YzQzMTZjMmU4ZDdlZjk4NTJiYjc4OTBlZjY0N2UxMjIwMjk1YWM3YzI0OWM0MmYxNTE5MjkwYTc2YjFmZDY"
             }
-            title={"Join the Slack Community!"}
+            title={"Join the Slack Community"}
             desc={
               "Chat about the news, media, and anything else with your fellow newsbies."
             }

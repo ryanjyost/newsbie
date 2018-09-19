@@ -19,7 +19,6 @@ export default class SingleTopic extends Component {
 
   render() {
     const { topic } = this.props;
-    console.log(topic);
     const mainPreview = topic.preview.politics[0];
     const morePreview = topic.preview.more[0];
     const opinionPreview = topic.preview.opinions[0];

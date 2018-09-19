@@ -19,7 +19,6 @@ export default class TopNews extends Component {
         Accept: "application/json"
       })
       .then(res => {
-        console.log(res.data);
         this.setState({ topics: res.data.topics, batches: res.data.batches });
       })
       .catch(err => console.log(err));

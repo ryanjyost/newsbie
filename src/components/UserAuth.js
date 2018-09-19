@@ -25,6 +25,7 @@ export default class UserAuth extends Component {
     auth
       .doCreateUserWithEmailAndPassword(email, password1)
       .then(authUser => {
+        console.log(authUser);
         this.props.updateUser(authUser);
         this.setState({
           signUpSuccess: true,
