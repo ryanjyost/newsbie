@@ -21,7 +21,8 @@ import { withRouter } from "react-router";
 import { ic_menu } from "react-icons-kit/md/ic_menu";
 import { ic_close } from "react-icons-kit/md/ic_close";
 import { Icon } from "react-icons-kit";
-import withAuth from "./components/hoc/withAuth";
+import ReactGA from "react-ga";
+import store from "store";
 
 class TopBar extends React.Component {
   constructor(props) {
@@ -194,7 +195,7 @@ class MainRouter extends React.Component {
   componentDidMount() {
     this.updateDimensions();
 
-    let user = JSON.parse(window.localStorage.getItem("user"));
+    let user = store.get("user");
     if (user) {
       this.setState({ user });
     }
@@ -203,6 +204,13 @@ class MainRouter extends React.Component {
       "resize",
       this.throttle(this.updateDimensions.bind(this), 200)
     );
+
+    this.initReactGA();
+  }
+
+  initReactGA() {
+    ReactGA.initialize("UA-97014671-5");
+    ReactGA.pageview(window.location.pathname + window.location.search);
   }
 
   updateDimensions() {
@@ -237,7 +245,7 @@ class MainRouter extends React.Component {
   updateUser(user) {
     console.log("update");
     this.setState({ user });
-    window.localStorage.setItem("user", JSON.stringify(user));
+    store.set("user", user);
   }
 
   render() {

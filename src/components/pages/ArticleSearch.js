@@ -250,8 +250,9 @@ export default class ArticleSearch extends Component {
     };
 
     if (
-      !this.state.topTags[0] ||
-      (this.state.sites.length < 1 && !isSingleSource)
+      // !this.state.topTags[0] ||
+      this.state.sites.length < 1 &&
+      !isSingleSource
     ) {
       return (
         <div>

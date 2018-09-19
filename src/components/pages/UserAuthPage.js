@@ -25,14 +25,15 @@ export default class UserAuthPage extends Component {
         <div
           style={{
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "flex-start",
             alignItems: "center",
+            paddingTop: 100,
             flexDirection: "column",
-            height: "100vh",
+            minHeight: "100vh",
             width: "100%"
           }}
         >
-          <h3 style={{ margin: 5 }}>New phone, who dis?</h3>
+          <h3 style={{ margin: 5, fontWeight: "bold" }}>New phone, who dis?</h3>
           <h5
             style={{
               margin: "5px 0px 20px 0px",
@@ -45,7 +46,7 @@ export default class UserAuthPage extends Component {
           <div
             className="shadow"
             style={{
-              width: 300,
+              width: 400,
               maxWidth: "100%",
               backgroundColor: "#fcfcfc",
               padding: 20

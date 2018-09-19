@@ -46,7 +46,7 @@ export default class SingleSource extends Component {
   componentDidMount() {
     axios
       .get(
-        `https://birds-eye-news-api.herokuapp.com/${
+        `https://birds-eye-news-api.herokuapp.com/sources/${
           this.props.match.params.source
         }`,
         {

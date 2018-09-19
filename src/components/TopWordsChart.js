@@ -55,7 +55,7 @@ export default class TopWordsChart extends Component {
         }}
       >
         {data && (
-          <XYPlot yType="ordinal" xType="linear" height={300} width={300}>
+          <XYPlot yType="ordinal" xType="linear" height={300} width={340}>
             <VerticalGridLines />
             <HorizontalGridLines />
             <HorizontalBarSeries

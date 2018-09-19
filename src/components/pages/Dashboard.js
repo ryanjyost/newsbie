@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { FormGroup, ControlLabel, FormControl } from "react-bootstrap";
+import { Row, Col } from "react-bootstrap";
 import TagCloud from "../TagCloud";
 import WordCloud from "../WordCloud";
 import axios from "axios/index";
@@ -9,6 +9,7 @@ import Slider from "react-slick";
 import "../../../node_modules/react-vis/dist/style.css";
 
 import SingleFrontPage from "../SingleFrontPage";
+import TopNews from "./TopNews";
 import ToolMenu from "../ToolMenu";
 import UserAuth from "../UserAuth";
 import TopWordsChart from "../TopWordsChart";
@@ -159,6 +160,16 @@ export default class Dashboard extends Component {
           politicsArticles: filteredPolitics,
           opinionArticles: filteredOpinions
         });
+      })
+      .catch(err => console.log(err));
+
+    axios
+      .get(`https://birds-eye-news-api.herokuapp.com/top_news`, {
+        Accept: "application/json"
+      })
+      .then(res => {
+        console.log(res.data);
+        this.setState({ topics: res.data.topics, batches: res.data.batches });
       })
       .catch(err => console.log(err));
 
@@ -447,14 +458,18 @@ export default class Dashboard extends Component {
       }
     };
 
+    const renderTopNews = () => {
+      return <TopNews topicCount={1} />;
+    };
+
     return (
-      <div
+      <Row
         style={{
           backgroundColor: "#f2f2f2",
           minHeight: "100vh",
           padding: "60px 0px 10px 0px",
           width: "100%",
-          maxWidth: 900,
+          maxWidth: 1200,
           margin: "auto",
           // overflowX: "hidden",
           display: "flex",
@@ -463,7 +478,7 @@ export default class Dashboard extends Component {
           flexWrap: "wrap"
         }}
       >
-        <div
+        <Row
           style={{
             backgroundColor: "#f2f2f2",
             padding: "0px 0px 0px 0px",
@@ -476,95 +491,114 @@ export default class Dashboard extends Component {
           }}
         >
           {/* SIGN UP SIGN IN */}
+
           {!this.props.user ? (
-            <div
+            <Row
               className={"shadow"}
               style={{
                 ...sectionStyle,
-                ...{ maxWidth: 350, flexWrap: "wrap" }
+                ...{
+                  flexWrap: "wrap",
+                  display: "flex",
+                  maxWidth: 900,
+                  alignItems: "baseline"
+                }
               }}
             >
-              <div>
+              <Col xs={12} sm={5}>
                 <h5 style={{ margin: 0, color: "rgba(46, 228, 246,1)" }}>
-                  welcome to newsbie, where you can
+                  <strong>welcome to newsbie, where you can</strong>
                 </h5>
                 <h2 style={{ margin: 0 }}>
-                  monitor, analyze & understand the news media.
+                  <strong>monitor, analyze & understand the news media.</strong>
                 </h2>
-              </div>
-              <div>
+              </Col>
+              <Col
+                xs={12}
+                sm={7}
+                style={{
+                  maxWidth: 400
+                }}
+              >
                 <UserAuth updateUser={user => this.props.updateUser(user)} />
-              </div>
-            </div>
+              </Col>
+            </Row>
           ) : null}
 
           <div>
             <ToolMenu hideSourceMenu user={this.props.user} />
           </div>
-        </div>
+        </Row>
 
-        <SectionWithLoader
-          title={`most common words in ${
-            this.state.batchOfTags ? this.state.batchOfTags.sourceCount : ""
-          } recent headlines from ${
-            this.state.sites.length > 0 ? this.state.sites.length : ""
-          } sources`}
-          isLoading={this.state.topTags.length < 2}
-          sectionStyle={{
-            width: Math.min(screenWidth - 50, 350)
-          }}
-          // divStyle={{ width: screenWidth > 768 ? "50%" : "100%" }}
-        >
-          <WordCloud
-            shuffle
-            list={this.state.topTags
-              .sort((a, b) => {
-                if (a.tf > b.tf) {
-                  return -1;
-                } else if (b.tf > a.tf) {
-                  return 1;
-                } else {
-                  return 0;
-                }
-              })
-              .slice(0, 30)}
-            valProperty={"tf"}
-            calcValue={word => {
-              return word.tf / this.state.batchOfTags.sourceCount;
-            }}
-          />
-          {renderTimeAgo(
-            this.state.batchOfTags ? this.state.batchOfTags.created_at : null
-          )}
-        </SectionWithLoader>
-
-        {/*<h4*/}
-        {/*style={{*/}
-        {/*margin: "50px 0px 10px 0px",*/}
-        {/*textAlign: "center"*/}
-        {/*// width: "100%"*/}
-        {/*}}*/}
-        {/*>*/}
-        {/*How's it being covered?*/}
-        {/*</h4>*/}
-
-        {/* ======================================== */}
-        <SectionWithLoader
-          title={`% of recent headlines that include the word...`}
-          isLoading={!this.state.topTags[0]}
-          sectionStyle={{
-            width: Math.min(screenWidth - 50, 350)
+        <Row
+          style={{
+            alignItems: "stretch",
+            display: "flex",
+            flexWrap: "wrap",
+            padding: "20px 10px",
+            justifyContent: "center",
+            maxWidth: 1000
           }}
         >
-          <TopWordsChart
-            topTags={this.state.topTags}
-            batchOfTags={this.state.batchOfTags}
-            styles={styles}
-          />
-          {renderTimeAgo(
-            this.state.batchOfTags ? this.state.batchOfTags.created_at : null
-          )}
-        </SectionWithLoader>
+          <Col sm={6} style={{ marginBottom: 10 }}>
+            <SectionWithLoader
+              title={`most common words in ${
+                this.state.batchOfTags ? this.state.batchOfTags.sourceCount : ""
+              } recent headlines from ${
+                this.state.sites.length > 0 ? this.state.sites.length : ""
+              } sources`}
+              isLoading={this.state.topTags.length < 2}
+              sectionStyle={{
+                height: "100%"
+              }}
+              // divStyle={{ width: screenWidth > 768 ? "50%" : "100%" }}
+            >
+              <WordCloud
+                shuffle
+                list={this.state.topTags
+                  .sort((a, b) => {
+                    if (a.tf > b.tf) {
+                      return -1;
+                    } else if (b.tf > a.tf) {
+                      return 1;
+                    } else {
+                      return 0;
+                    }
+                  })
+                  .slice(0, 30)}
+                valProperty={"tf"}
+                calcValue={word => {
+                  return word.tf / this.state.batchOfTags.sourceCount;
+                }}
+              />
+              {renderTimeAgo(
+                this.state.batchOfTags
+                  ? this.state.batchOfTags.created_at
+                  : null
+              )}
+            </SectionWithLoader>
+          </Col>
+          <Col sm={6} style={{ marginBottom: 10 }}>
+            <SectionWithLoader
+              title={`% of recent headlines that include the word...`}
+              isLoading={!this.state.topTags[0]}
+              sectionStyle={{
+                height: "100%"
+              }}
+            >
+              <TopWordsChart
+                topTags={this.state.topTags}
+                batchOfTags={this.state.batchOfTags}
+                styles={styles}
+              />
+              {renderTimeAgo(
+                this.state.batchOfTags
+                  ? this.state.batchOfTags.created_at
+                  : null
+              )}
+            </SectionWithLoader>
+          </Col>
+        </Row>
 
         {/* ======================================== */}
         <div
@@ -587,17 +621,8 @@ export default class Dashboard extends Component {
           )}
         </div>
 
-        {/* ======================================== */}
-        <SectionWithLoader
-          title={`% of recent headlines that include the word...`}
-          isLoading={false}
-          // sectionStyle={{
-          //   width: Math.min(screenWidth - 50, 350)
-          // }}
-        >
-          hey
-        </SectionWithLoader>
-      </div>
+        {renderTopNews()}
+      </Row>
     );
   }
 }

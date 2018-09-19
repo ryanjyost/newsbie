@@ -13,6 +13,7 @@ import { ic_visibility } from "react-icons-kit/md/ic_visibility";
 import { tv } from "react-icons-kit/fa/tv";
 import { lock } from "react-icons-kit/fa/lock";
 import { globe } from "react-icons-kit/fa/globe";
+import { slack } from "react-icons-kit/fa/slack";
 import { Icon } from "react-icons-kit";
 
 export default class ToolMenu extends Component {
@@ -24,73 +25,145 @@ export default class ToolMenu extends Component {
   render() {
     const { hideSourceMenu, user } = this.props;
 
-    const SingleTool = ({ link, title, desc, icon }) => {
-      return (
-        <Link
-          style={{
-            padding: "10px 20px",
-            textDecoration: "none",
-            display: "inline-block",
-            margin: 5,
-            width: 350,
-            // height: 50,
-            backgroundColor: "#fff",
-            color: "rgba(0,0,0,0.9)",
-            position: "relative",
-            opacity: user ? 1 : 0.9
-            // flexDirection: "column",
-            // alignItems: "center"
-          }}
-          className={"shadow shadowHover"}
-          to={link}
-        >
-          {!this.props.user && (
-            <Icon
-              style={{
-                position: "absolute",
-                top: 5,
-                right: 5,
-                color: "rgba(0, 0, 0, 0.3)"
-              }}
-              icon={lock}
-              size={16}
-            />
-          )}
-          <div
+    const SingleTool = ({ link, title, desc, icon, noLock, externalLink }) => {
+      if (externalLink) {
+        return (
+          <a
             style={{
-              display: "flex",
-              alignItems: "center",
+              padding: "10px 20px",
+              textDecoration: "none",
+              display: "inline-block",
+              margin: 5,
+              width: 350,
+              // height: 50,
+              backgroundColor: "#fff",
+              color: "rgba(0,0,0,0.9)",
+              position: "relative",
+              opacity: user ? 1 : 0.9
               // flexDirection: "column",
-              justifyContent: "center"
+              // alignItems: "center"
             }}
+            className={"shadow shadowHover"}
+            href={link}
+            target={"_blank"}
           >
-            <Icon
-              style={{
-                marginRight: 10,
-                color: "rgba(46, 228, 246,1)"
-              }}
-              icon={icon}
-              size={34}
-            />
+            {!this.props.user &&
+              !noLock && (
+                <Icon
+                  style={{
+                    position: "absolute",
+                    top: 5,
+                    right: 5,
+                    color: "rgba(0, 0, 0, 0.3)"
+                  }}
+                  icon={lock}
+                  size={16}
+                />
+              )}
             <div
               style={{
                 display: "flex",
-                alignItems: "flex-start",
-                flexDirection: "column",
-                justifyContent: "center",
-                marginLeft: 10
+                alignItems: "center",
+                // flexDirection: "column",
+                justifyContent: "center"
               }}
             >
-              <span style={{ fontSize: 14 }}>
-                <strong>{title}</strong>
-              </span>
-              <span style={{ fontSize: 12, color: "rgba(0,0,0,0.7)" }}>
-                {desc}
-              </span>
+              <Icon
+                style={{
+                  marginRight: 10,
+                  color: "rgba(46, 228, 246,1)"
+                }}
+                icon={icon}
+                size={34}
+              />
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  marginLeft: 10
+                }}
+              >
+                <span style={{ fontSize: 14 }}>
+                  <strong>{title}</strong>
+                </span>
+                <span style={{ fontSize: 12, color: "rgba(0,0,0,0.7)" }}>
+                  {desc}
+                </span>
+              </div>
             </div>
-          </div>
-        </Link>
-      );
+          </a>
+        );
+      } else {
+        return (
+          <Link
+            style={{
+              padding: "10px 20px",
+              textDecoration: "none",
+              display: "inline-block",
+              margin: 5,
+              width: 350,
+              // height: 50,
+              backgroundColor: "#fff",
+              color: "rgba(0,0,0,0.9)",
+              position: "relative",
+              opacity: user ? 1 : 0.9
+              // flexDirection: "column",
+              // alignItems: "center"
+            }}
+            className={"shadow shadowHover"}
+            to={link}
+          >
+            {!this.props.user &&
+              !noLock && (
+                <Icon
+                  style={{
+                    position: "absolute",
+                    top: 5,
+                    right: 5,
+                    color: "rgba(0, 0, 0, 0.3)"
+                  }}
+                  icon={lock}
+                  size={16}
+                />
+              )}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                // flexDirection: "column",
+                justifyContent: "center"
+              }}
+            >
+              <Icon
+                style={{
+                  marginRight: 10,
+                  color: "rgba(46, 228, 246,1)"
+                }}
+                icon={icon}
+                size={34}
+              />
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "flex-start",
+                  flexDirection: "column",
+                  justifyContent: "center",
+                  marginLeft: 10
+                }}
+              >
+                <span style={{ fontSize: 14 }}>
+                  <strong>{title}</strong>
+                </span>
+                <span style={{ fontSize: 12, color: "rgba(0,0,0,0.7)" }}>
+                  {desc}
+                </span>
+              </div>
+            </div>
+          </Link>
+        );
+      }
     };
 
     return (
@@ -117,6 +190,18 @@ export default class ToolMenu extends Component {
             flexWrap: "wrap"
           }}
         >
+          <SingleTool
+            link={
+              "https://join.slack.com/t/newsbie/shared_invite/enQtNDM4MzY3NTY4MzA2LWI2YzQzMTZjMmU4ZDdlZjk4NTJiYjc4OTBlZjY0N2UxMjIwMjk1YWM3YzI0OWM0MmYxNTE5MjkwYTc2YjFmZDY"
+            }
+            title={"Join the Slack Community!"}
+            desc={
+              "Chat about the news, media, and anything else with your fellow newsbies."
+            }
+            icon={slack}
+            noLock
+            externalLink
+          />
           <SingleTool
             link={"/top_news"}
             title={"Top News Breakdown"}

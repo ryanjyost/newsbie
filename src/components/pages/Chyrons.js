@@ -524,9 +524,12 @@ export default class Chyrons extends Component {
           >
             <Row
               style={{
-                padding: "0px 10px"
-                // display: "flex",
-                // alignItems: "stretch"
+                padding: "0px 10px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "stretch",
+                flexWrap: "wrap",
+                width: "100%"
               }}
             >
               {this.state.chyronSources.map(chyron => {
