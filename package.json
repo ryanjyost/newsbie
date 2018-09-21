@@ -6,6 +6,7 @@
     "react-scripts": "1.1.4"
   },
   "dependencies": {
+    "antd": "^3.9.2",
     "axios": "^0.18.0",
     "d3": "^5.5.0",
     "detect-it": "^3.0.5",

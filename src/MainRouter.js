@@ -10,7 +10,6 @@ import App from "./App";
 import Landing from "./components/Landing";
 import ToolMenu from "./components/ToolMenu";
 import Dashboard from "./components/pages/Dashboard";
-import Articles from "./components/pages/ArticleSearch";
 import FrontPageSearch from "./components/pages/FrontPageSearch";
 import Sources from "./components/pages/Sources";
 import UserAuthPage from "./components/pages/UserAuthPage";
@@ -23,6 +22,14 @@ import { ic_close } from "react-icons-kit/md/ic_close";
 import { Icon } from "react-icons-kit";
 import ReactGA from "react-ga";
 import store from "store";
+
+//=========================================
+import ArticlesOld from "./components/pages/ArticleSearch";
+import Articles from "./components/pages/Articles";
+
+import { Layout, Menu, Icon as AntIcon } from "antd";
+const { Header, Content, Footer, Sider } = Layout;
+//=========================================
 
 class TopBar extends React.Component {
   constructor(props) {
@@ -188,7 +195,8 @@ class MainRouter extends React.Component {
     this.state = {
       menuOpen: false,
       screenWidth: 0,
-      user: null
+      user: null,
+      collapsed: true
     };
   }
 
@@ -249,24 +257,116 @@ class MainRouter extends React.Component {
   }
 
   render() {
-    const { user } = this.state;
+    const { user, screenWidth, collapsed } = this.state;
 
-    // const withAuthAndUser = Component => {
-    //   return withAuth(Component, user, this.updateUser.bind(this));
-    // };
+    const renderSidebar = () => {
+      return (
+        <Sider
+          // collapsedWidth={0}
+          trigger={null}
+          collapsible
+          collapsed={this.state.collapsed}
+          style={{
+            overflow: "auto",
+            height: "100vh",
+            position: "fixed",
+            left: 0,
+            backgroundColor: "#fff",
+            zIndex: 10000000
+          }}
+        >
+          <Link
+            to={"/"}
+            style={{
+              fontSize: 16,
+              cursor: "pointer",
+              marginLeft: 10,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: 64
+            }}
+            onClick={() => window.scrollTo(0, 0)}
+          >
+            <img src={"/images/ms-icon-310x310.png"} height={30} width={30} />
+            <span
+              style={{
+                textDecoration: "none",
+                fontSize: 10,
+                color: "rgba(0,0,0,0.5)",
+                marginLeft: 3
+              }}
+            >
+              beta
+            </span>
+          </Link>
+          <Menu mode="inline" defaultSelectedKeys={["4"]}>
+            <Menu.Item key="1">
+              <AntIcon type="user" />
+              <span className="nav-text">nav 1</span>
+            </Menu.Item>
+            <Menu.Item key="2">
+              <AntIcon type="video-camera" />
+              <span className="nav-text">nav 2</span>
+            </Menu.Item>
+            <Menu.Item key="3">
+              <AntIcon type="upload" />
+              <span className="nav-text">nav 3</span>
+            </Menu.Item>
+            <Menu.Item key="4">
+              <AntIcon type="bar-chart" />
+              <span className="nav-text">nav 4</span>
+            </Menu.Item>
+            <Menu.Item key="5">
+              <AntIcon type="cloud-o" />
+              <span className="nav-text">nav 5</span>
+            </Menu.Item>
+            <Menu.Item key="6">
+              <AntIcon type="appstore-o" />
+              <span className="nav-text">nav 6</span>
+            </Menu.Item>
+            <Menu.Item key="7">
+              <AntIcon type="team" />
+              <span className="nav-text">nav 7</span>
+            </Menu.Item>
+            <Menu.Item key="8">
+              <AntIcon type="shop" />
+              <span className="nav-text">nav 8</span>
+            </Menu.Item>
+          </Menu>
+        </Sider>
+      );
+    };
 
     return (
       <Router>
-        <div>
-          <ScollToTopWithRouter
-            updateState={(key, value) => this.setState({ [key]: value })}
-          >
-            <TopBarWithRouter
-              updateState={(key, value) => this.setState({ [key]: value })}
-              menuOpen={this.state.menuOpen}
-              user={user}
-            />
-            <div>
+        <Layout>
+          {renderSidebar()}
+          <Layout>
+            <Header style={{ background: "#fff", padding: 0 }}>
+              <AntIcon
+                style={{ marginLeft: collapsed ? 100 : 210, cursor: "pointer" }}
+                className="trigger"
+                type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
+                onClick={() =>
+                  this.setState({ collapsed: !this.state.collapsed })
+                }
+              />
+            </Header>
+            <Content>
+              {!this.state.collapsed && (
+                <div
+                  onClick={() => this.setState({ collapsed: true })}
+                  style={{
+                    height: "100vh",
+                    width: "100%",
+                    position: "absolute",
+                    top: 0,
+                    backgroundColor: "rgba(0,0,0,0.3)",
+                    zIndex: 10000
+                  }}
+                />
+              )}
               {!user ? (
                 <Route
                   render={props => (
@@ -301,6 +401,10 @@ class MainRouter extends React.Component {
                     render={props => <Articles {...props} />}
                   />
                   <Route
+                    path="/old/articles"
+                    render={props => <ArticlesOld {...props} />}
+                  />
+                  <Route
                     path="/front_pages"
                     render={props => <FrontPageSearch {...props} />}
                   />
@@ -325,9 +429,9 @@ class MainRouter extends React.Component {
                   <Route component={Dashboard} />
                 </Switch>
               )}
-            </div>
-          </ScollToTopWithRouter>
-        </div>
+            </Content>
+          </Layout>
+        </Layout>
       </Router>
     );
   }
