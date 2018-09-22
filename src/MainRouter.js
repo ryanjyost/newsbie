@@ -16,6 +16,7 @@ import Sources from "./components/pages/Sources";
 import UserAuthPage from "./components/pages/UserAuthPage";
 import SingleSource from "./components/pages/SingleSource";
 import TopNews from "./components/pages/TopNews";
+import Test from "./components/pages/test";
 import Chyrons from "./components/pages/Chyrons";
 import { withRouter } from "react-router";
 import { ic_menu } from "react-icons-kit/md/ic_menu";
@@ -322,6 +323,7 @@ class MainRouter extends React.Component {
                     render={props => <TopNews {...props} />}
                   />
                   <Route path="/old/landing" component={Landing} />
+                  <Route path="/test" component={Test} />
                   <Route component={Dashboard} />
                 </Switch>
               )}

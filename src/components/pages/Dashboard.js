@@ -41,8 +41,6 @@ export default class Dashboard extends Component {
       batch: [],
       screenWidth: 0,
       sites: [],
-      politicsArticles: [],
-      opinionArticles: [],
       currentNews: [],
       currentOpinions: [],
       touchOnly: detectIt.deviceType === "touchOnly"
@@ -114,10 +112,11 @@ export default class Dashboard extends Component {
 	 * Front Pages
 	 * */
     axios
-      .get(`https://birds-eye-news-api.herokuapp.com/get_front_pages`, {
+      .get(`https://birds-eye-news-api.herokuapp.com`, {
         Accept: "application/json"
       })
       .then(response => {
+        console.log(response);
         //let results = response.body.results;
         // console.log("hey", response.data.records);
         const records = response.data.records.filter(record => {
@@ -143,22 +142,8 @@ export default class Dashboard extends Component {
         Accept: "application/json"
       })
       .then(res => {
-        let currentNews = shuffle(res.data.politicsArticles);
-
-        let filteredPolitics = currentNews.filter(article => {
-          return article.site.name.toLowerCase() !== "politico";
-        });
-
-        let currentOpinions = shuffle(res.data.opinionArticles);
-
-        let filteredOpinions = currentOpinions.filter(article => {
-          return article.site.name.toLowerCase() !== "cbsnews";
-        });
-
         this.setState({
-          sites: res.data.sites,
-          politicsArticles: filteredPolitics,
-          opinionArticles: filteredOpinions
+          sites: res.data.sites
         });
       })
       .catch(err => console.log(err));
