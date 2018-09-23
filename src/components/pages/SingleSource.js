@@ -45,14 +45,9 @@ export default class SingleSource extends Component {
 
   componentDidMount() {
     axios
-      .get(
-        `https://birds-eye-news-api.herokuapp.com/sources/${
-          this.props.match.params.source
-        }`,
-        {
-          Accept: "application/json"
-        }
-      )
+      .get(`http://localhost:8000/sources/${this.props.match.params.source}`, {
+        Accept: "application/json"
+      })
       .then(res => {
         if (res.data.tags.length < 2) {
           this.setState({ view: "articles", hideAnalysis: true });

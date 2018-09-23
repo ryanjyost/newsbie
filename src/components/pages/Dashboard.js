@@ -112,7 +112,7 @@ export default class Dashboard extends Component {
 	 * Front Pages
 	 * */
     axios
-      .get(`https://birds-eye-news-api.herokuapp.com`, {
+      .get(`https://birds-eye-news-api.herokuapp.com/get_front_pages`, {
         Accept: "application/json"
       })
       .then(response => {
@@ -126,36 +126,14 @@ export default class Dashboard extends Component {
 
         this.setState({
           records: randomOrder,
-          batch: response.data.batch
+          batch: response.data.batch,
+          sites: response.data.sites ? response.data.sites : []
         });
       })
       .catch(error => {
         console.log("ERROR", error);
         this.setState({ showError: true });
       });
-
-    /*
-	 * Articles
-	 * */
-    axios
-      .get("https://birds-eye-news-api.herokuapp.com/today", {
-        Accept: "application/json"
-      })
-      .then(res => {
-        this.setState({
-          sites: res.data.sites
-        });
-      })
-      .catch(err => console.log(err));
-
-    axios
-      .get(`https://birds-eye-news-api.herokuapp.com/top_news`, {
-        Accept: "application/json"
-      })
-      .then(res => {
-        this.setState({ topics: res.data.topics, batches: res.data.batches });
-      })
-      .catch(err => console.log(err));
 
     window.addEventListener(
       "resize",

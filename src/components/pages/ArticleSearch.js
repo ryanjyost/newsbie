@@ -63,7 +63,7 @@ export default class ArticleSearch extends Component {
 		 * Articles
 		 * */
       axios
-        .get("https://birds-eye-news-api.herokuapp.com/today")
+        .get("https://birds-eye-news-api.herokuapp.com/recent_articles")
         .then(res => {
           let currentNews = shuffle(res.data.politicsArticles);
 
