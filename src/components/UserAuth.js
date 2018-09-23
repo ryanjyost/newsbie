@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { auth } from "../firebase";
+import { Input, Icon, Button } from "antd";
 
 export default class UserAuth extends Component {
   constructor(props) {
@@ -85,24 +86,25 @@ export default class UserAuth extends Component {
   }
 
   render() {
-    const { signUpSuccess, fetching, error } = this.state;
+    const { signUpSuccess, fetching, error, email } = this.state;
     const labelStyle = {
-      color: "rgba(0,0,0,0.8)",
+      color: "rgba(0,0,0,0.6)",
       fontSize: 12,
-      padding: "0px 0px 3px 0px",
-      fontWeight: "bold"
+      padding: "0px 0px 0px 0px",
+      fontWeight: "bold",
+      marginBottom: 3
     };
     const inputStyle = {
       marginBottom: 10
     };
     const btnStyle = {
-      fontSize: 14,
-      backgroundColor: "rgb(33, 58, 73)",
-      color: "#fafafa",
-      // fontWeight: "bold",
-      padding: "10px",
-      borderRadius: 3,
-      letterSpacing: "0.02em"
+      // fontSize: 14,
+      // backgroundColor: "rgb(33, 58, 73)",
+      // color: "#fafafa",
+      // // fontWeight: "bold",
+      // padding: "10px",
+      // borderRadius: 3,
+      // letterSpacing: "0.02em"
     };
 
     const disableSignup =
@@ -125,50 +127,75 @@ export default class UserAuth extends Component {
         >
           {" "}
           <label style={labelStyle}>Email</label>
-          <input
+          <Input
             style={inputStyle}
+            placeholder="Enter your email"
+            prefix={
+              <Icon
+                type="user"
+                style={{ color: "rgba(0,0,0,.25)", marginRight: 10 }}
+              />
+            }
             value={this.state.email}
             onChange={e => this.setState({ email: e.target.value })}
           />
           <label style={labelStyle}>
             Password{" "}
-            <span style={{ color: "rgba(0,0,0,0.4)" }}>
+            <span style={{ color: "rgba(0,0,0,0.4)", fontWeight: "normal" }}>
               (minimum 6 characters)
             </span>
           </label>
-          <input
+          <Input
             style={inputStyle}
             value={this.state.password1}
+            prefix={
+              <Icon
+                type="lock"
+                style={{ color: "rgba(0,0,0,.25)", marginRight: 10 }}
+              />
+            }
             onChange={e => this.setState({ password1: e.target.value })}
             type={"password"}
           />
           <label style={labelStyle}>Confirm Password</label>
-          <input
+          <Input
             style={inputStyle}
             value={this.state.password2}
             onChange={e => this.setState({ password2: e.target.value })}
             type={"password"}
+            prefix={
+              <Icon
+                type="lock"
+                style={{ color: "rgba(0,0,0,.25)", marginRight: 10 }}
+              />
+            }
           />
-          <button
+          <Button
+            type="primary"
             disabled={disableSignup}
             style={btnStyle}
             className={"shadow shadowHover"}
             onClick={() => this.onSignUp()}
           >
             {fetching ? "Creating your account..." : "Get Free Early Access"}
-          </button>
+          </Button>
           {!fetching && (
             <div
-              className="hoverUnderline"
               style={{
                 textAlign: "center",
                 fontSize: 12,
                 padding: 10,
                 color: "rgba(0,0,0,0.8)"
               }}
-              onClick={() => this.setState({ view: "signIn" })}
             >
-              Already have an account? Click here
+              Already have an account?{" "}
+              <span
+                onClick={() => this.setState({ view: "signIn" })}
+                className="hoverUnderline"
+                style={{ color: "rgba(24, 144, 255, 1)" }}
+              >
+                Sign In
+              </span>
             </div>
           )}
         </div>
@@ -184,40 +211,59 @@ export default class UserAuth extends Component {
             // padding: "20px 0px 10px 0px"
           }}
         >
-          {" "}
           <label style={labelStyle}>Email</label>
-          <input
+          <Input
             style={inputStyle}
+            placeholder="Enter your email"
+            prefix={
+              <Icon
+                type="user"
+                style={{ color: "rgba(0,0,0,.25)", marginRight: 10 }}
+              />
+            }
             value={this.state.email}
             onChange={e => this.setState({ email: e.target.value })}
           />
-          <label style={labelStyle}>Password</label>
-          <input
+          <label style={labelStyle}>Password </label>
+          <Input
             style={inputStyle}
             value={this.state.password1}
+            prefix={
+              <Icon
+                type="lock"
+                style={{ color: "rgba(0,0,0,.25)", marginRight: 10 }}
+              />
+            }
             onChange={e => this.setState({ password1: e.target.value })}
             type={"password"}
           />
-          <button
+          <Button
+            type="primary"
             disabled={disableSignIn}
             style={btnStyle}
             className={"shadow shadowHover"}
             onClick={() => this.onSignIn()}
           >
             {fetching ? "Signing in..." : "Sign In"}
-          </button>
+          </Button>
+
           {!fetching && (
             <div
-              className="hoverUnderline"
               style={{
                 textAlign: "center",
                 fontSize: 12,
                 padding: 10,
                 color: "rgba(0,0,0,0.8)"
               }}
-              onClick={() => this.setState({ view: "signUp" })}
             >
-              Don't have an account yet? Click here
+              Don't have an account yet?{" "}
+              <span
+                onClick={() => this.setState({ view: "signUp" })}
+                className="hoverUnderline"
+                style={{ color: "rgba(24, 144, 255, 1)" }}
+              >
+                Sign Up
+              </span>
             </div>
           )}
         </div>
@@ -326,7 +372,7 @@ export default class UserAuth extends Component {
         style={{
           display: "flex",
           flexDirection: "column",
-          padding: "20px 0px 10px 0px"
+          padding: "0px 0px 0px 0px"
         }}
         onKeyPress={e => this.handleEnterKey(e)}
       >

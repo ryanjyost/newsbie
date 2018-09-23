@@ -6,22 +6,24 @@ import {
   Link,
   Redirect
 } from "react-router-dom";
-import App from "./App";
-import Landing from "./components/Landing";
-import ToolMenu from "./components/ToolMenu";
-import Dashboard from "./components/pages/Dashboard";
-import FrontPageSearch from "./components/pages/FrontPageSearch";
-import Sources from "./components/pages/Sources";
-import UserAuthPage from "./components/pages/UserAuthPage";
-import SingleSource from "./components/pages/SingleSource";
-import TopNews from "./components/pages/TopNews";
-import Chyrons from "./components/pages/Chyrons";
 import { withRouter } from "react-router";
 import { ic_menu } from "react-icons-kit/md/ic_menu";
 import { ic_close } from "react-icons-kit/md/ic_close";
 import { Icon } from "react-icons-kit";
 import ReactGA from "react-ga";
 import store from "store";
+import detectIt from "detect-it";
+
+import Landing from "./components/Landing";
+import ToolMenu from "./components/ToolMenu";
+import DashboardOld from "./components/pages/old/Dashboard";
+import Home from "./components/pages/Home";
+import FrontPageSearch from "./components/pages/FrontPageSearch";
+import Sources from "./components/pages/Sources";
+import UserAuthPage from "./components/pages/UserAuthPage";
+import SingleSource from "./components/pages/SingleSource";
+import TopNews from "./components/pages/TopNews";
+import Chyrons from "./components/pages/Chyrons";
 
 //=========================================
 import ArticlesOld from "./components/pages/ArticleSearch";
@@ -196,11 +198,13 @@ class MainRouter extends React.Component {
       menuOpen: false,
       screenWidth: 0,
       user: null,
-      collapsed: true
+      collapsed: true,
+      didMount: false
     };
   }
 
   componentDidMount() {
+    this.setState({ didMount: true });
     this.updateDimensions();
 
     let user = store.get("user");
@@ -212,6 +216,8 @@ class MainRouter extends React.Component {
       "resize",
       this.throttle(this.updateDimensions.bind(this), 200)
     );
+    window.addEventListener("touchstart", this.touchStart);
+    window.addEventListener("touchmove", this.preventTouch, { passive: false });
 
     this.initReactGA();
   }
@@ -250,19 +256,41 @@ class MainRouter extends React.Component {
     };
   }
 
+  touchStart(e) {
+    this.firstClientX = e.touches[0].clientX;
+    this.firstClientY = e.touches[0].clientY;
+  }
+
   updateUser(user) {
     console.log("update");
     this.setState({ user });
     store.set("user", user);
   }
 
-  render() {
-    const { user, screenWidth, collapsed } = this.state;
+  preventTouch(e) {
+    const minValue = 5; // threshold
 
-    const renderSidebar = () => {
+    this.clientX = e.touches[0].clientX - this.firstClientX;
+    this.clientY = e.touches[0].clientY - this.firstClientY;
+
+    // Vertical scrolling does not work when you start swiping horizontally.
+    if (Math.abs(this.clientX) > minValue) {
+      e.preventDefault();
+      e.returnValue = false;
+      return false;
+    }
+  }
+
+  render() {
+    const { user, screenWidth, collapsed, didMount } = this.state;
+    let hideSidebar = screenWidth < 500;
+
+    const Sidebar = ({ location }) => {
+      const activeKey = location.pathname || "";
+
       return (
         <Sider
-          // collapsedWidth={0}
+          collapsedWidth={hideSidebar ? 0 : 80}
           trigger={null}
           collapsible
           collapsed={this.state.collapsed}
@@ -271,39 +299,38 @@ class MainRouter extends React.Component {
             height: "100vh",
             position: "fixed",
             left: 0,
-            backgroundColor: "#fff",
+            backgroundColor: "#FDFEFF",
             zIndex: 10000000
           }}
         >
           <Link
             to={"/"}
             style={{
-              fontSize: 16,
               cursor: "pointer",
-              marginLeft: 10,
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              height: 64
+              height: 64,
+              borderRight: "1px solid #e8e8e8"
             }}
             onClick={() => window.scrollTo(0, 0)}
           >
-            <img src={"/images/ms-icon-310x310.png"} height={30} width={30} />
-            <span
-              style={{
-                textDecoration: "none",
-                fontSize: 10,
-                color: "rgba(0,0,0,0.5)",
-                marginLeft: 3
-              }}
-            >
-              beta
-            </span>
+            <img
+              src={
+                collapsed
+                  ? "https://d1dzf0mjm4jp11.cloudfront.net/newsbie-logo.png"
+                  : "https://d1dzf0mjm4jp11.cloudfront.net/newsbie-logo-wide.png"
+              }
+              height={30}
+              // width={collapsed ? 30 * (4571 / 1000)}
+            />
           </Link>
-          <Menu mode="inline" defaultSelectedKeys={["4"]}>
-            <Menu.Item key="1">
-              <AntIcon type="user" />
-              <span className="nav-text">nav 1</span>
+          <Menu mode="inline" selectedKeys={[activeKey]}>
+            <Menu.Item key="/" style={{ marginTop: 0 }}>
+              <Link to={"/"}>
+                <AntIcon type="home" />
+                <span className="nav-text">Dashboard</span>
+              </Link>
             </Menu.Item>
             <Menu.Item key="2">
               <AntIcon type="video-camera" />
@@ -337,103 +364,126 @@ class MainRouter extends React.Component {
         </Sider>
       );
     };
+    const SidebarWithRouter = withRouter(Sidebar);
 
-    return (
-      <Router>
-        <Layout>
-          {renderSidebar()}
+    if (!didMount) {
+      return null;
+    } else {
+      return (
+        <Router>
           <Layout>
-            <Header style={{ background: "#fff", padding: 0 }}>
-              <AntIcon
-                style={{ marginLeft: collapsed ? 100 : 210, cursor: "pointer" }}
-                className="trigger"
-                type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
-                onClick={() =>
-                  this.setState({ collapsed: !this.state.collapsed })
-                }
-              />
-            </Header>
-            <Content>
-              {!this.state.collapsed && (
-                <div
-                  onClick={() => this.setState({ collapsed: true })}
+            <SidebarWithRouter />
+            <Layout>
+              <Header
+                style={{
+                  backgroundColor: "#FDFEFF",
+                  padding: 0,
+                  position: "fixed",
+                  zIndex: 8,
+                  width: "100%",
+                  borderBottom: "1px solid rgb(232, 232, 232)"
+                }}
+              >
+                <AntIcon
                   style={{
-                    height: "100vh",
-                    width: "100%",
-                    position: "absolute",
-                    top: 0,
-                    backgroundColor: "rgba(0,0,0,0.3)",
-                    zIndex: 10000
+                    marginLeft: collapsed ? (hideSidebar ? 20 : 100) : 220,
+                    cursor: "pointer"
                   }}
+                  className="trigger"
+                  type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
+                  onClick={() =>
+                    this.setState({ collapsed: !this.state.collapsed })
+                  }
                 />
-              )}
-              {!user ? (
-                <Route
-                  render={props => (
-                    <UserAuthPage
-                      {...props}
-                      user={user}
-                      updateUser={user => {
-                        this.updateUser(user);
+              </Header>
+              <Content
+                style={{
+                  paddingLeft: collapsed ? (hideSidebar ? 0 : 80) : 200
+                }}
+              >
+                {!this.state.collapsed &&
+                  hideSidebar && (
+                    <div
+                      onClick={() => this.setState({ collapsed: true })}
+                      style={{
+                        height: "100vh",
+                        width: "100%",
+                        position: "absolute",
+                        top: 0,
+                        backgroundColor: "rgba(0,0,0,0.3)",
+                        zIndex: 10000
                       }}
                     />
                   )}
-                />
-              ) : (
-                <Switch>
-                  {/*<Route exact path="/" component={Landing} />*/}
-                  {/*<Route path="/demo" component={App} />*/}
+                {!user ? (
                   <Route
-                    path="/"
-                    exact
                     render={props => (
-                      <Dashboard
+                      <UserAuthPage
                         {...props}
                         user={user}
                         updateUser={user => {
-                          this.setState({ user });
+                          this.updateUser(user);
                         }}
                       />
                     )}
                   />
-                  <Route
-                    path="/articles"
-                    render={props => <Articles {...props} />}
-                  />
-                  <Route
-                    path="/old/articles"
-                    render={props => <ArticlesOld {...props} />}
-                  />
-                  <Route
-                    path="/front_pages"
-                    render={props => <FrontPageSearch {...props} />}
-                  />
-                  <Route
-                    path="/sources"
-                    exact
-                    render={props => <Sources {...props} />}
-                  />
-                  <Route
-                    path="/sources/:source"
-                    render={props => <SingleSource {...props} />}
-                  />
-                  <Route
-                    path="/chyrons"
-                    render={props => <Chyrons {...props} />}
-                  />
-                  <Route
-                    path="/top_news"
-                    render={props => <TopNews {...props} />}
-                  />
-                  <Route path="/old/landing" component={Landing} />
-                  <Route component={Dashboard} />
-                </Switch>
-              )}
-            </Content>
+                ) : (
+                  <Switch>
+                    {/*<Route exact path="/" component={Landing} />*/}
+                    {/*<Route path="/demo" component={App} />*/}
+                    <Route
+                      path="/"
+                      exact
+                      render={props => (
+                        <Home
+                          {...props}
+                          {...this.state}
+                          updateUser={user => {
+                            this.setState({ user });
+                          }}
+                        />
+                      )}
+                    />
+                    <Route
+                      path="/articles"
+                      render={props => <Articles {...props} />}
+                    />
+                    <Route
+                      path="/old/articles"
+                      render={props => <ArticlesOld {...props} />}
+                    />
+                    <Route
+                      path="/front_pages"
+                      render={props => <FrontPageSearch {...props} />}
+                    />
+                    <Route
+                      path="/sources"
+                      exact
+                      render={props => <Sources {...props} />}
+                    />
+                    <Route
+                      path="/sources/:source"
+                      render={props => <SingleSource {...props} />}
+                    />
+                    <Route
+                      path="/chyrons"
+                      render={props => <Chyrons {...props} />}
+                    />
+                    <Route
+                      path="/top_news"
+                      render={props => <TopNews {...props} />}
+                    />
+                    <Route path="/old/landing" component={Landing} />
+                    <Route path="/old/dashboard" component={DashboardOld} />
+                    <Route component={Home} />
+                  </Switch>
+                )}
+              </Content>
+            </Layout>
           </Layout>
-        </Layout>
-      </Router>
-    );
+        </Router>
+      );
+    }
   }
 }
 

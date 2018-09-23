@@ -1,24 +1,25 @@
 import React, { Component } from "react";
 import { Row, Col } from "react-bootstrap";
-import TagCloud from "../TagCloud";
-import WordCloud from "../WordCloud";
+import TagCloud from "../../TagCloud";
+import WordCloud from "../../WordCloud";
 import axios from "axios/index";
 import shuffle from "shuffle-array";
 import ReactGA from "react-ga";
 import Slider from "react-slick";
-import "../../../node_modules/react-vis/dist/style.css";
+import detectIt from "detect-it";
+import "../../../../node_modules/react-vis/dist/style.css";
 
-import SingleFrontPage from "../SingleFrontPage";
-import TopNews from "./TopNews";
-import ToolMenu from "../ToolMenu";
-import UserAuth from "../UserAuth";
-import TopWordsChart from "../TopWordsChart";
+import SingleFrontPage from "../../SingleFrontPage";
+import TopNews from "../TopNews";
+import ToolMenu from "../../ToolMenu";
+import UserAuth from "../../UserAuth";
+import TopWordsChart from "../../TopWordsChart";
 import TimeAgo from "react-timeago";
 import { androidTime } from "react-icons-kit/ionicons/androidTime";
 import { Icon } from "react-icons-kit";
-import Loader from "../Loader";
-import SectionWithLoader from "../SectionWithLoader";
-import detectIt from "detect-it";
+import Loader from "../../Loader";
+import SectionWithLoader from "../../SectionWithLoader";
+
 import {
   HorizontalBarSeries,
   HorizontalGridLines,
