@@ -2,11 +2,39 @@ import React, { Component } from "react";
 import axios from "axios/index";
 import shuffle from "shuffle-array";
 import ReactGA from "react-ga";
+import _ from "lodash";
+import moment from "moment";
+import {
+  LineChart,
+  Legend,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Line,
+  BarChart,
+  Bar
+} from "recharts";
+import { Card } from "antd";
+
+// Components
+import TopWords from "../TopWords";
+import Loader from "../Loader";
+import FrontPagesRow from "../FrontPagesRow";
+import TopNews from "../pages/TopNews";
 
 export default class Home extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      topTags: [null],
+      allTagBatches: [],
+      batchOfTags: null,
+      moreTags: [{ term: "", tf: 0, sourceCount: 0 }],
+      lineGraphData: [],
+      barGraphData: [],
+      dataKeys: []
+    };
   }
 
   componentDidMount() {
@@ -19,50 +47,57 @@ export default class Home extends Component {
       })
       .then(res => {
         // get top, different topics
-        let topics = [res.data.topTags[0]];
 
-        let tags = res.data.topTags;
-        for (let i = 1; i < tags.length; i++) {
-          let currentTag = tags[i];
-          if (topics.length > 2) {
-            break;
-          } else {
-            let duplicate = topics.find(topic => {
-              let splitTag = currentTag.term.split(" ");
-              // console.log(splitTag);
-              return splitTag.find(word => {
-                return word.includes(topic.term) || topic.term.includes(word);
-              });
-            });
-            if (duplicate) {
-              // console.log(duplicate, currentTag);
-              continue;
+        let splitTags = _.partition(res.data.topTags, tag => {
+          return tag.sourceCount / res.data.batches[0].sourceCount > 0.05;
+        });
+        const tags = res.data.batches[0].tags.slice();
+
+        const barGraphData = tags
+          .sort((a, b) => {
+            if (moment(a.sourceCount).isAfter(moment(b.sourceCount))) {
+              return -1;
+            } else if (moment(b.sourceCount).isAfter(moment(a.sourceCount))) {
+              return 1;
             } else {
-              topics.push(currentTag);
+              return 0;
             }
-          }
-        }
-
-        // console.log(topics);
-        for (let batch of res.data.batches) {
-          // console.log(batch);
-          let cohen = batch.tags.find(tag => {
-            return tag.term === "cohen";
+          })
+          .slice(0, 10)
+          .map(tag => {
+            return {
+              term: tag.term,
+              percentage: tag.sourceCount / res.data.batches[0].sourceCount
+            };
           });
-
-          // if (cohen) {
-          //   console.log(cohen);
-          // } else {
-          //   console.log("NOT FOUND", batch);
-          // }
-        }
 
         this.setState({
           batchOfTags: res.data.batches[0],
+          barGraphData,
           allTagBatches: res.data.batches,
-          topTags: res.data.topTags,
-          topics
+          topTags: splitTags[0].sort((a, b) => {
+            if (a.sourceCount > b.sourceCount) {
+              return -1;
+            } else if (b.sourceCount > a.sourceCount) {
+              return 1;
+            } else {
+              return 0;
+            }
+          }),
+          moreTags: splitTags[1]
+            .sort((a, b) => {
+              if (a.sourceCount > b.sourceCount) {
+                return -1;
+              } else if (b.sourceCount > a.sourceCount) {
+                return 1;
+              } else {
+                return 0;
+              }
+            })
+            .slice(0, 20)
         });
+
+        this.prepTopWordTrendData(res.data.batches);
       })
       .catch(err => console.log(err));
 
@@ -83,230 +118,351 @@ export default class Home extends Component {
 
         this.setState({
           records: randomOrder,
-          batch: response.data.batch
+          batch: response.data.batch,
+          sites: response.data.sites
         });
       })
       .catch(error => {
         console.log("ERROR", error);
         this.setState({ showError: true });
       });
+  }
 
-    /*
-	 * Articles
-	 * */
-    axios
-      .get("https://birds-eye-news-api.herokuapp.com/today", {
-        Accept: "application/json"
+  nearestHour(time) {
+    return moment.duration(moment().diff(moment(time))).asHours();
+    // return Math.floor(
+    //   moment.duration(moment().diff(moment(time))).asHours()
+    // ).toFixed(2);
+  }
+
+  prepTopWordTrendData(batches) {
+    let factor = batches.length / 24;
+    let filtered = batches.filter((batch, i) => {
+      return (i + 7) % factor === 0 || i === 0;
+    });
+
+    // for(let i=0; )
+
+    let dataKeys = batches[0].tags
+      .sort((a, b) => {
+        if (moment(a.sourceCount).isAfter(moment(b.sourceCount))) {
+          return -1;
+        } else if (moment(b.sourceCount).isAfter(moment(a.sourceCount))) {
+          return 1;
+        } else {
+          return 0;
+        }
       })
-      .then(res => {
-        let currentNews = shuffle(res.data.politicsArticles);
+      .slice(0, 4)
+      .map(tag => {
+        return tag.term;
+      });
 
-        let filteredPolitics = currentNews.filter(article => {
-          return article.site.name.toLowerCase() !== "politico";
-        });
+    let data = filtered.map(batch => {
+      let obj = {
+        time_stamp: -this.nearestHour(batch.created_at)
+      };
 
-        let currentOpinions = shuffle(res.data.opinionArticles);
+      for (let i = 0; i < batch.tags.length; i++) {
+        if (dataKeys.indexOf(batch.tags[i].term) > -1) {
+          obj[batch.tags[i].term] =
+            (batch.tags[i].sourceCount / batch.sourceCount) * 100;
+        }
+      }
 
-        let filteredOpinions = currentOpinions.filter(article => {
-          return article.site.name.toLowerCase() !== "cbsnews";
-        });
+      for (let item of dataKeys) {
+        if (!(item in obj)) {
+          obj[item] = 0;
+        }
+      }
 
-        this.setState({
-          sites: res.data.sites,
-          politicsArticles: filteredPolitics,
-          opinionArticles: filteredOpinions
-        });
-      })
-      .catch(err => console.log(err));
+      return obj;
+    });
 
-    axios
-      .get(`https://birds-eye-news-api.herokuapp.com/top_news`, {
-        Accept: "application/json"
-      })
-      .then(res => {
-        this.setState({ topics: res.data.topics, batches: res.data.batches });
-      })
-      .catch(err => console.log(err));
+    this.setState({ lineGraphData: data, dataKeys });
   }
 
   render() {
-    const {} = this.state;
-    const { screenWidth } = this.props;
+    const { screenWidth, styles } = this.props;
 
-    let imageWidth = Math.min(screenWidth - 50, 400);
+    let topTags = this.state.topTags.slice();
 
-    let articleWidth = Math.min(screenWidth - 100, 300);
-    let articleHeight = articleWidth * 0.75;
-    let articleMargin = 10;
+    if (!topTags[0] && !this.state.batchOfTags) {
+      return <Loader loaderHeight={"100vh"} />;
+    }
 
-    const sectionStyle = {
-      // border: this.props.noStyle ? null : "1px solid #e5e5e5",
-      padding: 25,
-      backgroundColor: "#fff",
-      margin: "10px 10px",
-      borderRadius: 3,
-      position: "relative",
-      width: "100%"
+    const renderSimpleAreaChart = () => {
+      const colors = [
+        "#FF4848",
+        "#9669FE",
+        "#23819C",
+        "#FF800D",
+        "#800080",
+        "#3923D6"
+      ];
+
+      return (
+        <LineChart
+          width={
+            styles.hideSidebar
+              ? styles.screenWidth - (25 * 2 + 30)
+              : Math.min(
+                  700 - (25 * 2 + 30),
+                  styles.screenWidth - styles.sidebarWidth - (25 * 2 + 30)
+                )
+          }
+          height={300}
+          data={this.state.lineGraphData}
+          margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis
+            dataKey="time_stamp"
+            stroke={"rgba(0,0,0,0.4)"}
+            ticks={[-24, -20, -16, -12, -8, -4, 0].reverse()}
+            domain={[-24, 0]}
+            tickFormatter={tick => `${-tick} hrs`}
+            axisLine={{ stroke: "#e5e5e5" }}
+            tickLine={{ stroke: "#e5e5e5" }}
+            type="number"
+          />
+          <YAxis
+            padding={{ bottom: 10 }}
+            axisLine={{ stroke: "#e5e5e5" }}
+            tickLine={{ stroke: "#e5e5e5" }}
+            stroke={"rgba(0,0,0,0.4)"}
+            interval={"preserveEnd"}
+            tickFormatter={obj => {
+              if (obj) {
+                return `${Number(obj).toFixed(0)}%`;
+              } else {
+                return "";
+              }
+            }}
+            width={40}
+            domain={["dataMin", "dataMax"]}
+            type="number"
+          />
+          {/*<Tooltip />*/}
+          <Legend align={"center"} />
+          {this.state.dataKeys.map((item, i) => {
+            return (
+              <Line
+                key={i}
+                type="monotone"
+                dataKey={item}
+                stroke={colors[i]}
+                dot={false}
+              />
+            );
+          })}
+        </LineChart>
+      );
     };
 
-    const styles = {
-      articleWidth,
-      articleHeight,
-      articleMargin,
-      sectionStyle,
-      screenWidth,
-      maxWidth: 900
+    const renderBarChart = () => {
+      let ticks = this.state.barGraphData.map(item => {
+        return item.term;
+      });
+
+      class Tick extends Component {
+        render() {
+          const { x, y, stroke, payload, value } = this.props;
+          return (
+            <text
+              x={x}
+              y={y + 5}
+              // height={30}
+              // width={120}
+              className="recharts-text recharts-cartesian-axis-tick-value"
+              fill="rgba(0,0,0,0.5)"
+              textAnchor={"end"}
+            >
+              <tspan>{payload.value}</tspan>
+            </text>
+          );
+        }
+      }
+
+      return (
+        <BarChart
+          width={
+            styles.hideSidebar
+              ? styles.screenWidth - (25 * 2 + 30)
+              : Math.min(
+                  500 - (25 * 2 + 30),
+                  styles.screenWidth - styles.sidebarWidth - (25 * 2 + 30)
+                )
+          }
+          height={300}
+          data={this.state.barGraphData}
+          ticks={ticks}
+          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+          barCategoryGap={"20%"}
+          layout={"vertical"}
+          stroke={"rgba(0,0,0,0.4)"}
+          barSize={20}
+        >
+          {/*<CartesianGrid strokeDasharray="3 3" />*/}
+          <XAxis
+            type={"number"}
+            stroke={"rgba(0,0,0,0.3)"}
+            axisLine={{ stroke: "#f2f2f2" }}
+            tickLine={{ stroke: "#f2f2f2" }}
+            tickFormatter={tick => {
+              return `${(Number(tick) * 100).toFixed(0)}%`;
+            }}
+          />
+          <Bar dataKey="percentage" fill="#B8E8FF" stroke={"transparent"} />
+          <YAxis
+            width={120}
+            tickSize={10}
+            tickLine={{ stroke: "transparent" }}
+            stroke={"rgba(0,0,0,0.4)"}
+            type="category"
+            dataKey="term"
+            axisLine={{ stroke: "transparent" }}
+            mirror
+            orientation={"right"}
+            tick={<Tick />}
+          />
+        </BarChart>
+      );
     };
-    //
-    // let topTags = this.state.topTags.slice();
 
-    // const renderTopWordsGraph = () => {
-    //   let data = topTags.map(tag => {
-    //     if (tag) {
-    //       return {
-    //         x: tag.sourceCount / this.state.batchOfTags.sourceCount,
-    //         y: tag.term
-    //       };
-    //     } else {
-    //       return {
-    //         x: 0,
-    //         y: ""
-    //       };
-    //     }
-    //   });
-    //
-    //   let sorted = data.sort((a, b) => {
-    //     if (a.x > b.x) {
-    //       return 1;
-    //     } else if (b.x > a.x) {
-    //       return -1;
-    //     } else {
-    //       return 0;
-    //     }
-    //   });
-    //
-    //   return (
-    //     <div
-    //       style={{
-    //         display: "flex",
-    //         width: "auto",
-    //         overflowX: "scroll",
-    //         overflowY: "hidden",
-    //         padding: "10px 0px 0px 0px",
-    //         marginLeft: -20,
-    //         strokeWidth: 0
-    //       }}
-    //     >
-    //       {data && (
-    //         <XYPlot
-    //           yType="ordinal"
-    //           xType="linear"
-    //           height={300}
-    //           width={Math.min(styles.screenWidth - 60, 350)}
-    //         >
-    //           <VerticalGridLines />
-    //           <HorizontalGridLines />
-    //           <HorizontalBarSeries
-    //             color={"rgba(46, 228, 246, 0.6)"}
-    //             opacity={0.5}
-    //             data={sorted.slice(data.length - 10)}
-    //           />
-    //           <YAxis
-    //             left={250}
-    //             style={{
-    //               line: { stroke: "rgba(0,0,0,0)" },
-    //               ticks: { stroke: "rgba(0,0,0,0)" },
-    //               text: {
-    //                 stroke: "none",
-    //                 fill: "rgba(0,0,0,0.8)",
-    //                 fontWeight: 400,
-    //                 fontSize: 12
-    //               }
-    //             }}
-    //           />
-    //           <XAxis
-    //             tickFormat={v => `${(v * 100).toFixed()}%`}
-    //             style={{
-    //               line: { stroke: "rgba(0,0,0,0)" },
-    //               ticks: { stroke: "rgba(0,0,0,0)" },
-    //               text: {
-    //                 stroke: "none",
-    //                 fill: "rgba(0,0,0,0.4)",
-    //                 fontWeight: 300,
-    //                 fontSize: 10
-    //               }
-    //             }}
-    //           />
-    //         </XYPlot>
-    //       )}
-    //     </div>
-    //   );
-    // };
-    //
-    // const renderFrontPages = () => {
-    //   const settings = {
-    //     // dots: true,
-    //     infinite: true,
-    //     speed: 100,
-    //     slidesToShow: 1,
-    //     slidesToScroll: 1,
-    //     // dots: false,
-    //     arrows: false,
-    //     className: "frontPageSlider"
-    //     // infinite: true,
-    //     // speed: 500,
-    //     // slidesToShow: 1,
-    //     // slidesToScroll: 1,
-    //     // className: "sliderContainer",
-    //     // centerMode: true,
-    //     // centerPadding: "0px",
-    //     // swipeToSlide: true
-    //   };
-    //   if (touchOnly) {
-    //     return (
-    //       <Slider {...settings} style={{ padding: "20px 0px" }}>
-    //         {this.state.records.map((record, i) => {
-    //           return (
-    //             <SingleFrontPage
-    //               key={i}
-    //               imageWidth={imageWidth}
-    //               record={record}
-    //             />
-    //           );
-    //         })}
-    //       </Slider>
-    //     );
-    //   } else {
-    //     return (
-    //       <div
-    //         className={"horzRow"}
-    //         style={{
-    //           display: "flex",
-    //           padding: "20px 20px",
-    //           overflowX: "auto",
-    //           position: "relative"
-    //         }}
-    //       >
-    //         {this.state.records.map((record, i) => {
-    //           return (
-    //             <div key={i} style={{ margin: "0px 15px" }}>
-    //               <SingleFrontPage
-    //                 key={i}
-    //                 imageWidth={imageWidth}
-    //                 record={record}
-    //               />
-    //             </div>
-    //           );
-    //         })}
-    //       </div>
-    //     );
-    //   }
-    // };
-    //
-    // const renderTopNews = () => {
-    //   return <TopNews topicCount={1} />;
-    // };
+    return (
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          padding:
+            styles.screenWidth > 500
+              ? "100px 20px 50px 20px"
+              : "100px 10px 50px 10px"
+        }}
+      >
+        <div style={{ maxWidth: 1000 }}>
+          <div
+            style={{
+              display: "flex",
+              // flexWrap: "wrap",
+              justifyContent: "center",
+              alignItems: "center"
+            }}
+          >
+            <div>
+              <h4
+                style={{
+                  marginBottom: 15,
+                  fontWeight: "normal",
+                  color: "rgba(0,0,0,0.5)"
+                }}
+              >
+                What's being covered in the news?
+              </h4>
+              <Card
+                style={{ width: "100%" }}
+                // // title="What's the news media writing about?"
+                // // extra={<a href="#">More</a>}
+                // tabList={tabList}
+                // activeTabKey={this.state.tab}
+                // onTabChange={tab => this.setState({ tab })}
+              >
+                <TopWords
+                  {...this.props}
+                  list={this.state.topTags.slice(0, 30)}
+                  suppList={this.state.moreTags}
+                  calcValue={word => {
+                    return (
+                      word.sourceCount / this.state.batchOfTags.sourceCount
+                    );
+                  }}
+                />
+              </Card>
+            </div>
+          </div>
+        </div>
+        <Card style={{ width: "100%", maxWidth: 500, marginTop: 30 }}>
+          {renderBarChart()}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              width: "100%"
+            }}
+          >
+            <span
+              style={{
+                fontStyle: "italic",
+                color: "rgba(0,0,0,0.2)",
+                fontSize: 12,
+                padding: 5
+              }}
+            >
+              ...as percentage of recent articles
+            </span>
+          </div>
+        </Card>
 
-    return <div style={{ display: "flex", flexWrap: "wrap" }}>hey</div>;
+        <div
+          style={{
+            margin: "30px 0px 20px 0px",
+            borderRadius: 3,
+            position: "relative",
+            width: screenWidth - 20,
+            paddingRight: screenWidth > 500 && !styles.touchOnly ? 100 : ""
+          }}
+        >
+          <FrontPagesRow records={this.state.records} styles={styles} />
+        </div>
+
+        <h4
+          style={{
+            marginBottom: 15,
+            fontWeight: "normal",
+            color: "rgba(0,0,0,0.5)",
+            marginTop: 20,
+            width: "100%"
+          }}
+        >
+          What are the major topic trends?
+        </h4>
+        <Card style={{ width: "100%", maxWidth: 700 }}>
+          {renderSimpleAreaChart()}
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-end",
+              width: "100%",
+              marginTop: 10
+            }}
+          >
+            <span
+              style={{
+                fontStyle: "italic",
+                color: "rgba(0,0,0,0.2)",
+                fontSize: 12,
+                padding: 5
+              }}
+            >
+              ...as percentage of recent articles
+            </span>
+          </div>
+        </Card>
+
+        <h4
+          style={{
+            marginBottom: 15,
+            fontWeight: "normal",
+            color: "rgba(0,0,0,0.5)",
+            marginTop: 30,
+            width: "100%"
+          }}
+        >
+          Dive deeper into top news stories
+        </h4>
+        <TopNews styles={styles} />
+      </div>
+    );
   }
 }

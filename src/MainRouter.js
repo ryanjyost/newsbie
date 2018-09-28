@@ -199,7 +199,8 @@ class MainRouter extends React.Component {
       screenWidth: 0,
       user: null,
       collapsed: true,
-      didMount: false
+      didMount: false,
+      touchOnly: false
     };
   }
 
@@ -220,6 +221,10 @@ class MainRouter extends React.Component {
     window.addEventListener("touchmove", this.preventTouch, { passive: false });
 
     this.initReactGA();
+
+    this.setState({
+      touchOnly: detectIt.deviceType === "touchOnly"
+    });
   }
 
   initReactGA() {
@@ -284,6 +289,16 @@ class MainRouter extends React.Component {
   render() {
     const { user, screenWidth, collapsed, didMount } = this.state;
     let hideSidebar = screenWidth < 500;
+    let isOpenWide = !hideSidebar && !collapsed;
+
+    let styles = {
+      screenWidth,
+      hideSidebar,
+      isOpenWide,
+      collapsed,
+      sidebarWidth: collapsed ? (hideSidebar ? 0 : 80) : hideSidebar ? 80 : 200,
+      touchOnly: this.state.touchOnly
+    };
 
     const Sidebar = ({ location }) => {
       const activeKey = location.pathname || "";
@@ -308,10 +323,11 @@ class MainRouter extends React.Component {
             style={{
               cursor: "pointer",
               display: "flex",
-              justifyContent: "center",
+              justifyContent: collapsed ? "center" : "flex-start",
               alignItems: "center",
               height: 64,
-              borderRight: "1px solid #e8e8e8"
+              paddingLeft: collapsed ? 0 : 15,
+              borderRight: "1px solid #f2f2f2"
             }}
             onClick={() => window.scrollTo(0, 0)}
           >
@@ -325,7 +341,11 @@ class MainRouter extends React.Component {
               // width={collapsed ? 30 * (4571 / 1000)}
             />
           </Link>
-          <Menu mode="inline" selectedKeys={[activeKey]}>
+          <Menu
+            mode="inline"
+            style={{ borderRight: "1px solid #e8e8e8" }}
+            selectedKeys={[activeKey]}
+          >
             <Menu.Item key="/" style={{ marginTop: 0 }}>
               <Link to={"/"}>
                 <AntIcon type="home" />
@@ -398,7 +418,9 @@ class MainRouter extends React.Component {
               </Header>
               <Content
                 style={{
-                  paddingLeft: collapsed ? (hideSidebar ? 0 : 80) : 200
+                  paddingLeft: styles.sidebarWidth,
+                  position: "relative",
+                  float: "left"
                 }}
               >
                 {!this.state.collapsed &&
@@ -406,7 +428,7 @@ class MainRouter extends React.Component {
                     <div
                       onClick={() => this.setState({ collapsed: true })}
                       style={{
-                        height: "100vh",
+                        height: "100%",
                         width: "100%",
                         position: "absolute",
                         top: 0,
@@ -438,6 +460,7 @@ class MainRouter extends React.Component {
                         <Home
                           {...props}
                           {...this.state}
+                          styles={styles}
                           updateUser={user => {
                             this.setState({ user });
                           }}

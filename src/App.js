@@ -7,7 +7,7 @@ import $ from "jquery";
 import Site from "./components/Site";
 import Article from "./components/Article";
 import Landing from "./components/Landing";
-import FrontPages from "./components/FrontPages";
+import FrontPages from "./components/old/FrontPages";
 import Tag from "./components/Tag";
 import Slider from "react-slick";
 import detectIt from "detect-it";

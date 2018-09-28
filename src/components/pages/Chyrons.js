@@ -10,7 +10,7 @@ import shuffle from "shuffle-array";
 import CircularProgressbar from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import numeral from "numeral";
-import WordCloud from "../WordCloud";
+import WordCloud from "../old/WordCloud";
 
 export default class Chyrons extends Component {
   constructor(props) {

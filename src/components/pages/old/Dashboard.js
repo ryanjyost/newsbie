@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Row, Col } from "react-bootstrap";
 import TagCloud from "../../TagCloud";
-import WordCloud from "../../WordCloud";
+import WordCloud from "../../old/WordCloud";
 import axios from "axios/index";
 import shuffle from "shuffle-array";
 import ReactGA from "react-ga";
@@ -46,7 +46,7 @@ export default class Dashboard extends Component {
       opinionArticles: [],
       currentNews: [],
       currentOpinions: [],
-      touchOnly: detectIt.deviceType === "touchOnly"
+      touchOnly: false
 
       // word trends
     };
@@ -178,6 +178,10 @@ export default class Dashboard extends Component {
       this.throttle(this.updateDimensions.bind(this), 200)
     );
 
+    this.setState({
+      touchOnly: detectIt.deviceType === "touchOnly"
+    });
+
     // google analystics
     this.initReactGA();
 
@@ -273,7 +277,8 @@ export default class Dashboard extends Component {
       articleMargin,
       sectionStyle,
       screenWidth,
-      maxWidth: 900
+      maxWidth: 900,
+      touchOnly
     };
 
     let topTags = this.state.topTags.slice();
