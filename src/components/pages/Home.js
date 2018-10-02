@@ -33,7 +33,8 @@ export default class Home extends Component {
       moreTags: [{ term: "", tf: 0, sourceCount: 0 }],
       lineGraphData: [],
       barGraphData: [],
-      dataKeys: []
+      dataKeys: [],
+      records: []
     };
   }
 
@@ -187,10 +188,6 @@ export default class Home extends Component {
 
     let topTags = this.state.topTags.slice();
 
-    if (!topTags[0] && !this.state.batchOfTags) {
-      return <Loader loaderHeight={"100vh"} />;
-    }
-
     const renderSimpleAreaChart = () => {
       const colors = [
         "#FF4848",
@@ -286,14 +283,10 @@ export default class Home extends Component {
 
       return (
         <BarChart
-          width={
-            styles.hideSidebar
-              ? styles.screenWidth - (25 * 2 + 30)
-              : Math.min(
-                  500 - (25 * 2 + 30),
-                  styles.screenWidth - styles.sidebarWidth - (25 * 2 + 30)
-                )
-          }
+          width={Math.min(
+            500 - (25 * 2 + 30),
+            styles.screenWidth - (25 * 2 + 30)
+          )}
           height={300}
           data={this.state.barGraphData}
           ticks={ticks}
@@ -329,6 +322,10 @@ export default class Home extends Component {
         </BarChart>
       );
     };
+
+    if (!topTags[0] || !this.state.batchOfTags || !this.state.records) {
+      return <Loader loaderHeight={"100vh"} />;
+    }
 
     return (
       <div

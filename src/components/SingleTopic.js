@@ -99,8 +99,6 @@ export default class SingleTopic extends Component {
       return tag.tf / topic.main.tf > 0.1;
     });
 
-    console.log(topic, splitTags);
-
     this.setState({
       topTags: splitTags[0],
       moreTags: splitTags[1]
@@ -425,7 +423,7 @@ export default class SingleTopic extends Component {
       } else {
         return (
           <TopWords
-            {...this.props}
+            screenWidth={styles.screenWidth}
             list={this.state.topTags}
             suppList={this.state.moreTags}
             calcValue={word => {
@@ -451,13 +449,13 @@ export default class SingleTopic extends Component {
         {groupOfArticles(topic.preview.politics, mainPreview)}
 
         <div
-          style={{ margin: styles.screenWidth > 500 ? "0px 0px 10px 10px" : 0 }}
+        // style={{ margin: styles.screenWidth > 500 ? "0px 0px 10px 10px" : 0 }}
         >
           <Card
             style={{
               display: "flex",
-              flexWrap: "wrap",
-              marginBottom: styles.screenWidth > 500 ? 10 : 0
+              flexWrap: "wrap"
+              // marginBottom: styles.screenWidth > 500 ? 10 : 0
             }}
           >
             <div style={{ marginBottom: 10, maxWidth: 250 }}>
@@ -471,7 +469,7 @@ export default class SingleTopic extends Component {
 
         {groupOfArticles(topic.preview.more, morePreview)}
 
-        <Card>
+        <Card style={{ maxWidth: 600 }}>
           <h5 style={{ margin: "0px 0px 3px 0px" }}>
             terms related{" "}
             <span style={{ color: "rgba(0,0,0,0.5)" }}>

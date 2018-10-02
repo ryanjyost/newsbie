@@ -17,7 +17,7 @@ const blank = {
   twitter: ""
 };
 
-module.exports = [
+const sources = [
   {
     name: "cnn",
     image: "cnn-logo.png",
@@ -863,6 +863,18 @@ module.exports = [
     twitter: "@MotherJones"
   }
 ];
+
+export default sources;
+
+export const sortedSources = sources.sort((a, b) => {
+  if (a.title.replace("The ", "") > b.title.replace("The ", "")) {
+    return 1;
+  } else if (b.title.replace("The ", "") > a.title.replace("The ", "")) {
+    return -1;
+  } else {
+    return 0;
+  }
+});
 
 let old = [
   {

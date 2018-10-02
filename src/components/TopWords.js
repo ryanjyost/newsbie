@@ -23,7 +23,6 @@ export default class TopWords extends Component {
   }
 
   componentDidMount() {
-    console.log("LIST", this.props.list);
     const values = this.props.list.map(item => {
       return this.props.calcValue(item);
     });
