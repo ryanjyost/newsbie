@@ -15,18 +15,18 @@ import store from "store";
 import detectIt from "detect-it";
 
 import Landing from "./components/Landing";
-import ToolMenu from "./components/ToolMenu";
 import DashboardOld from "./components/pages/old/Dashboard";
 import Home from "./components/pages/Home";
-import FrontPageSearch from "./components/pages/FrontPageSearch";
+import FrontPages from "./components/pages/FrontPages";
 import Sources from "./components/pages/Sources";
 import UserAuthPage from "./components/pages/UserAuthPage";
 import SingleSource from "./components/pages/SingleSource";
 import TopNews from "./components/pages/TopNews";
 import Chyrons from "./components/pages/Chyrons";
+import Articles from "./components/pages/ArticleSearch";
+import Images from "./components/pages/Images";
 
 //=========================================
-import Articles from "./components/pages/ArticleSearch";
 
 import { Layout, Menu, Icon as AntIcon, Button } from "antd";
 const { Header, Content, Footer, Sider } = Layout;
@@ -143,7 +143,6 @@ class MainRouter extends React.Component {
 
     const Sidebar = ({ location }) => {
       const activeKey = location.pathname || "";
-
       return (
         <Sider
           collapsedWidth={hideSidebar ? 0 : 80}
@@ -186,7 +185,11 @@ class MainRouter extends React.Component {
             mode="inline"
             style={{ borderRight: "1px solid #e8e8e8" }}
             selectedKeys={[activeKey]}
-            onSelect={() => this.setState({ collapsed: true })}
+            onSelect={() => {
+              if (hideSidebar) {
+                this.setState({ collapsed: true });
+              }
+            }}
           >
             <Menu.Item key="/" style={{ marginTop: 0 }}>
               <Link to={"/"}>
@@ -200,6 +203,30 @@ class MainRouter extends React.Component {
                 <span className="nav-text">Articles</span>
               </Link>
             </Menu.Item>
+            <Menu.Item key="/front_pages" style={{ marginTop: 0 }}>
+              <Link to={"/front_pages"}>
+                <AntIcon type="block" />
+                <span className="nav-text">Front Pages</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="/news_images" style={{ marginTop: 0 }}>
+              <Link to={"/news_images"}>
+                <AntIcon type="picture" />
+                <span className="nav-text">Images</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="/trends" style={{ marginTop: 0 }}>
+              <Link to={"/trends"}>
+                <AntIcon type="line-chart" />
+                <span className="nav-text">Topic Trends</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="/term" style={{ marginTop: 0 }}>
+              <Link to={"/term"}>
+                <AntIcon type="experiment" />
+                <span className="nav-text">Term Analysis</span>
+              </Link>
+            </Menu.Item>
           </Menu>
         </Sider>
       );
@@ -207,6 +234,23 @@ class MainRouter extends React.Component {
     const SidebarWithRouter = withRouter(Sidebar);
 
     const HeaderNoRouter = ({ location }) => {
+      let title = "";
+      switch (location.pathname) {
+        case "/":
+          title = "Overview";
+          break;
+        case "/articles":
+          title = "Articles";
+          break;
+        case "/front_pages":
+          title = "Front Pages";
+          break;
+        case "/news_images":
+          title = "Images";
+          break;
+        default:
+          break;
+      }
       return (
         <Header
           style={{
@@ -221,30 +265,42 @@ class MainRouter extends React.Component {
             alignItems: "center"
           }}
         >
-          <AntIcon
+          <div
             style={{
-              marginLeft: hideSidebar ? 20 : collapsed ? 100 : 220,
-              cursor: "pointer"
+              display: "flex",
+              alignItems: "center"
             }}
-            className="trigger"
-            type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
-            onClick={() => this.setState({ collapsed: !this.state.collapsed })}
-          />
-          <a
-            style={{ display: "flex", alignItems: "center" }}
-            target={"_blank"}
-            href={
-              "https://join.slack.com/t/newsbie/shared_invite/enQtNDM4MzY3NTY4MzA2LWI2YzQzMTZjMmU4ZDdlZjk4NTJiYjc4OTBlZjY0N2UxMjIwMjk1YWM3YzI0OWM0MmYxNTE5MjkwYTc2YjFmZDY"
-            }
           >
-            <Button
-              size="small"
-              style={{ marginRight: 20, backgroundColor: "transparent" }}
-              type="default"
+            <AntIcon
+              style={{
+                marginLeft: hideSidebar ? 20 : collapsed ? 100 : 220,
+                cursor: "pointer"
+              }}
+              className="trigger"
+              type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
+              onClick={() =>
+                this.setState({ collapsed: !this.state.collapsed })
+              }
+            />
+            <h4 style={{ margin: "0px 0px 0px 10px" }}>{title}</h4>
+          </div>
+          {!hideSidebar && (
+            <a
+              style={{ display: "flex", alignItems: "center" }}
+              target={"_blank"}
+              href={
+                "https://join.slack.com/t/newsbie/shared_invite/enQtNDM4MzY3NTY4MzA2LWI2YzQzMTZjMmU4ZDdlZjk4NTJiYjc4OTBlZjY0N2UxMjIwMjk1YWM3YzI0OWM0MmYxNTE5MjkwYTc2YjFmZDY"
+              }
             >
-              <AntIcon type="slack" style={{ marginRight: 0 }} />Chat on Slack
-            </Button>
-          </a>
+              <Button
+                size="small"
+                style={{ marginRight: 20, backgroundColor: "transparent" }}
+                type="default"
+              >
+                <AntIcon type="slack" style={{ marginRight: 0 }} />Chat on Slack
+              </Button>
+            </a>
+          )}
         </Header>
       );
     };
@@ -281,7 +337,7 @@ class MainRouter extends React.Component {
                       }}
                     />
                   )}
-                {!user ? (
+                {!user && window.location.pathname !== "/" ? (
                   <Route
                     render={props => (
                       <UserAuthPage
@@ -317,7 +373,13 @@ class MainRouter extends React.Component {
                     />
                     <Route
                       path="/front_pages"
-                      render={props => <FrontPageSearch {...props} />}
+                      render={props => (
+                        <FrontPages {...props} styles={styles} />
+                      )}
+                    />
+                    <Route
+                      path="/news_images"
+                      render={props => <Images {...props} styles={styles} />}
                     />
                     <Route
                       path="/sources"
@@ -338,7 +400,18 @@ class MainRouter extends React.Component {
                     />
                     <Route path="/old/landing" component={Landing} />
                     <Route path="/old/dashboard" component={DashboardOld} />
-                    <Route component={Home} />
+                    <Route
+                      render={props => (
+                        <Home
+                          {...props}
+                          {...this.state}
+                          styles={styles}
+                          updateUser={user => {
+                            this.setState({ user });
+                          }}
+                        />
+                      )}
+                    />
                   </Switch>
                 )}
               </Content>

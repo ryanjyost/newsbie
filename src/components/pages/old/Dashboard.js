@@ -9,7 +9,7 @@ import Slider from "react-slick";
 import detectIt from "detect-it";
 import "../../../../node_modules/react-vis/dist/style.css";
 
-import SingleFrontPage from "../../SingleFrontPage";
+import SingleFrontPage from "../../front_pages/SingleFrontPage";
 import TopNews from "../TopNews";
 import ToolMenu from "../../ToolMenu";
 import UserAuth from "../../UserAuth";

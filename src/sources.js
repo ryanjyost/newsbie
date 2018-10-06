@@ -876,6 +876,28 @@ export const sortedSources = sources.sort((a, b) => {
   }
 });
 
+export const mappedSourceToImage = () => {
+  let mapped = {};
+  sources.map(source => {
+    mapped[source.name] = source.image;
+  });
+
+  return mapped;
+};
+
+export const sourcesForFrontPages = sources
+  .filter(source => {
+    return source.name !== "thewashingtonpost";
+  })
+  .map(source => {
+    return {
+      image: source.image,
+      name: source.name,
+      title: source.title,
+      url: source.url
+    };
+  });
+
 let old = [
   {
     name: "bloomberg",

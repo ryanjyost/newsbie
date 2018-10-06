@@ -7,7 +7,7 @@ import TopWordsChart from "../TopWordsChart";
 import TagCloud from "../TagCloud";
 import WordCloud from "../old/WordCloud";
 import ArticleSearch from "../pages/ArticleSearch";
-import FrontPageSearch from "../pages/FrontPageSearch";
+import FrontPageSearch from "./old/FrontPageSearch";
 import SectionWithLoader from "../SectionWithLoader";
 
 // icons

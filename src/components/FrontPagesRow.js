@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import SingleFrontPage from "./SingleFrontPage";
+import SingleFrontPage from "./front_pages/SingleFrontPage";
 import Slider from "react-slick";
 import detectIt from "detect-it";
 
@@ -56,7 +56,7 @@ export default class FrontPagesRow extends Component {
           className={"horzRow"}
           style={{
             display: "flex",
-            padding: "20px 20px 20px 0px",
+            padding: "20px 0px 20px 0px",
             overflowX: "auto",
             position: "relative"
           }}

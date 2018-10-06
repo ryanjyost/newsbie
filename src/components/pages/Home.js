@@ -338,79 +338,68 @@ export default class Home extends Component {
               : "100px 10px 50px 10px"
         }}
       >
-        <div style={{ maxWidth: 1000 }}>
-          <div
-            style={{
-              display: "flex",
-              // flexWrap: "wrap",
-              justifyContent: "center",
-              alignItems: "center"
-            }}
-          >
-            <div>
-              <h4
-                style={{
-                  marginBottom: 15,
-                  fontWeight: "normal",
-                  color: "rgba(0,0,0,0.5)"
-                }}
-              >
-                What's being covered in the news?
-              </h4>
-              <Card
-                style={{ width: "100%" }}
-                // // title="What's the news media writing about?"
-                // // extra={<a href="#">More</a>}
-                // tabList={tabList}
-                // activeTabKey={this.state.tab}
-                // onTabChange={tab => this.setState({ tab })}
-              >
-                <TopWords
-                  {...this.props}
-                  list={this.state.topTags.slice(0, 30)}
-                  suppList={this.state.moreTags}
-                  calcValue={word => {
-                    return (
-                      word.sourceCount / this.state.batchOfTags.sourceCount
-                    );
-                  }}
-                />
-              </Card>
-            </div>
-          </div>
-        </div>
-        <Card style={{ width: "100%", maxWidth: 500, marginTop: 30 }}>
-          {renderBarChart()}
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-end",
-              width: "100%"
-            }}
-          >
-            <span
-              style={{
-                fontStyle: "italic",
-                color: "rgba(0,0,0,0.2)",
-                fontSize: 12,
-                padding: 5
-              }}
-            >
-              ...as percentage of recent articles
-            </span>
-          </div>
-        </Card>
-
         <div
           style={{
-            margin: "30px 0px 20px 0px",
-            borderRadius: 3,
-            position: "relative",
-            width: screenWidth - 20,
-            paddingRight: screenWidth > 500 && !styles.touchOnly ? 100 : ""
+            maxWidth: 1400,
+            display: "flex",
+            flexWrap: "wrap",
+            justifyContent: "flex-start",
+            alignItems: "stretch"
           }}
         >
-          <FrontPagesRow records={this.state.records} styles={styles} />
+          <div>
+            <h4
+              style={{
+                marginBottom: 15,
+                fontWeight: "normal",
+                color: "rgba(0,0,0,0.5)"
+              }}
+            >
+              What's being covered in the news?
+            </h4>
+            <Card style={{ width: "100%", maxWidth: 900 }}>
+              <TopWords
+                {...this.props}
+                list={this.state.topTags.slice(0, 30)}
+                suppList={this.state.moreTags}
+                calcValue={word => {
+                  return word.sourceCount / this.state.batchOfTags.sourceCount;
+                }}
+              />
+            </Card>
+          </div>
+
+          <Card style={{ width: "100%", maxWidth: 500, marginTop: 30 }}>
+            {renderBarChart()}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "flex-end",
+                width: "100%"
+              }}
+            >
+              <span
+                style={{
+                  fontStyle: "italic",
+                  color: "rgba(0,0,0,0.2)",
+                  fontSize: 12,
+                  padding: 5
+                }}
+              >
+                ...as percentage of recent articles
+              </span>
+            </div>
+          </Card>
+        </div>
+
+        <div style={{ width: "100%" }}>
+          <div
+            style={{
+              margin: "30px 0px 20px 0px"
+            }}
+          >
+            <FrontPagesRow records={this.state.records} styles={styles} />
+          </div>
         </div>
 
         <h4
@@ -449,14 +438,14 @@ export default class Home extends Component {
 
         <h4
           style={{
-            marginBottom: 15,
+            marginBottom: 10,
             fontWeight: "normal",
             color: "rgba(0,0,0,0.5)",
             marginTop: 30,
             width: "100%"
           }}
         >
-          Dive deeper into top news stories
+          Dive deeper into trending topics
         </h4>
         <TopNews styles={styles} />
       </div>

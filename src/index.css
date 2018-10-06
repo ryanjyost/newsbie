@@ -180,7 +180,7 @@ input:focus, input:active {
 }
 
 .hoverUnderline:hover {
-  text-decoration: underline;
+  text-decoration: underline !important;
   cursor:pointer;
 }
 

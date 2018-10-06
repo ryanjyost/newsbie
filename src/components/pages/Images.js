@@ -4,7 +4,7 @@ import shuffle from "shuffle-array";
 import moment from "moment";
 import { sortedSources as sources, mappedSourceToImage } from "../../sources";
 
-import Article from "../articles/Article";
+import NewsImage from "../images/NewsImage";
 
 import Loader from "../../components/Loader";
 import { Input, Radio, Button, Icon, Collapse, Drawer } from "antd";
@@ -75,17 +75,29 @@ export default class ArticleSearch extends Component {
 
           let combined = [...filteredPolitics, ...filteredOpinions];
 
-          let articles = combined.sort((a, b) => {
-            let dateA = a.date ? moment(a.date) : moment(a.created_at);
-            let dateB = b.date ? moment(b.date) : moment(b.created_at);
-            if (dateA.isAfter(dateB)) {
-              return -1;
-            } else if (dateA.isBefore(dateB)) {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
+          let articles = combined
+            .filter(article => {
+              let shouldRender = article
+                ? article.image
+                  ? article.image.url
+                    ? true
+                    : false
+                  : false
+                : false;
+
+              return shouldRender;
+            })
+            .sort((a, b) => {
+              let dateA = a.date ? moment(a.date) : moment(a.created_at);
+              let dateB = b.date ? moment(b.date) : moment(b.created_at);
+              if (dateA.isAfter(dateB)) {
+                return -1;
+              } else if (dateA.isBefore(dateB)) {
+                return 1;
+              } else {
+                return 0;
+              }
+            });
 
           this.setState({
             sites: res.data.sites,
@@ -101,56 +113,6 @@ export default class ArticleSearch extends Component {
         topTags: this.props.tags
       });
     }
-  }
-
-  handleUpdateStartDate(startDate) {
-    let formattedStart = startDate.format("MM/DD/YYYY");
-    let formattedEnd = this.state.endDate.format("MM/DD/YYYY");
-
-    axios
-      .get(
-        `https://birds-eye-news-api.herokuapp.com/articles?start=${formattedStart}&end=${formattedEnd}`,
-        {
-          Accept: "application/json"
-        }
-      )
-      .then(res => {
-        this.setState({ articles: shuffle(res.data.articles) });
-      })
-      .catch(err => console.log(err));
-
-    this.setState({
-      startDate: startDate,
-      currentTagFilter: null,
-      searchInput: "",
-      typeFilter: null
-    });
-  }
-
-  handleUpdateEndDate(endDate) {
-    let formattedStart = !this.state.startDate
-      ? "01/01/1970"
-      : this.state.startDate.format("MM/DD/YYYY");
-    let formattedEnd = endDate.format("MM/DD/YYYY");
-
-    axios
-      .get(
-        `https://birds-eye-news-api.herokuapp.com/articles?start=${formattedStart}&end=${formattedEnd}`,
-        {
-          Accept: "application/json"
-        }
-      )
-      .then(res => {
-        this.setState({ articles: shuffle(res.data.articles) });
-      })
-      .catch(err => console.log(err));
-
-    this.setState({
-      endDate: endDate,
-      currentTagFilter: null,
-      searchInput: "",
-      typeFilter: null
-    });
   }
 
   filterArticles(params) {
@@ -268,7 +230,8 @@ export default class ArticleSearch extends Component {
 
     const { styles, isSingleSource } = this.props;
 
-    let isSmall = styles.screenWidth < 900;
+    let isSmall = true;
+    let maxImageWidth = 350;
 
     const params = {
       currentTagFilter,
@@ -548,7 +511,7 @@ export default class ArticleSearch extends Component {
             }}
           >
             {!isSmall && renderSearch()}
-            {renderFilterTypeButtons()}
+            {/*{renderFilterTypeButtons()}*/}
             {renderSortButtons()}
             {/*{renderImageSelection()}*/}
           </div>
@@ -558,7 +521,7 @@ export default class ArticleSearch extends Component {
       );
     };
 
-    const renderNoArticles = () => {
+    const renderNoImages = () => {
       return (
         <div
           style={{
@@ -610,27 +573,30 @@ export default class ArticleSearch extends Component {
       return (
         <div
           style={{
-            position: "absolute",
-            top: 90,
             fontSize: 13,
             left: 20,
-            maxWidth: 250,
-            width: "100%"
+            maxWidth: styles.screenWidth > 500 ? 400 : 250,
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center"
           }}
         >
-          <strong>{sortText}</strong> <strong>{typeText}</strong>
-          <span>&nbsp;articles&nbsp;</span>
-          {sourceFilter ? (
-            <span>
-              from <strong>{sourceFilter.title}</strong>
-            </span>
-          ) : null}
-          {currentTagFilter ? (
-            <span>
-              &nbsp;that include the term{" "}
-              <strong>{currentTagFilter.term}</strong>
-            </span>
-          ) : null}
+          <div>
+            <strong>{sortText}</strong> <strong>{typeText}</strong>
+            <span>&nbsp;images&nbsp;</span>
+            {sourceFilter ? (
+              <span>
+                from <strong>{sourceFilter.title}</strong>
+              </span>
+            ) : null}
+            {currentTagFilter ? (
+              <span>
+                &nbsp;from articles that include the term{" "}
+                <strong>{currentTagFilter.term}</strong>
+              </span>
+            ) : null}
+          </div>
         </div>
       );
     };
@@ -653,14 +619,14 @@ export default class ArticleSearch extends Component {
       <div style={{ display: "flex", justifyContent: "center", width: "100%" }}>
         <div
           style={{
-            padding: isSmall ? "60px 20px 0px 20px" : "80px 20px 0px 20px",
+            padding: "90px 20px 0px 20px",
             display: "flex",
             justifyContent: isSmall ? "center" : "flex-start",
             alignItems: "flex-start",
             flexWrap: "wrap",
             position: "relative",
             width: "100%",
-            maxWidth: 1000
+            maxWidth: 1600
           }}
         >
           {isSmall ? (
@@ -708,28 +674,27 @@ export default class ArticleSearch extends Component {
             </div>
           )}
 
-          {isSmall && renderHelperText()}
+          {renderHelperText()}
+
           <div
             style={{
               display: "flex",
+              flexWrap: "wrap",
               justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              width: isSmall ? "100%" : "50%",
-              maxWidth: 500,
-              marginLeft: !isSmall ? 460 : 0,
-              paddingTop: isSmall ? 80 : 0
+              paddingTop: 80,
+              width: "100%"
             }}
           >
             {this.state.articles.length === 0
-              ? renderNoArticles()
+              ? renderNoImages()
               : this.state.articles.map((article, i) => {
                   return (
-                    <Article
+                    <NewsImage
                       key={i}
                       article={article}
                       i={i}
-                      isSmall={isSmall}
+                      isSmall={styles.screenWidth < maxImageWidth * 2 + 20}
+                      maxWidth={maxImageWidth}
                       image={mappedImages[article.siteName]}
                       styles={styles}
                     />

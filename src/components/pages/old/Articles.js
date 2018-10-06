@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import axios from "axios/index";
 import shuffle from "shuffle-array";
-import TagCloud from "../TagCloud";
+import TagCloud from "../../TagCloud";
 import ReactGA from "react-ga";
 import detectIt from "detect-it";
-import Article from "../Article";
+import Article from "../../Article";
 import { Icon } from "react-icons-kit";
 import { ic_search } from "react-icons-kit/md/ic_search";
 import { iosCalendarOutline } from "react-icons-kit/ionicons/iosCalendarOutline";
 import DatePicker from "react-datetime";
-import "../../../node_modules/react-datetime/css/react-datetime.css";
+import "../../../../node_modules/react-datetime/css/react-datetime.css";
 import moment from "moment";
 import TimeAgo from "react-timeago";
 import { XmlEntities } from "html-entities";

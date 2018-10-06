@@ -7,10 +7,10 @@ export default class SingleFrontPage extends Component {
   }
 
   render() {
-    const { imageWidth, record } = this.props;
+    const { imageWidth, record, showInfo } = this.props;
     return (
       <a
-        // target={"_blank"}
+        target={"_blank"}
         href={record.site ? record.site.url : ""}
         key={record.id}
         style={{

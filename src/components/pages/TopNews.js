@@ -26,7 +26,9 @@ export default class TopNews extends Component {
   render() {
     if (this.state.topics.length < 2) {
       return (
-        <div>
+        <div
+          style={{ display: "flex", justifyContent: "center", width: "100%" }}
+        >
           <Loader
             loaderHeight={"300px"}
             loadingMessage={"Loading and analyzing the news..."}

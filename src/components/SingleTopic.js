@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import { Progress } from "antd";
-import FrequencyLineGraph from "./FrequencyLineGraph";
-import WordCloud from "./old/WordCloud";
 import TimeAgo from "react-timeago";
 import entities from "html-entities";
-import numeral from "numeral";
 import moment from "moment";
 import { max, min } from "simple-statistics";
 import { Card } from "antd";
@@ -23,6 +20,8 @@ import {
   BarChart,
   Bar
 } from "recharts";
+import Article from "./articles/Article";
+import { sortedSources as sources, mappedSourceToImage } from "../sources";
 
 export default class SingleTopic extends Component {
   constructor(props) {
@@ -32,7 +31,8 @@ export default class SingleTopic extends Component {
       graphMax: 0,
       graphMin: 0,
       topTags: [],
-      moreTags: []
+      moreTags: [],
+      mappedImages: []
     };
 
     const AllHtmlEntities = entities.AllHtmlEntities;
@@ -42,6 +42,7 @@ export default class SingleTopic extends Component {
   componentDidMount() {
     this.prepLineGraphData(this.props.allTagBatches);
     this.prepRelatedWords(this.props.topic);
+    this.setState({ mappedImages: mappedSourceToImage() });
   }
 
   nearestHour(time) {
@@ -107,6 +108,7 @@ export default class SingleTopic extends Component {
 
   render() {
     const { topic, styles, batches } = this.props;
+    const { mappedImages } = this.state;
     const mainPreview = topic.preview.politics[0];
     const morePreview = topic.preview.more[0];
     const opinionPreview = topic.preview.opinions[0];
@@ -184,7 +186,7 @@ export default class SingleTopic extends Component {
       );
     };
 
-    const groupOfArticles = (articles, image) => {
+    const groupOfArticlesOld = (articles, image) => {
       return (
         <Card
           style={{ maxWidth: "100%" }}
@@ -209,8 +211,8 @@ export default class SingleTopic extends Component {
                     ? image.image
                       ? image.image.url
                         ? image.image.url.replace(/^http:\/\//i, "https://")
-                        : "https://res.cloudinary.com/ryanjyost/image/upload/v1530579641/newsbie-logo-large.png"
-                      : "https://res.cloudinary.com/ryanjyost/image/upload/v1530579641/newsbie-logo-large.png"
+                        : "https://d1dzf0mjm4jp11.cloudfront.net/newsbie-logo.png"
+                      : "https://d1dzf0mjm4jp11.cloudfront.net/newsbie-logo.png"
                     : ""
                 })`
               }}
@@ -227,6 +229,32 @@ export default class SingleTopic extends Component {
             })}
           </div>
         </Card>
+      );
+    };
+
+    const groupOfArticles = (articles, image) => {
+      return (
+        <div style={{ display: "flex", flexWrap: "wrap" }}>
+          {articles.map((article, i) => {
+            return (
+              <div
+                style={{
+                  width: "100%",
+                  maxWidth: 500,
+                  margin: styles.screenWidth > 500 ? "5px 15px" : "5px"
+                }}
+                key={i}
+              >
+                <Article
+                  article={article}
+                  i={i}
+                  styles={styles}
+                  image={mappedImages[article.siteName]}
+                />
+              </div>
+            );
+          })}
+        </div>
       );
     };
 
@@ -251,7 +279,7 @@ export default class SingleTopic extends Component {
               style={{ color: "#1890ff" }}
               strokeColor={"#1890ff"}
               type="circle"
-              width={60}
+              width={80}
               percent={Number(
                 Math.floor(topic.percentageFreq * 100).toFixed(2)
               )}
@@ -273,13 +301,13 @@ export default class SingleTopic extends Component {
             style={{
               marginLeft: 10,
               color: "rgba(0,0,0,0.4)",
-              fontSize: 12,
+              fontSize: 15,
               lineHeight: 1.5,
               width: 250
             }}
           >
             of recent articles mention{" "}
-            <span style={{ color: "rgba(0,0,0,0.7)", fontSize: 16 }}>
+            <span style={{ color: "rgba(0,0,0,0.7)", fontSize: 18 }}>
               {topic.main.term}
             </span>{" "}
             or related terms
@@ -309,7 +337,7 @@ export default class SingleTopic extends Component {
               style={{ color: "#1890ff" }}
               strokeColor={"#1890ff"}
               type="circle"
-              width={60}
+              width={80}
               format={num => {
                 return `${num}%`;
               }}
@@ -335,14 +363,14 @@ export default class SingleTopic extends Component {
             style={{
               marginLeft: 10,
               color: "rgba(0,0,0,0.4)",
-              fontSize: 12,
+              fontSize: 15,
               lineHeight: 1.5,
               width: 250
             }}
           >
             of sources have recently written about
             <span
-              style={{ color: "rgba(0,0,0,0.7)", marginLeft: 2, fontSize: 16 }}
+              style={{ color: "rgba(0,0,0,0.7)", marginLeft: 2, fontSize: 18 }}
             >
               {topic.main.term}
             </span>
@@ -353,67 +381,48 @@ export default class SingleTopic extends Component {
 
     const renderLineGraph = () => {
       return (
-        <Card>
-          <h6
-            style={{
-              margin: "0px 0px 20px 10px",
-              color: "rgba(0,0,0,0.5)"
-              // textAlign: "center"
+        <AreaChart
+          width={
+            styles.hideSidebar
+              ? styles.screenWidth - (25 * 2 + 50)
+              : Math.min(
+                  500 - (25 * 2 + 30),
+                  styles.screenWidth - styles.sidebarWidth - (25 * 2 + 30)
+                )
+          }
+          height={200}
+          data={this.state.lineGraphData}
+          margin={{ left: -2 }}
+        >
+          <XAxis
+            dataKey="x"
+            stroke={"rgba(0,0,0,0.4)"}
+            ticks={[-24, -20, -16, -12, -8, -4, 0].reverse()}
+            domain={[-24, 0]}
+            type="number"
+            tickFormatter={tick => `${-tick} hrs`}
+            axisLine={{ stroke: "#e5e5e5" }}
+            tickLine={{ stroke: "#e5e5e5" }}
+          />
+          <YAxis
+            // interval={"preserveStartEnd"}
+            axisLine={{ stroke: "#e5e5e5" }}
+            tickLine={{ stroke: "#e5e5e5" }}
+            domain={[this.state.graphMin, this.state.graphMax]}
+            stroke={"rgba(0,0,0,0.4)"}
+            ticks={[this.state.graphMin + 0.01, this.state.graphMax - 0.01]}
+            tickFormatter={obj => {
+              if (obj) {
+                return `${Number(obj * 100).toFixed(0)}%`;
+              } else {
+                return "";
+              }
             }}
-          >
-            how often<strong style={{ fontSize: 14 }}>{` ${
-              topic.main.term
-            } `}</strong>{" "}
-            has been in the news
-          </h6>
-          <AreaChart
-            width={
-              styles.hideSidebar
-                ? styles.screenWidth - (25 * 2 + 30)
-                : Math.min(
-                    500 - (25 * 2 + 30),
-                    styles.screenWidth - styles.sidebarWidth - (25 * 2 + 30)
-                  )
-            }
-            height={200}
-            data={this.state.lineGraphData}
-            margin={{ left: -2 }}
-          >
-            <XAxis
-              dataKey="x"
-              stroke={"rgba(0,0,0,0.4)"}
-              ticks={[-24, -20, -16, -12, -8, -4, 0].reverse()}
-              domain={[-24, 0]}
-              type="number"
-              tickFormatter={tick => `${-tick} hrs`}
-              axisLine={{ stroke: "#e5e5e5" }}
-              tickLine={{ stroke: "#e5e5e5" }}
-            />
-            <YAxis
-              // interval={"preserveStartEnd"}
-              axisLine={{ stroke: "#e5e5e5" }}
-              tickLine={{ stroke: "#e5e5e5" }}
-              domain={[this.state.graphMin, this.state.graphMax]}
-              stroke={"rgba(0,0,0,0.4)"}
-              ticks={[this.state.graphMin + 0.01, this.state.graphMax - 0.01]}
-              tickFormatter={obj => {
-                if (obj) {
-                  return `${Number(obj * 100).toFixed(0)}%`;
-                } else {
-                  return "";
-                }
-              }}
-              width={40}
-            />
-            {/*<Tooltip />*/}>
-            <Area
-              type="monotone"
-              dataKey={"y"}
-              stroke={"#B8E8FF"}
-              dot={false}
-            />
-          </AreaChart>
-        </Card>
+            width={40}
+          />
+          {/*<Tooltip />*/}>
+          <Area type="monotone" dataKey={"y"} stroke={"#B8E8FF"} dot={false} />
+        </AreaChart>
       );
     };
 
@@ -441,35 +450,67 @@ export default class SingleTopic extends Component {
           padding: 5,
           marginBottom: 20,
           display: "flex",
-          flexWrap: "wrap",
+          flexDirection: "column",
           width: "100%"
           // maxWidth: 800
         }}
       >
-        {groupOfArticles(topic.preview.politics, mainPreview)}
-
+        <h3>{topic.main.term}</h3>
         <div
-        // style={{ margin: styles.screenWidth > 500 ? "0px 0px 10px 10px" : 0 }}
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            marginBottom: styles.screenWidth > 500 ? 20 : 0
+          }}
         >
           <Card
             style={{
-              display: "flex",
-              flexWrap: "wrap"
+              maxWidth: 400,
+              width: "100%",
+              margin: styles.screenWidth > 500 ? 10 : "10px 0px"
               // marginBottom: styles.screenWidth > 500 ? 10 : 0
             }}
           >
-            <div style={{ marginBottom: 10, maxWidth: 250 }}>
-              {renderPercentageFreq()}
-            </div>
-            <div style={{ maxWidth: 250 }}>{renderCoverage()}</div>
+            <div style={{ marginBottom: 20 }}>{renderPercentageFreq()}</div>
+            <div>{renderCoverage()}</div>
           </Card>
-
-          {renderLineGraph()}
+          <Card
+            style={{
+              maxWidth: styles.hideSidebar
+                ? styles.screenWidth - 10 * 2
+                : Math.min(
+                    520 - 25 * 2,
+                    styles.screenWidth + styles.sidebarWidth - 25 * 2
+                  ),
+              width: "100%",
+              margin: styles.screenWidth > 500 ? 10 : "10px 0px"
+            }}
+          >
+            <h6
+              style={{
+                margin: "0px 0px 20px 10px",
+                color: "rgba(0,0,0,0.5)"
+                // textAlign: "center"
+              }}
+            >
+              how often<strong style={{ fontSize: 14 }}>{` ${
+                topic.main.term
+              } `}</strong>{" "}
+              has been in the news
+            </h6>
+            {renderLineGraph()}
+          </Card>
         </div>
 
-        {groupOfArticles(topic.preview.more, morePreview)}
+        {groupOfArticles(topic.preview.politics, mainPreview)}
 
-        <Card style={{ maxWidth: 600 }}>
+        <Card
+          style={{
+            maxWidth: 800,
+            margin:
+              styles.screenWidth > 500 ? "20px 10px 20px 10px" : "10px 0px"
+          }}
+        >
           <h5 style={{ margin: "0px 0px 3px 0px" }}>
             terms related{" "}
             <span style={{ color: "rgba(0,0,0,0.5)" }}>
@@ -479,6 +520,19 @@ export default class SingleTopic extends Component {
           {renderRelatedWords()}
         </Card>
 
+        {groupOfArticles(topic.preview.more, morePreview)}
+
+        <h4
+          style={{
+            marginBottom: 0,
+            fontWeight: "normal",
+            color: "rgba(0,0,0,0.5)",
+            marginTop: 20,
+            width: "100%"
+          }}
+        >
+          Opinions
+        </h4>
         {groupOfArticles(topic.preview.opinions, opinionPreview)}
       </div>
     );
