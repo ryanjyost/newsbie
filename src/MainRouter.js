@@ -7,15 +7,14 @@ import {
   Redirect
 } from "react-router-dom";
 import { withRouter } from "react-router";
-import { ic_menu } from "react-icons-kit/md/ic_menu";
-import { ic_close } from "react-icons-kit/md/ic_close";
-import { Icon } from "react-icons-kit";
 import ReactGA from "react-ga";
 import store from "store";
 import detectIt from "detect-it";
 
-import Landing from "./components/Landing";
+import LandingOld from "./components/Landing";
 import DashboardOld from "./components/pages/old/Dashboard";
+
+import Landing from "./components/pages/Landing";
 import Home from "./components/pages/Home";
 import FrontPages from "./components/pages/FrontPages";
 import Sources from "./components/pages/Sources";
@@ -25,12 +24,29 @@ import TopNews from "./components/pages/TopNews";
 import Chyrons from "./components/pages/Chyrons";
 import Articles from "./components/pages/ArticleSearch";
 import Images from "./components/pages/Images";
+import Trends from "./components/pages/Trends";
 
 //=========================================
 
-import { Layout, Menu, Icon as AntIcon, Button } from "antd";
+import { Layout, Menu, Icon as AntIcon, Button, Dropdown } from "antd";
+const SubMenu = Menu.SubMenu;
+const MenuItemGroup = Menu.ItemGroup;
 const { Header, Content, Footer, Sider } = Layout;
 //=========================================
+
+function renderAuthRoute(Component, props, user, styles, updateUser) {
+  if (user) {
+    return <Component {...props} styles={styles} />;
+  } else {
+    return (
+      <UserAuthPage
+        {...props}
+        styles={styles}
+        updateUser={user => updateUser(user)}
+      />
+    );
+  }
+}
 
 class MainRouter extends React.Component {
   constructor(props) {
@@ -38,10 +54,12 @@ class MainRouter extends React.Component {
     this.state = {
       menuOpen: false,
       screenWidth: 0,
-      user: null,
+      user: true,
       collapsed: true,
       didMount: false,
-      touchOnly: false
+      touchOnly: false,
+      topMenuKey: null,
+      currentPageRequiresAuth: false
     };
   }
 
@@ -64,7 +82,9 @@ class MainRouter extends React.Component {
     this.initReactGA();
 
     this.setState({
-      touchOnly: detectIt.deviceType === "touchOnly"
+      touchOnly: detectIt.deviceType === "touchOnly",
+      currentPageRequiresAuth:
+        window.location.pathname !== "/" && window.location.pathname !== "/app"
     });
   }
 
@@ -108,7 +128,6 @@ class MainRouter extends React.Component {
   }
 
   updateUser(user) {
-    console.log("update");
     this.setState({ user });
     store.set("user", user);
   }
@@ -143,168 +162,234 @@ class MainRouter extends React.Component {
 
     const Sidebar = ({ location }) => {
       const activeKey = location.pathname || "";
-      return (
-        <Sider
-          collapsedWidth={hideSidebar ? 0 : 80}
-          trigger={null}
-          collapsible
-          collapsed={this.state.collapsed}
-          style={{
-            overflow: "auto",
-            height: "100vh",
-            position: "fixed",
-            left: 0,
-            backgroundColor: "#FDFEFF",
-            zIndex: 10000000
-          }}
-        >
-          <Link
-            to={"/"}
+
+      if (!location.pathname.includes("app")) {
+        return null;
+      } else {
+        return (
+          <Sider
+            collapsedWidth={hideSidebar ? 0 : 80}
+            trigger={null}
+            collapsible
+            collapsed={this.state.collapsed}
             style={{
-              cursor: "pointer",
-              display: "flex",
-              justifyContent: collapsed ? "center" : "flex-start",
-              alignItems: "center",
-              height: 64,
-              paddingLeft: collapsed ? 0 : 15,
-              borderRight: "1px solid #f2f2f2"
-            }}
-            onClick={() => window.scrollTo(0, 0)}
-          >
-            <img
-              src={
-                collapsed
-                  ? "https://d1dzf0mjm4jp11.cloudfront.net/newsbie-logo.png"
-                  : "https://d1dzf0mjm4jp11.cloudfront.net/newsbie-logo-wide.png"
-              }
-              height={30}
-              // width={collapsed ? 30 * (4571 / 1000)}
-            />
-          </Link>
-          <Menu
-            mode="inline"
-            style={{ borderRight: "1px solid #e8e8e8" }}
-            selectedKeys={[activeKey]}
-            onSelect={() => {
-              if (hideSidebar) {
-                this.setState({ collapsed: true });
-              }
+              overflow: "auto",
+              height: "100vh",
+              position: "fixed",
+              left: 0,
+              backgroundColor: "#FDFEFF",
+              zIndex: 10000000
             }}
           >
-            <Menu.Item key="/" style={{ marginTop: 0 }}>
-              <Link to={"/"}>
-                <AntIcon type="home" />
-                <span className="nav-text">Overview</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/articles" style={{ marginTop: 0 }}>
-              <Link to={"/articles"}>
-                <AntIcon type="read" />
-                <span className="nav-text">Articles</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/front_pages" style={{ marginTop: 0 }}>
-              <Link to={"/front_pages"}>
-                <AntIcon type="block" />
-                <span className="nav-text">Front Pages</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/news_images" style={{ marginTop: 0 }}>
-              <Link to={"/news_images"}>
-                <AntIcon type="picture" />
-                <span className="nav-text">Images</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/trends" style={{ marginTop: 0 }}>
-              <Link to={"/trends"}>
-                <AntIcon type="line-chart" />
-                <span className="nav-text">Topic Trends</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="/term" style={{ marginTop: 0 }}>
-              <Link to={"/term"}>
-                <AntIcon type="experiment" />
-                <span className="nav-text">Term Analysis</span>
-              </Link>
-            </Menu.Item>
-          </Menu>
-        </Sider>
-      );
+            <Link
+              to={"/app"}
+              style={{
+                cursor: "pointer",
+                display: "flex",
+                justifyContent: collapsed ? "center" : "flex-start",
+                alignItems: "center",
+                height: 64,
+                paddingLeft: collapsed ? 0 : 15,
+                borderRight: "1px solid #f2f2f2"
+              }}
+              onClick={() => {
+                window.scrollTo(0, 0);
+                this.handleNav("/app");
+              }}
+            >
+              <img
+                src={
+                  collapsed
+                    ? "https://d1dzf0mjm4jp11.cloudfront.net/newsbie-logo.png"
+                    : "https://d1dzf0mjm4jp11.cloudfront.net/newsbie-logo-wide.png"
+                }
+                height={30}
+                // width={collapsed ? 30 * (4571 / 1000)}
+              />
+            </Link>
+            <Menu
+              mode="inline"
+              style={{ borderRight: "1px solid #e8e8e8" }}
+              selectedKeys={[activeKey]}
+              onSelect={item => {
+                if (hideSidebar) {
+                  this.setState({ collapsed: true });
+                }
+              }}
+            >
+              <Menu.Item key="/app" style={{ marginTop: 0 }}>
+                <Link to={"/app"}>
+                  <AntIcon type="home" />
+                  <span className="nav-text">Overview</span>
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="/app/trends" style={{ marginTop: 0 }}>
+                <Link to={"/app/trends"}>
+                  <AntIcon type="line-chart" />
+                  <span className="nav-text">Trends</span>
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="/app/term" style={{ marginTop: 0 }}>
+                <Link to={"/app/term"}>
+                  <AntIcon type="experiment" />
+                  <span className="nav-text">Term Analysis</span>
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="/app/articles" style={{ marginTop: 0 }}>
+                <Link to={"/app/articles"}>
+                  <AntIcon type="read" />
+                  <span className="nav-text">Articles</span>
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="/app/front_pages" style={{ marginTop: 0 }}>
+                <Link to={"/app/front_pages"}>
+                  <AntIcon type="block" />
+                  <span className="nav-text">Front Pages</span>
+                </Link>
+              </Menu.Item>
+              <Menu.Item key="/app/news_images" style={{ marginTop: 0 }}>
+                <Link to={"/app/news_images"}>
+                  <AntIcon type="picture" />
+                  <span className="nav-text">Images</span>
+                </Link>
+              </Menu.Item>
+            </Menu>
+          </Sider>
+        );
+      }
     };
     const SidebarWithRouter = withRouter(Sidebar);
 
     const HeaderNoRouter = ({ location }) => {
       let title = "";
-      switch (location.pathname) {
-        case "/":
-          title = "Overview";
-          break;
-        case "/articles":
-          title = "Articles";
-          break;
-        case "/front_pages":
-          title = "Front Pages";
-          break;
-        case "/news_images":
-          title = "Images";
-          break;
-        default:
-          break;
+      const routeMapping = {
+        "/app": "Overview",
+        "/app/articles": "Articles",
+        "/app/front_pages": "Front Pages",
+        "/app/news_images": "Images",
+        "/app/trends": "Term Trends - Snapshot",
+        "/app/term": "Term Analyzer"
+      };
+
+      if (location.pathname in routeMapping) {
+        title = routeMapping[location.pathname];
       }
-      return (
-        <Header
-          style={{
-            backgroundColor: "#FDFEFF",
-            padding: 0,
-            position: "fixed",
-            zIndex: 8,
-            width: "100%",
-            borderBottom: "1px solid rgb(232, 232, 232)",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center"
-          }}
-        >
-          <div
+
+      if (location.pathname === "/") {
+        const menu = (
+          <Menu onClick={e => this.setState({ topMenuKey: e.key })}>
+            <Menu.Item key="/pricing" style={{ marginTop: 0 }}>
+              <Link to={"/pricing"}>
+                <span className="nav-text">Pricing</span>
+              </Link>
+            </Menu.Item>
+            <Menu.Item key="2">
+              <Link to={"/pricing"}>1st item</Link>
+            </Menu.Item>
+            <Menu.Item key="3">
+              <Link to={"/pricing"}>1st item</Link>
+            </Menu.Item>
+          </Menu>
+        );
+
+        return (
+          <Header
             style={{
+              backgroundColor: "#FDFEFF",
+              padding: 0,
+              position: "fixed",
+              zIndex: 8,
+              width: "100%",
+              borderBottom: "1px solid rgb(232, 232, 232)",
               display: "flex",
+              justifyContent: "space-between",
               alignItems: "center"
             }}
           >
-            <AntIcon
-              style={{
-                marginLeft: hideSidebar ? 20 : collapsed ? 100 : 220,
-                cursor: "pointer"
-              }}
-              className="trigger"
-              type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
-              onClick={() =>
-                this.setState({ collapsed: !this.state.collapsed })
-              }
-            />
-            <h4 style={{ margin: "0px 0px 0px 10px" }}>{title}</h4>
-          </div>
-          {!hideSidebar && (
-            <a
-              style={{ display: "flex", alignItems: "center" }}
-              target={"_blank"}
-              href={
-                "https://join.slack.com/t/newsbie/shared_invite/enQtNDM4MzY3NTY4MzA2LWI2YzQzMTZjMmU4ZDdlZjk4NTJiYjc4OTBlZjY0N2UxMjIwMjk1YWM3YzI0OWM0MmYxNTE5MjkwYTc2YjFmZDY"
-              }
-            >
-              <Button
-                size="small"
-                style={{ marginRight: 20, backgroundColor: "transparent" }}
-                type="default"
-              >
-                <AntIcon type="slack" style={{ marginRight: 0 }} />Chat on Slack
-              </Button>
-            </a>
-          )}
-        </Header>
-      );
-    };
+            <div style={{ marginLeft: 20 }}>
+              <img
+                src={
+                  screenWidth < 500
+                    ? "https://d1dzf0mjm4jp11.cloudfront.net/newsbie-logo.png"
+                    : "https://d1dzf0mjm4jp11.cloudfront.net/newsbie-logo-wide.png"
+                }
+                height={30}
+                // width={collapsed ? 30 * (4571 / 1000)}
+              />
+            </div>
 
+            <div
+              style={{ marginLeft: 20, display: "flex", alignItems: "center" }}
+            >
+              <div style={{ marginRight: 20 }}>
+                <Dropdown overlay={menu}>
+                  <Button style={{ padding: "0px 15px" }}>
+                    Menu <AntIcon type="down" />
+                  </Button>
+                </Dropdown>
+              </div>
+              <Button size={"small"} style={{ marginRight: 20 }}>
+                <Link to="/app">Enter the App &rarr;</Link>
+              </Button>
+            </div>
+          </Header>
+        );
+      } else {
+        return (
+          <Header
+            style={{
+              backgroundColor: "#FDFEFF",
+              padding: 0,
+              position: "fixed",
+              zIndex: 100,
+              width: "100%",
+              borderBottom: "1px solid rgb(232, 232, 232)",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center"
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center"
+              }}
+            >
+              <AntIcon
+                style={{
+                  marginLeft: hideSidebar ? 20 : collapsed ? 100 : 220,
+                  cursor: "pointer"
+                }}
+                className="trigger"
+                type={this.state.collapsed ? "menu-unfold" : "menu-fold"}
+                onClick={() =>
+                  this.setState({ collapsed: !this.state.collapsed })
+                }
+              />
+              <h4 style={{ margin: "0px 0px 0px 10px" }}>{title}</h4>
+            </div>
+            {!hideSidebar && (
+              <a
+                style={{ display: "flex", alignItems: "center" }}
+                target={"_blank"}
+                href={
+                  "https://join.slack.com/t/newsbie/shared_invite/enQtNDM4MzY3NTY4MzA2LWI2YzQzMTZjMmU4ZDdlZjk4NTJiYjc4OTBlZjY0N2UxMjIwMjk1YWM3YzI0OWM0MmYxNTE5MjkwYTc2YjFmZDY"
+                }
+              >
+                <Button
+                  size="small"
+                  style={{ marginRight: 20, backgroundColor: "transparent" }}
+                  type="default"
+                >
+                  <AntIcon type="slack" style={{ marginRight: 0 }} />Chat on
+                  Slack
+                </Button>
+              </a>
+            )}
+          </Header>
+        );
+      }
+    };
     const HeaderWithRouter = withRouter(HeaderNoRouter);
 
     if (!didMount) {
@@ -337,83 +422,107 @@ class MainRouter extends React.Component {
                       }}
                     />
                   )}
-                {!user && window.location.pathname !== "/" ? (
+
+                <Switch>
+                  <Route
+                    path="/"
+                    exact
+                    render={props => {
+                      if (user) {
+                        return (
+                          <Redirect
+                            to={{
+                              pathname: "/app",
+                              state: { from: props.location }
+                            }}
+                          />
+                        );
+                      } else {
+                        return (
+                          <Landing {...props} {...this.state} styles={styles} />
+                        );
+                      }
+                    }}
+                  />
+                  <Route
+                    path="/app"
+                    exact
+                    render={props => (
+                      <Home {...props} {...this.state} styles={styles} />
+                    )}
+                  />
+                  <Route
+                    path="/app/articles"
+                    render={props =>
+                      renderAuthRoute(
+                        Articles,
+                        props,
+                        user,
+                        styles,
+                        this.updateUser.bind(this)
+                      )
+                    }
+                  />
+                  <Route
+                    path="/app/front_pages"
+                    render={props =>
+                      renderAuthRoute(
+                        FrontPages,
+                        props,
+                        user,
+                        styles,
+                        this.updateUser.bind(this)
+                      )
+                    }
+                  />
+                  <Route
+                    path="/app/trends"
+                    render={props =>
+                      renderAuthRoute(
+                        Trends,
+                        props,
+                        user,
+                        styles,
+                        this.updateUser.bind(this)
+                      )
+                    }
+                  />
+                  <Route
+                    path="/app/news_images"
+                    render={props =>
+                      renderAuthRoute(
+                        Images,
+                        props,
+                        user,
+                        styles,
+                        this.updateUser.bind(this)
+                      )
+                    }
+                  />
+                  <Route
+                    path="/sources"
+                    exact
+                    render={props => <Sources {...props} />}
+                  />
+                  <Route
+                    path="/sources/:source"
+                    render={props => <SingleSource {...props} />}
+                  />
+                  <Route path="/old/landing" component={LandingOld} />
+                  <Route path="/old/dashboard" component={DashboardOld} />
                   <Route
                     render={props => (
-                      <UserAuthPage
+                      <Home
                         {...props}
-                        user={user}
+                        {...this.state}
+                        styles={styles}
                         updateUser={user => {
-                          this.updateUser(user);
+                          this.setState({ user });
                         }}
                       />
                     )}
                   />
-                ) : (
-                  <Switch>
-                    {/*<Route exact path="/" component={Landing} />*/}
-                    {/*<Route path="/demo" component={App} />*/}
-                    <Route
-                      path="/"
-                      exact
-                      render={props => (
-                        <Home
-                          {...props}
-                          {...this.state}
-                          styles={styles}
-                          updateUser={user => {
-                            this.setState({ user });
-                          }}
-                        />
-                      )}
-                    />
-                    <Route
-                      path="/articles"
-                      render={props => <Articles {...props} styles={styles} />}
-                    />
-                    <Route
-                      path="/front_pages"
-                      render={props => (
-                        <FrontPages {...props} styles={styles} />
-                      )}
-                    />
-                    <Route
-                      path="/news_images"
-                      render={props => <Images {...props} styles={styles} />}
-                    />
-                    <Route
-                      path="/sources"
-                      exact
-                      render={props => <Sources {...props} />}
-                    />
-                    <Route
-                      path="/sources/:source"
-                      render={props => <SingleSource {...props} />}
-                    />
-                    <Route
-                      path="/chyrons"
-                      render={props => <Chyrons {...props} />}
-                    />
-                    <Route
-                      path="/top_news"
-                      render={props => <TopNews {...props} />}
-                    />
-                    <Route path="/old/landing" component={Landing} />
-                    <Route path="/old/dashboard" component={DashboardOld} />
-                    <Route
-                      render={props => (
-                        <Home
-                          {...props}
-                          {...this.state}
-                          styles={styles}
-                          updateUser={user => {
-                            this.setState({ user });
-                          }}
-                        />
-                      )}
-                    />
-                  </Switch>
-                )}
+                </Switch>
               </Content>
             </Layout>
           </Layout>

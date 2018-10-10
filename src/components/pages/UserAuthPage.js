@@ -1,8 +1,5 @@
 import React, { Component } from "react";
 import UserAuth from "../UserAuth";
-import { Link } from "react-router-dom";
-import { withRouter } from "react-router";
-import Dashbaord from "./old/Dashboard";
 
 export default class UserAuthPage extends Component {
   constructor(props) {
@@ -30,7 +27,7 @@ export default class UserAuthPage extends Component {
             backgroundColor: "#fff",
             padding: 20,
             border: "1px solid rgba(0,0,0,0.05)",
-            borderRadius: 5
+            borderRadius: 3
           }}
         >
           <UserAuth updateUser={user => this.props.updateUser(user)} />

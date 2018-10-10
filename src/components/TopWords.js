@@ -1,15 +1,9 @@
 import React, { Component } from "react";
-import { ic_close } from "react-icons-kit/md/ic_close";
-import { mean, standardDeviation, zScore, median } from "simple-statistics";
+import { mean, standardDeviation } from "simple-statistics";
 import shuffle from "shuffle-array";
-import { Link } from "react-router-dom";
-import { Icon as AntIcon } from "antd";
-import { Icon } from "react-icons-kit";
-import { wikipedia } from "react-icons-kit/icomoon/wikipedia";
 
 // components
-import { Card, Progress } from "antd";
-import { androidTime } from "react-icons-kit/ionicons/androidTime";
+import SingleWordItem from "./SingleWordItem";
 
 export default class TopWords extends Component {
   constructor(props) {
@@ -46,84 +40,15 @@ export default class TopWords extends Component {
         <div>
           <div style={{ display: "flex", flexWrap: "wrap" }}>
             {list.map((tag, i) => {
-              const val = zScore(
-                this.props.calcValue(tag),
-                this.state.mean,
-                this.state.sd
-              );
-              let wikiUrl = tag ? tag.term.replace(/ /g, "+") : "";
-
-              const renderLinks = () => {
-                return (
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      color: "rgba(0, 0, 0, 0.25)"
-                    }}
-                  >
-                    <a
-                      style={{ marginRight: 5 }}
-                      target="_blank"
-                      href={`http://www.google.com/search?q=${wikiUrl}`}
-                    >
-                      <AntIcon type="google" size={20} />
-                    </a>
-                    <a
-                      style={{
-                        display: "flex",
-                        marginRight: 5
-                      }}
-                      target="_blank"
-                      href={`https://en.wikipedia.org/w/index.php?search=${wikiUrl}&title=Special:Search&fulltext=1`}
-                    >
-                      <Icon icon={wikipedia} size={20} />
-                    </a>
-                    <a
-                      target="_blank"
-                      href={`https://twitter.com/search?q=${wikiUrl}`}
-                    >
-                      <AntIcon type="twitter" size={20} />
-                    </a>
-                  </div>
-                );
-              };
-
               return (
-                <div
+                <SingleWordItem
                   key={i}
-                  style={{
-                    margin: 5,
-                    display: "flex",
-                    alignItems: isSmall ? "center" : "stretch",
-                    padding: 10,
-                    border: "1px solid rgba(0,0,0,0.02)",
-                    backgroundColor: "rgba(240,242,245,0.15)"
-                  }}
-                >
-                  <div>
-                    <Progress
-                      style={{ color: "#1890ff" }}
-                      type="circle"
-                      percent={Number(
-                        Math.floor(this.props.calcValue(tag) * 100).toFixed(0)
-                      )}
-                      width={isSmall ? 40 : 60}
-                    />
-                  </div>
-                  <div style={{ padding: "0px 10px" }}>
-                    <div
-                      style={{
-                        fontSize: isSmall ? 16 : 20,
-                        color: "rgba(0,0,0,0.75)",
-                        fontWeight: "500"
-                      }}
-                    >
-                      {tag.term}
-                    </div>
-                    {!isSmall && renderLinks()}
-                  </div>
-                </div>
+                  tag={tag}
+                  isSmall={isSmall}
+                  mainValue={Number(
+                    Math.floor(this.props.calcValue(tag) * 100).toFixed(0)
+                  )}
+                />
               );
             })}
           </div>

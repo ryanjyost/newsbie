@@ -469,7 +469,9 @@ export default class FrontPages extends Component {
               justifyContent: isSmall ? "center" : "flex-start",
               alignItems: "flex-start",
               flexWrap: "wrap",
-              position: "relative"
+              position: "relative",
+              width: "100%",
+              maxWidth: 1400
             }}
           >
             {isSmall ? (
@@ -570,7 +572,9 @@ export default class FrontPages extends Component {
                       imageWidth={
                         !styles.screenWidth
                           ? 300
-                          : Math.min(styles.screenWidth - 40, 400)
+                          : isSmall
+                            ? Math.min(styles.screenWidth - 40, 400)
+                            : Math.min(styles.screenWidth / 2 - 200, 500)
                       }
                       record={record}
                     />

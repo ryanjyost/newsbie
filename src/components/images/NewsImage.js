@@ -152,7 +152,7 @@ export default class NewsImage extends Component {
               position: "absolute",
               bottom: 10,
               right: 10,
-              zIndex: 100,
+              zIndex: 5,
               backgroundColor: "rgba(255, 255, 255, 0.8)",
               padding: "5px 10px",
               borderRadius: 2

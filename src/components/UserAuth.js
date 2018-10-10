@@ -177,7 +177,7 @@ export default class UserAuth extends Component {
             className={"shadow shadowHover"}
             onClick={() => this.onSignUp()}
           >
-            {fetching ? "Creating your account..." : "Get Free Early Access"}
+            {fetching ? "Creating your account..." : `Get Started - It's Free`}
           </Button>
           {!fetching && (
             <div
