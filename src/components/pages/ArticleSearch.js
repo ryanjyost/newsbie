@@ -8,6 +8,8 @@ import Article from "../articles/Article";
 
 import Loader from "../../components/Loader";
 import { Input, Radio, Button, Icon, Collapse, Drawer } from "antd";
+import { throttle } from "../../helpers/util";
+
 const Search = Input.Search;
 
 export default class ArticleSearch extends Component {
@@ -24,10 +26,9 @@ export default class ArticleSearch extends Component {
 
       allArticles: [],
       articles: [],
+      extraArticles: [],
       currentTagFilter: null,
       searchInput: "",
-      // startDate: null,
-      // endDate: moment(),
       typeFilter: "all",
       sourceFilter: null,
       hideImages: false,
@@ -89,9 +90,10 @@ export default class ArticleSearch extends Component {
 
           this.setState({
             sites: res.data.sites,
-            allArticles: articles,
-            articles: articles.slice(0, 100)
+            allArticles: articles
           });
+
+          this.paginateArticles(articles);
         })
         .catch(err => console.log(err));
     } else {
@@ -150,6 +152,12 @@ export default class ArticleSearch extends Component {
       currentTagFilter: null,
       searchInput: "",
       typeFilter: null
+    });
+  }
+
+  paginateArticles(articles) {
+    this.setState({
+      articles: articles.slice(0, 30)
     });
   }
 
@@ -253,7 +261,7 @@ export default class ArticleSearch extends Component {
         break;
     }
 
-    this.setState({ articles: sorted.slice(0, 100) });
+    this.paginateArticles(articles);
   }
 
   render() {
@@ -308,12 +316,15 @@ export default class ArticleSearch extends Component {
         <div style={{ margin: "10px 10px 10px 0px" }}>
           <Search
             placeholder="Search articles"
-            onChange={e =>
-              this.filterArticles({
-                ...params,
-                ...{ searchInput: e.target.value }
-              })
-            }
+            onChange={e => {
+              throttle(
+                this.filterArticles({
+                  ...params,
+                  ...{ searchInput: e.target.value }
+                }),
+                200
+              );
+            }}
             style={{ width: 200 }}
           />
         </div>

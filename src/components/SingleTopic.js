@@ -109,128 +109,9 @@ export default class SingleTopic extends Component {
   render() {
     const { topic, styles, batches } = this.props;
     const { mappedImages } = this.state;
-    const mainPreview = topic.preview.politics[0];
-    const morePreview = topic.preview.more[0];
-    const opinionPreview = topic.preview.opinions[0];
-
-    const singleArticle = (article, i, allowMain = true) => {
-      const isMain = i === 0 && allowMain;
-      return (
-        <a
-          href={
-            article
-              ? article.link
-                ? article.link.replace(/^http:\/\//i, "https://")
-                : null
-              : null
-          }
-          key={i}
-          style={{
-            padding: isMain ? "10px 5px 5px 5px" : "5px 10px",
-            color: isMain ? "rgba(0,0,0,0.95)" : "rgba(0,0,0,0.85)",
-            lineHeight: 1.2,
-            margin: 0,
-            display: "block"
-          }}
-        >
-          <div
-            className={"linkWithHover"}
-            style={{
-              fontSize: isMain ? 15 : 12,
-              color: isMain ? "rgba(0, 0, 0, 0.9)" : "rgba(0, 0, 0, 0.7)",
-              overflow: "hidden",
-              WebkitBoxOrient: "vertical",
-              letterSpacing: "0.01em",
-              display: "-webkit-box",
-              WebkitLineClamp: 2,
-              margin: 0
-            }}
-          >
-            {this.entities.decode(article.title)}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "alignItems",
-              textAlign: "right",
-              padding: "0px 0px 0px 0px",
-              fontSize: 10,
-              color: "rgba(0, 0, 0, 0.5)",
-              textDecoration: "none",
-              margin: "2px 0px 0px 0px"
-            }}
-          >
-            {article.site.title}{" "}
-            <span style={{ margin: "0px 5px" }}>&middot;</span>
-            <TimeAgo date={article.created_at} />
-          </div>
-          {isMain && false ? (
-            <div
-              style={{
-                fontSize: 11,
-                fontWeight: "normal",
-                overflow: "hidden",
-                WebkitBoxOrient: "vertical",
-                lineHeight: 1.3,
-                letterSpacing: "0.01em",
-                display: "-webkit-box",
-                WebkitLineClamp: 3,
-                marginTop: 4,
-                color: "rgba(0,0,0,0.7)"
-              }}
-            >
-              {this.entities.decode(article.description)}
-            </div>
-          ) : null}
-        </a>
-      );
-    };
-
-    const groupOfArticlesOld = (articles, image) => {
-      return (
-        <Card
-          style={{ maxWidth: "100%" }}
-          // style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}
-        >
-          <div style={{ display: "flex", maxWidth: "100%" }}>
-            <div
-              style={{
-                borderRadius: 3,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                height: 200,
-                width: 300,
-                backgroundColor: "rgba(0,0,0,0.5)",
-                position: "relative",
-                backgroundSize: "cover",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                backgroundImage: `url(${
-                  image
-                    ? image.image
-                      ? image.image.url
-                        ? image.image.url.replace(/^http:\/\//i, "https://")
-                        : "https://d1dzf0mjm4jp11.cloudfront.net/newsbie-logo.png"
-                      : "https://d1dzf0mjm4jp11.cloudfront.net/newsbie-logo.png"
-                    : ""
-                })`
-              }}
-            />
-          </div>
-          <div
-            style={{
-              maxWidth: 350
-              // paddingLeft: styles.screenWidth > 829 ? 30 : 0
-            }}
-          >
-            {articles.map((article, i) => {
-              return singleArticle(article, i, true);
-            })}
-          </div>
-        </Card>
-      );
-    };
+    // const mainPreview = topic.preview.politics[0];
+    // const morePreview = topic.preview.more[0];
+    // const opinionPreview = topic.preview.opinions[0];
 
     const groupOfArticles = (articles, image) => {
       return (
@@ -427,11 +308,13 @@ export default class SingleTopic extends Component {
     };
 
     const renderRelatedWords = () => {
-      if (!this.state.topTags.length) {
+      if (this.state.topTags.length < 1) {
         return null;
       } else {
         return (
           <TopWords
+            isRelatedWords
+            termRelatedTo={topic.main.term}
             screenWidth={styles.screenWidth}
             list={this.state.topTags}
             suppList={this.state.moreTags}
@@ -502,7 +385,7 @@ export default class SingleTopic extends Component {
           </Card>
         </div>
 
-        {groupOfArticles(topic.preview.politics, mainPreview)}
+        {groupOfArticles(topic.preview.politics)}
 
         <Card
           style={{
@@ -520,7 +403,7 @@ export default class SingleTopic extends Component {
           {renderRelatedWords()}
         </Card>
 
-        {groupOfArticles(topic.preview.more, morePreview)}
+        {groupOfArticles(topic.preview.more)}
 
         <h4
           style={{
@@ -531,9 +414,9 @@ export default class SingleTopic extends Component {
             width: "100%"
           }}
         >
-          Opinions
+          Commentary / Opinions
         </h4>
-        {groupOfArticles(topic.preview.opinions, opinionPreview)}
+        {groupOfArticles(topic.preview.opinions)}
       </div>
     );
   }

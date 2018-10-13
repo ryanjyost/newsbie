@@ -227,6 +227,25 @@ export default class Trends extends Component {
             {renderPositive()}
 
             {/* ============ POSITIVE  ============ */}
+            <h4
+              style={{
+                marginBottom: 15,
+                fontWeight: "normal",
+                color: "rgba(0,0,0,0.5)"
+              }}
+            >
+              Terms{" "}
+              <span style={{ color: "rgb(255, 85, 0)", fontWeight: "bold" }}>
+                declining in frequency
+              </span>{" "}
+              compared to{" "}
+              <span>
+                <strong>{this.displayTextForTab(negativeTab)}</strong>
+              </span>
+            </h4>
+            {renderNegative()}
+
+            {/* ============ POSITIVE  ============ */}
             <div style={{ marginBottom: 15 }}>
               <h4
                 style={{
@@ -251,25 +270,6 @@ export default class Trends extends Component {
             </div>
             {renderBrandNew()}
 
-            {/* ============ POSITIVE  ============ */}
-            <h4
-              style={{
-                marginBottom: 15,
-                fontWeight: "normal",
-                color: "rgba(0,0,0,0.5)"
-              }}
-            >
-              Terms{" "}
-              <span style={{ color: "rgb(255, 85, 0)", fontWeight: "bold" }}>
-                declining in frequency
-              </span>{" "}
-              compared to{" "}
-              <span>
-                <strong>{this.displayTextForTab(negativeTab)}</strong>
-              </span>
-            </h4>
-            {renderNegative()}
-
             {/* ============ NEUTRAL  ============ */}
             <div>
               <h4
@@ -284,7 +284,7 @@ export default class Trends extends Component {
                 <span style={{ fontWeight: "bold" }}>pretty much the same</span>{" "}
                 compared to{" "}
                 <span>
-                  <strong>{this.displayTextForTab(negativeTab)}</strong>
+                  <strong>{this.displayTextForTab(neutralTab)}</strong>
                 </span>
               </h4>
             </div>

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { mean, standardDeviation } from "simple-statistics";
 import shuffle from "shuffle-array";
+import { Link } from "react-router-dom";
 
 // components
 import SingleWordItem from "./SingleWordItem";
@@ -17,21 +18,20 @@ export default class TopWords extends Component {
   }
 
   componentDidMount() {
-    const values = this.props.list.map(item => {
-      return this.props.calcValue(item);
-    });
-
-    const avg = mean(values);
-    const sd = standardDeviation(values);
     const list = this.props.shuffle
       ? shuffle(this.props.list)
       : this.props.list;
-    this.setState({ mean: avg, sd: sd, list });
+    this.setState({ list });
   }
 
   render() {
     const { list } = this.state;
-    const { screenWidth, suppList } = this.props;
+    const {
+      screenWidth,
+      suppList,
+      isRelatedWords,
+      isTermAnalysis
+    } = this.props;
 
     let isSmall = screenWidth < 500;
 
@@ -42,6 +42,7 @@ export default class TopWords extends Component {
             {list.map((tag, i) => {
               return (
                 <SingleWordItem
+                  isTermAnalysis={isTermAnalysis}
                   key={i}
                   tag={tag}
                   isSmall={isSmall}
@@ -77,12 +78,31 @@ export default class TopWords extends Component {
                   <div style={{ padding: "0px 2px" }}>
                     <div
                       style={{
-                        fontSize: isSmall ? 13 : 15,
+                        fontSize: isSmall ? 15 : 17,
                         color: "rgba(0,0,0,0.7)",
                         fontWeight: "400"
                       }}
                     >
+                      {/*<Link*/}
+                      {/*to={`/app/terms/${tag.term.replace(" ", "-")}`}*/}
+                      {/*className={"hoverUnderline"}*/}
+                      {/*// style={{*/}
+                      {/*//   fontSize: isSmall ? 15 : 17,*/}
+                      {/*//   color: "rgba(0,0,0,0.7)",*/}
+                      {/*//   fontWeight: "400"*/}
+                      {/*// }}*/}
+                      {/*>*/}
                       {tag.term}
+                      {/*</Link>*/}
+                      <span
+                        style={{
+                          marginLeft: 5,
+                          fontSize: isSmall ? 14 : 16,
+                          color: "rgba(0,0,0,0.4)"
+                        }}
+                      >
+                        {Number(this.props.calcValue(tag) * 100).toFixed(1)}%
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -98,7 +118,12 @@ export default class TopWords extends Component {
                 padding: 5
               }}
             >
-              percentage of recent articles that contain the term
+              {isRelatedWords
+                ? `percentage frequency in recent articles that contain "${
+                    this.props.termRelatedTo
+                  }"`
+                : "percentage frequency in" +
+                  " a balanced sample of recent articles"}
             </span>
           </div>
         </div>
@@ -120,6 +145,7 @@ export default class TopWords extends Component {
       tab1: renderTab(),
       tab2: <p>content2</p>
     };
+
     return renderTab();
   }
 }

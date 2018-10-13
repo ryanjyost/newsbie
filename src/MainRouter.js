@@ -25,6 +25,8 @@ import Chyrons from "./components/pages/Chyrons";
 import Articles from "./components/pages/ArticleSearch";
 import Images from "./components/pages/Images";
 import Trends from "./components/pages/Trends";
+import Terms from "./components/pages/Terms";
+import TermAnalysis from "./components/pages/TermAnalysis";
 
 //=========================================
 
@@ -194,7 +196,6 @@ class MainRouter extends React.Component {
               }}
               onClick={() => {
                 window.scrollTo(0, 0);
-                this.handleNav("/app");
               }}
             >
               <img
@@ -229,8 +230,8 @@ class MainRouter extends React.Component {
                   <span className="nav-text">Trends</span>
                 </Link>
               </Menu.Item>
-              <Menu.Item key="/app/term" style={{ marginTop: 0 }}>
-                <Link to={"/app/term"}>
+              <Menu.Item key="/app/terms" style={{ marginTop: 0 }}>
+                <Link to={"/app/terms"}>
                   <AntIcon type="experiment" />
                   <span className="nav-text">Term Analysis</span>
                 </Link>
@@ -260,19 +261,24 @@ class MainRouter extends React.Component {
     };
     const SidebarWithRouter = withRouter(Sidebar);
 
-    const HeaderNoRouter = ({ location }) => {
+    const HeaderNoRouter = ({ location, match }) => {
       let title = "";
       const routeMapping = {
         "/app": "Overview",
         "/app/articles": "Articles",
         "/app/front_pages": "Front Pages",
         "/app/news_images": "Images",
-        "/app/trends": "Term Trends - Snapshot",
-        "/app/term": "Term Analyzer"
+        "/app/trends": "Trends",
+        // "/app/trends/timelines": "Trends - Timelines",
+        "/app/terms": "Pick a Term to Analyze"
       };
 
       if (location.pathname in routeMapping) {
         title = routeMapping[location.pathname];
+      } else if (location.pathname.includes("terms")) {
+        title = `Term Analysis - "${location.pathname
+          .replace("/app/terms/", "")
+          .replace("-", " ")}"`;
       }
 
       if (location.pathname === "/") {
@@ -450,6 +456,31 @@ class MainRouter extends React.Component {
                     render={props => (
                       <Home {...props} {...this.state} styles={styles} />
                     )}
+                  />
+                  <Route
+                    path="/app/terms"
+                    exact
+                    render={props =>
+                      renderAuthRoute(
+                        Terms,
+                        props,
+                        user,
+                        styles,
+                        this.updateUser.bind(this)
+                      )
+                    }
+                  />
+                  <Route
+                    path="/app/terms/:term"
+                    render={props =>
+                      renderAuthRoute(
+                        TermAnalysis,
+                        props,
+                        user,
+                        styles,
+                        this.updateUser.bind(this)
+                      )
+                    }
                   />
                   <Route
                     path="/app/articles"

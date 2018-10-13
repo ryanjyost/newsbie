@@ -24,7 +24,7 @@ export default class TopNews extends Component {
   }
 
   render() {
-    if (this.state.topics.length < 2) {
+    if (this.state.topics.length < 1) {
       return (
         <div
           style={{ display: "flex", justifyContent: "center", width: "100%" }}

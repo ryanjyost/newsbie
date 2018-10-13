@@ -3,6 +3,8 @@ import { wikipedia } from "react-icons-kit/icomoon/wikipedia";
 import { Icon } from "react-icons-kit";
 import { Progress } from "antd";
 import { Icon as AntIcon } from "antd";
+import { Link } from "react-router-dom";
+import qs from "query-string";
 
 export default class SingleWordItem extends Component {
   constructor(props) {
@@ -105,15 +107,29 @@ export default class SingleWordItem extends Component {
           )}
         </div>
         <div style={{ padding: "0px 10px" }}>
-          <div
-            style={{
-              fontSize: isSmall ? 16 : 20,
-              color: "rgba(0,0,0,0.75)",
-              fontWeight: "500"
-            }}
-          >
-            {tag.term}
-          </div>
+          {!this.props.isTermAnalysis ? (
+            <Link
+              className={"hoverUnderline"}
+              to={`/app/terms/${tag.term.replace(" ", "-")}`}
+              style={{
+                fontSize: isSmall ? 16 : 20,
+                color: "rgba(0,0,0,0.75)",
+                fontWeight: "500"
+              }}
+            >
+              {tag.term}
+            </Link>
+          ) : (
+            <div
+              style={{
+                fontSize: isSmall ? 16 : 20,
+                color: "rgba(0,0,0,0.75)",
+                fontWeight: "500"
+              }}
+            >
+              {tag.term}
+            </div>
+          )}
           {this.props.isPercentageChange ? (
             <div
               style={{
