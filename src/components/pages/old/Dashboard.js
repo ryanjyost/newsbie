@@ -42,8 +42,6 @@ export default class Dashboard extends Component {
       batch: [],
       screenWidth: 0,
       sites: [],
-      politicsArticles: [],
-      opinionArticles: [],
       currentNews: [],
       currentOpinions: [],
       touchOnly: false
@@ -119,6 +117,7 @@ export default class Dashboard extends Component {
         Accept: "application/json"
       })
       .then(response => {
+        console.log(response);
         //let results = response.body.results;
         // console.log("hey", response.data.records);
         const records = response.data.records.filter(record => {
@@ -128,50 +127,14 @@ export default class Dashboard extends Component {
 
         this.setState({
           records: randomOrder,
-          batch: response.data.batch
+          batch: response.data.batch,
+          sites: response.data.sites ? response.data.sites : []
         });
       })
       .catch(error => {
         console.log("ERROR", error);
         this.setState({ showError: true });
       });
-
-    /*
-	 * Articles
-	 * */
-    axios
-      .get("https://birds-eye-news-api.herokuapp.com/today", {
-        Accept: "application/json"
-      })
-      .then(res => {
-        let currentNews = shuffle(res.data.politicsArticles);
-
-        let filteredPolitics = currentNews.filter(article => {
-          return article.site.name.toLowerCase() !== "politico";
-        });
-
-        let currentOpinions = shuffle(res.data.opinionArticles);
-
-        let filteredOpinions = currentOpinions.filter(article => {
-          return article.site.name.toLowerCase() !== "cbsnews";
-        });
-
-        this.setState({
-          sites: res.data.sites,
-          politicsArticles: filteredPolitics,
-          opinionArticles: filteredOpinions
-        });
-      })
-      .catch(err => console.log(err));
-
-    axios
-      .get(`https://birds-eye-news-api.herokuapp.com/top_news`, {
-        Accept: "application/json"
-      })
-      .then(res => {
-        this.setState({ topics: res.data.topics, batches: res.data.batches });
-      })
-      .catch(err => console.log(err));
 
     window.addEventListener(
       "resize",

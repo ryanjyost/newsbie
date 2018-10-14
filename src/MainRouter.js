@@ -21,6 +21,7 @@ import Sources from "./components/pages/Sources";
 import UserAuthPage from "./components/pages/UserAuthPage";
 import SingleSource from "./components/pages/SingleSource";
 import TopNews from "./components/pages/TopNews";
+import Test from "./components/pages/test";
 import Chyrons from "./components/pages/Chyrons";
 import Articles from "./components/pages/ArticleSearch";
 import Images from "./components/pages/Images";
