@@ -4,7 +4,6 @@ import { Icon } from "react-icons-kit";
 import { Progress } from "antd";
 import { Icon as AntIcon } from "antd";
 import { Link } from "react-router-dom";
-import qs from "query-string";
 
 export default class SingleWordItem extends Component {
   constructor(props) {

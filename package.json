@@ -17,7 +17,6 @@
     "mobile-detect": "^1.4.3",
     "moment": "^2.22.2",
     "numeral": "^2.0.6",
-    "query-string": "^6.2.0",
     "randomcolor": "^0.5.3",
     "react": "^16.4.2",
     "react-app-rewire-less": "^2.1.3",
