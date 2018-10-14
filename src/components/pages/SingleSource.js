@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 import Loader from "../Loader";
 import TopWordsChart from "../TopWordsChart";
 import TagCloud from "../TagCloud";
-import WordCloud from "../WordCloud";
+import WordCloud from "../old/WordCloud";
 import ArticleSearch from "../pages/ArticleSearch";
-import FrontPageSearch from "../pages/FrontPageSearch";
+import FrontPageSearch from "./old/FrontPageSearch";
 import SectionWithLoader from "../SectionWithLoader";
 
 // icons

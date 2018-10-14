@@ -1,98 +1,141 @@
 import React, { Component } from "react";
-import { Row, Col } from "react-bootstrap";
-import FrequencyLineGraph from "./FrequencyLineGraph";
-import WordCloud from "./WordCloud";
+import { Progress } from "antd";
 import TimeAgo from "react-timeago";
 import entities from "html-entities";
-import numeral from "numeral";
-import CircularProgressbar from "react-circular-progressbar";
-import "react-circular-progressbar/dist/styles.css";
+import moment from "moment";
+import { max, min } from "simple-statistics";
+import { Card } from "antd";
+import TopWords from "./TopWords";
+import _ from "lodash";
+import {
+  LineChart,
+  Area,
+  AreaChart,
+  Legend,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Line,
+  BarChart,
+  Bar
+} from "recharts";
+import Article from "./articles/Article";
+import { sortedSources as sources, mappedSourceToImage } from "../sources";
 
 export default class SingleTopic extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      lineGraphData: [],
+      graphMax: 0,
+      graphMin: 0,
+      topTags: [],
+      moreTags: [],
+      mappedImages: []
+    };
 
     const AllHtmlEntities = entities.AllHtmlEntities;
     this.entities = new AllHtmlEntities();
   }
 
-  render() {
-    const { topic } = this.props;
-    const mainPreview = topic.preview.politics[0];
-    const morePreview = topic.preview.more[0];
-    const opinionPreview = topic.preview.opinions[0];
+  componentDidMount() {
+    this.prepLineGraphData(this.props.allTagBatches);
+    this.prepRelatedWords(this.props.topic);
+    this.setState({ mappedImages: mappedSourceToImage() });
+  }
 
-    const singleArticle = (article, i, allowMain = true) => {
-      const isMain = i === 0 && allowMain;
+  nearestHour(time) {
+    return moment.duration(moment().diff(moment(time))).asHours();
+    // return Math.floor(
+    //   moment.duration(moment().diff(moment(time))).asHours()
+    // ).toFixed(2);
+  }
+
+  prepLineGraphData(batches) {
+    let graphData = batches
+      .sort((a, b) => {
+        if (moment(a.created_at).isAfter(moment(b.created_at))) {
+          return 1;
+        } else if (moment(b.created_at).isAfter(moment(a.created_at))) {
+          return -1;
+        } else {
+          return 0;
+        }
+      })
+      .map((batch, i) => {
+        // console.log(i, batch.created_at);
+        if (batch) {
+          let yVal = batch.tags.find(item => {
+            return item.term === this.props.topic.main.term;
+          });
+
+          let dur = moment.duration(moment().diff(moment(batch.created_at)));
+          let xVal = dur.asHours();
+
+          return {
+            x: -this.nearestHour(batch.created_at),
+            y: yVal ? yVal.sourceCount / batch.sourceCount : 0
+          };
+        } else {
+          return {
+            x: 0,
+            y: ""
+          };
+        }
+      });
+
+    let values = graphData.map(val => {
+      return val.y;
+    });
+
+    let graphMin = min(values);
+    let graphMax = max(values);
+
+    this.setState({ lineGraphData: graphData, graphMin, graphMax });
+  }
+
+  prepRelatedWords(topic) {
+    let splitTags = _.partition(topic.related, tag => {
+      return tag.tf / topic.main.tf > 0.1;
+    });
+
+    this.setState({
+      topTags: splitTags[0],
+      moreTags: splitTags[1]
+    });
+  }
+
+  render() {
+    const { topic, styles, batches } = this.props;
+    const { mappedImages } = this.state;
+    // const mainPreview = topic.preview.politics[0];
+    // const morePreview = topic.preview.more[0];
+    // const opinionPreview = topic.preview.opinions[0];
+
+    const groupOfArticles = (articles, image) => {
       return (
-        <a
-          href={
-            article
-              ? article.link
-                ? article.link.replace(/^http:\/\//i, "https://")
-                : null
-              : null
-          }
-          key={i}
-          style={{
-            padding: isMain ? "10px 5px 5px 5px" : "5px 10px",
-            fontWeight: isMain ? "bold" : "normal",
-            color: isMain ? "rgba(0,0,0,0.95)" : "rgba(0,0,0,0.85)",
-            lineHeight: 1.2,
-            margin: 0,
-            display: "block"
-          }}
-        >
-          <div
-            className={"linkWithHover"}
-            style={{
-              fontSize: isMain ? 15 : 12,
-              overflow: "hidden",
-              WebkitBoxOrient: "vertical",
-              letterSpacing: "0.01em",
-              display: "-webkit-box",
-              WebkitLineClamp: 2,
-              margin: 0
-            }}
-          >
-            {this.entities.decode(article.title)}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "alignItems",
-              textAlign: "right",
-              padding: "0px 0px 0px 0px",
-              fontSize: 10,
-              color: "rgba(0, 0, 0, 0.5)",
-              textDecoration: "none",
-              margin: "2px 0px 0px 0px"
-            }}
-          >
-            {article.site.title}{" "}
-            <span style={{ margin: "0px 5px" }}>&middot;</span>
-            <TimeAgo date={article.created_at} />
-          </div>
-          {isMain && false ? (
-            <div
-              style={{
-                fontSize: 11,
-                fontWeight: "normal",
-                overflow: "hidden",
-                WebkitBoxOrient: "vertical",
-                lineHeight: 1.3,
-                letterSpacing: "0.01em",
-                display: "-webkit-box",
-                WebkitLineClamp: 3,
-                marginTop: 4,
-                color: "rgba(0,0,0,0.7)"
-              }}
-            >
-              {this.entities.decode(article.description)}
-            </div>
-          ) : null}
-        </a>
+        <div style={{ display: "flex", flexWrap: "wrap" }}>
+          {articles.map((article, i) => {
+            return (
+              <div
+                style={{
+                  width: "100%",
+                  maxWidth: 500,
+                  margin: styles.screenWidth > 500 ? "5px 15px" : "5px"
+                }}
+                key={i}
+              >
+                <Article
+                  article={article}
+                  i={i}
+                  styles={styles}
+                  image={mappedImages[article.siteName]}
+                />
+              </div>
+            );
+          })}
+        </div>
       );
     };
 
@@ -110,13 +153,20 @@ export default class SingleTopic extends Component {
           <div
             style={{
               margin: "0px 0px 0px 0px",
-              padding: "5px 0px",
-              width: 50
+              padding: "5px 0px"
             }}
           >
-            <CircularProgressbar
-              percentage={topic.percentageFreq * 100}
-              text={numeral(topic.percentageFreq).format("0%")}
+            <Progress
+              style={{ color: "#1890ff" }}
+              strokeColor={"#1890ff"}
+              type="circle"
+              width={80}
+              percent={Number(
+                Math.floor(topic.percentageFreq * 100).toFixed(2)
+              )}
+              format={num => {
+                return `${num}%`;
+              }}
               styles={{
                 path: { stroke: "rgba(46, 228, 246,1)" },
                 text: {
@@ -132,19 +182,22 @@ export default class SingleTopic extends Component {
             style={{
               marginLeft: 10,
               color: "rgba(0,0,0,0.4)",
-              fontSize: 16,
+              fontSize: 15,
               lineHeight: 1.5,
               width: 250
             }}
           >
             of recent articles mention{" "}
-            <span style={{ color: "rgba(0,0,0,0.7)" }}>{topic.main.term}</span>
+            <span style={{ color: "rgba(0,0,0,0.7)", fontSize: 18 }}>
+              {topic.main.term}
+            </span>{" "}
+            or related terms
           </div>
         </div>
       );
     };
 
-    const renderCovergae = () => {
+    const renderCoverage = () => {
       return (
         <div
           style={{
@@ -157,21 +210,25 @@ export default class SingleTopic extends Component {
         >
           <div
             style={{
-              width: 50,
               margin: "0px 0px 0px 0px",
               padding: "5px 0px"
             }}
           >
-            <CircularProgressbar
-              percentage={
-                (topic.sourceCoverage.yes.length /
-                  topic.sourceCoverage.sourceCount) *
-                100
-              }
-              text={numeral(
-                topic.sourceCoverage.yes.length /
-                  topic.sourceCoverage.sourceCount
-              ).format("0%")}
+            <Progress
+              style={{ color: "#1890ff" }}
+              strokeColor={"#1890ff"}
+              type="circle"
+              width={80}
+              format={num => {
+                return `${num}%`;
+              }}
+              percent={Number(
+                (
+                  (topic.sourceCoverage.yes.length /
+                    topic.sourceCoverage.sourceCount) *
+                  100
+                ).toFixed(0)
+              )}
               styles={{
                 path: { stroke: "rgba(46, 228, 246,1)" },
                 text: {
@@ -187,13 +244,15 @@ export default class SingleTopic extends Component {
             style={{
               marginLeft: 10,
               color: "rgba(0,0,0,0.4)",
-              fontSize: 16,
+              fontSize: 15,
               lineHeight: 1.5,
               width: 250
             }}
           >
             of sources have recently written about
-            <span style={{ color: "rgba(0,0,0,0.7)", marginLeft: 2 }}>
+            <span
+              style={{ color: "rgba(0,0,0,0.7)", marginLeft: 2, fontSize: 18 }}
+            >
               {topic.main.term}
             </span>
           </div>
@@ -203,94 +262,117 @@ export default class SingleTopic extends Component {
 
     const renderLineGraph = () => {
       return (
-        <FrequencyLineGraph
-          tag={topic.main}
-          data={this.props.allTagBatches}
-          width={320}
-        />
+        <AreaChart
+          width={
+            styles.hideSidebar
+              ? styles.screenWidth - (25 * 2 + 50)
+              : Math.min(
+                  500 - (25 * 2 + 30),
+                  styles.screenWidth - styles.sidebarWidth - (25 * 2 + 30)
+                )
+          }
+          height={200}
+          data={this.state.lineGraphData}
+          margin={{ left: -2 }}
+        >
+          <XAxis
+            dataKey="x"
+            stroke={"rgba(0,0,0,0.4)"}
+            ticks={[-24, -20, -16, -12, -8, -4, 0].reverse()}
+            domain={[-24, 0]}
+            type="number"
+            tickFormatter={tick => `${-tick} hrs`}
+            axisLine={{ stroke: "#e5e5e5" }}
+            tickLine={{ stroke: "#e5e5e5" }}
+          />
+          <YAxis
+            // interval={"preserveStartEnd"}
+            axisLine={{ stroke: "#e5e5e5" }}
+            tickLine={{ stroke: "#e5e5e5" }}
+            domain={[this.state.graphMin, this.state.graphMax]}
+            stroke={"rgba(0,0,0,0.4)"}
+            ticks={[this.state.graphMin + 0.01, this.state.graphMax - 0.01]}
+            tickFormatter={obj => {
+              if (obj) {
+                return `${Number(obj * 100).toFixed(0)}%`;
+              } else {
+                return "";
+              }
+            }}
+            width={40}
+          />
+          {/*<Tooltip />*/}>
+          <Area type="monotone" dataKey={"y"} stroke={"#B8E8FF"} dot={false} />
+        </AreaChart>
       );
     };
 
     const renderRelatedWords = () => {
-      return (
-        <WordCloud
-          shuffle
-          list={topic.related
-            .sort((a, b) => {
-              if (a.tf > b.tf) {
-                return -1;
-              } else if (b.tf > a.tf) {
-                return 1;
-              } else {
-                return 0;
-              }
-            })
-            .slice(0, 15)}
-          calcValue={word => {
-            return word.tf;
-          }}
-        />
-      );
+      if (this.state.topTags.length < 1) {
+        return null;
+      } else {
+        return (
+          <TopWords
+            isRelatedWords
+            termRelatedTo={topic.main.term}
+            screenWidth={styles.screenWidth}
+            list={this.state.topTags}
+            suppList={this.state.moreTags}
+            calcValue={word => {
+              return word.tf / this.props.topic.main.tf;
+            }}
+          />
+        );
+      }
     };
 
     return (
-      <Row
+      <div
         style={{
           position: "relative",
-          borderRadius: 3,
-          backgroundColor: "#fff",
-          padding: 20,
-          marginBottom: 20
+          padding: 5,
+          marginBottom: 20,
+          display: "flex",
+          flexDirection: "column",
+          width: "100%"
+          // maxWidth: 800
         }}
-        className={"shadow"}
       >
-        <Row style={{ alignItems: "center" }}>
-          <Col xs={12} sm={5} style={{ display: "flex" }}>
-            <div
-              style={{
-                borderRadius: 3,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                height: 200,
-                width: 300,
-                backgroundColor: "rgba(0,0,0,0.5)",
-                position: "relative",
-                backgroundSize: "cover",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                backgroundImage: `url(${
-                  mainPreview
-                    ? mainPreview.image
-                      ? mainPreview.image.url
-                        ? mainPreview.image.url.replace(
-                            /^http:\/\//i,
-                            "https://"
-                          )
-                        : "https://res.cloudinary.com/ryanjyost/image/upload/v1530579641/newsbie-logo-large.png"
-                      : "https://res.cloudinary.com/ryanjyost/image/upload/v1530579641/newsbie-logo-large.png"
-                    : ""
-                })`
-              }}
-            />
-          </Col>
-          <Col xs={12} sm={7}>
-            {topic.preview.politics.map((article, i) => {
-              return singleArticle(article, i, true);
-            })}
-          </Col>
-        </Row>
-        <Row>
-          <Col sm={6} style={{ paddingTop: 20 }}>
-            {renderPercentageFreq()}
-            {renderCovergae()}
-          </Col>
-          {/*<Col>{renderCovergae()}</Col>*/}
-          <Col sm={6}>
+        <h3>{topic.main.term}</h3>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            marginBottom: styles.screenWidth > 500 ? 20 : 0
+          }}
+        >
+          <Card
+            style={{
+              maxWidth: 400,
+              width: "100%",
+              margin: styles.screenWidth > 500 ? 10 : "10px 0px"
+              // marginBottom: styles.screenWidth > 500 ? 10 : 0
+            }}
+          >
+            <div style={{ marginBottom: 20 }}>{renderPercentageFreq()}</div>
+            <div>{renderCoverage()}</div>
+          </Card>
+          <Card
+            style={{
+              maxWidth: styles.hideSidebar
+                ? styles.screenWidth - 10 * 2
+                : Math.min(
+                    520 - 25 * 2,
+                    styles.screenWidth + styles.sidebarWidth - 25 * 2
+                  ),
+              width: "100%",
+              margin: styles.screenWidth > 500 ? 10 : "10px 0px"
+            }}
+          >
             <h6
               style={{
-                margin: "20px 0px 0px 10px",
-                color: "rgba(0,0,0,0.7)"
+                margin: "0px 0px 20px 10px",
+                color: "rgba(0,0,0,0.5)"
                 // textAlign: "center"
               }}
             >
@@ -300,104 +382,42 @@ export default class SingleTopic extends Component {
               has been in the news
             </h6>
             {renderLineGraph()}
-          </Col>
-        </Row>
-        <Row style={{ alignItems: "center", marginTop: 20 }}>
-          <Col sm={5} style={{ display: "flex" }}>
-            <div
-              style={{
-                borderRadius: 3,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                height: 200,
-                width: 300,
-                backgroundColor: "rgba(0,0,0,0.5)",
-                position: "relative",
-                backgroundSize: "cover",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                backgroundImage: `url(${
-                  morePreview
-                    ? morePreview.image
-                      ? morePreview.image.url
-                        ? morePreview.image.url.replace(
-                            /^http:\/\//i,
-                            "https://"
-                          )
-                        : "https://res.cloudinary.com/ryanjyost/image/upload/v1530579641/newsbie-logo-large.png"
-                      : "https://res.cloudinary.com/ryanjyost/image/upload/v1530579641/newsbie-logo-large.png"
-                    : ""
-                })`
-              }}
-            />
-          </Col>
-          <Col sm={7}>
-            {/*<h5 style={{ margin: "20px 0px 3px 0px" }}>*/}
-            {/*more stories{" "}*/}
-            {/*<span style={{ color: "rgba(0,0,0,0.5)" }}>*/}
-            {/*involving {topic.main.term}*/}
-            {/*</span>*/}
-            {/*</h5>*/}
-            {topic.preview.more.map((article, i) => {
-              return singleArticle(article, i, true);
-            })}
-          </Col>
-        </Row>
-        <Row>
-          <Col style={{ lineHeight: 1.2, padding: "10px 20px" }}>
-            <h5 style={{ margin: "20px 0px 3px 0px" }}>
-              terms related{" "}
-              <span style={{ color: "rgba(0,0,0,0.5)" }}>
-                to {topic.main.term}
-              </span>
-            </h5>
-            {renderRelatedWords()}
-          </Col>
-        </Row>
-        <Row style={{ alignItems: "center", marginTop: 20 }}>
-          <Col sm={5} style={{ display: "flex" }}>
-            <div
-              style={{
-                borderRadius: 3,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                height: 200,
-                width: 300,
-                backgroundColor: "rgba(0,0,0,0.5)",
-                position: "relative",
-                backgroundSize: "cover",
-                backgroundRepeat: "no-repeat",
-                backgroundPosition: "center",
-                backgroundImage: `url(${
-                  opinionPreview
-                    ? opinionPreview.image
-                      ? opinionPreview.image.url
-                        ? opinionPreview.image.url.replace(
-                            /^http:\/\//i,
-                            "https://"
-                          )
-                        : "https://res.cloudinary.com/ryanjyost/image/upload/v1530579641/newsbie-logo-large.png"
-                      : "https://res.cloudinary.com/ryanjyost/image/upload/v1530579641/newsbie-logo-large.png"
-                    : ""
-                })`
-              }}
-            />
-          </Col>
-          <Col sm={7}>
-            {/*<h5 style={{ margin: "10px 0px 3px 0px" }}>*/}
-            {/*opinions{" "}*/}
-            {/*<span style={{ color: "rgba(0,0,0,0.5)" }}>*/}
-            {/*involving {topic.main.term}*/}
-            {/*</span>*/}
-            {/*</h5>*/}
-            {topic.preview.opinions.map((article, i) => {
-              return singleArticle(article, i, true);
-            })}
-          </Col>
-        </Row>
-      </Row>
+          </Card>
+        </div>
+
+        {groupOfArticles(topic.preview.politics)}
+
+        <Card
+          style={{
+            maxWidth: 800,
+            margin:
+              styles.screenWidth > 500 ? "20px 10px 20px 10px" : "10px 0px"
+          }}
+        >
+          <h5 style={{ margin: "0px 0px 3px 0px" }}>
+            terms related{" "}
+            <span style={{ color: "rgba(0,0,0,0.5)" }}>
+              to {topic.main.term}
+            </span>
+          </h5>
+          {renderRelatedWords()}
+        </Card>
+
+        {groupOfArticles(topic.preview.more)}
+
+        <h4
+          style={{
+            marginBottom: 0,
+            fontWeight: "normal",
+            color: "rgba(0,0,0,0.5)",
+            marginTop: 20,
+            width: "100%"
+          }}
+        >
+          Commentary / Opinions
+        </h4>
+        {groupOfArticles(topic.preview.opinions)}
+      </div>
     );
   }
 }

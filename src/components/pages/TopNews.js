@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
 import SingleTopic from "../SingleTopic";
-import { Row, Col } from "react-bootstrap";
 import Loader from "../../components/Loader";
 
 export default class TopNews extends Component {
@@ -25,35 +24,31 @@ export default class TopNews extends Component {
   }
 
   render() {
-    if (!this.state.topics.length) {
+    if (this.state.topics.length < 1) {
       return (
-        <div>
+        <div
+          style={{ display: "flex", justifyContent: "center", width: "100%" }}
+        >
           <Loader
-            loaderHeight={"100vh"}
+            loaderHeight={"300px"}
             loadingMessage={"Loading and analyzing the news..."}
           />
         </div>
       );
     } else {
       return (
-        <Row
-          style={{
-            padding: "50px 20px",
-            margin: "0px 10px",
-            maxWidth: 800,
-            margin: "auto"
-          }}
-        >
+        <div style={{ width: "100%" }}>
           {this.state.topics.map((topic, i) => {
             return (
               <SingleTopic
                 key={i}
                 topic={topic}
                 allTagBatches={this.state.batches}
+                styles={this.props.styles}
               />
             );
           })}
-        </Row>
+        </div>
       );
     }
   }

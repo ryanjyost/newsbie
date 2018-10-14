@@ -17,7 +17,7 @@ const blank = {
   twitter: ""
 };
 
-module.exports = [
+const sources = [
   {
     name: "cnn",
     image: "cnn-logo.png",
@@ -863,6 +863,40 @@ module.exports = [
     twitter: "@MotherJones"
   }
 ];
+
+export default sources;
+
+export const sortedSources = sources.sort((a, b) => {
+  if (a.title.replace("The ", "") > b.title.replace("The ", "")) {
+    return 1;
+  } else if (b.title.replace("The ", "") > a.title.replace("The ", "")) {
+    return -1;
+  } else {
+    return 0;
+  }
+});
+
+export const mappedSourceToImage = () => {
+  let mapped = {};
+  sources.map(source => {
+    mapped[source.name] = source.image;
+  });
+
+  return mapped;
+};
+
+export const sourcesForFrontPages = sources
+  .filter(source => {
+    return source.name !== "thewashingtonpost";
+  })
+  .map(source => {
+    return {
+      image: source.image,
+      name: source.name,
+      title: source.title,
+      url: source.url
+    };
+  });
 
 let old = [
   {

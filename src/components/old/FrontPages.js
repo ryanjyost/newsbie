@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Site from "./Site";
+import Site from "../Site";
 import Slider from "react-slick";
 import $ from "jquery";
 
