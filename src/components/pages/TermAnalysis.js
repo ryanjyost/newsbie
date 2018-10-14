@@ -283,7 +283,7 @@ export default class TermAnalysis extends Component {
           <h4 style={{ margin: 10, color: "rgba(0,0,0,0.8)", lineHeight: 1.4 }}>
             {`The term "${
               topic.main.term
-            }" doesn't seem to have any related terms.`}
+            }" doesn't seem to have any commonly related terms.`}
             <br />{" "}
             <span
               style={{ color: "rgba(0,0,0,0.6)", fontSize: 16 }}

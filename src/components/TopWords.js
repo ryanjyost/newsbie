@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { mean, standardDeviation } from "simple-statistics";
 import shuffle from "shuffle-array";
 import { Link } from "react-router-dom";
 

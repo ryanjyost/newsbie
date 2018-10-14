@@ -1,24 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="eaad3f9b-385c-4760-bbaf-b9ee01a5c1fb" name="Default" comment="trends stuff">
-      <change afterPath="$PROJECT_DIR$/src/components/articles/BasicArticleSearch.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/data/TermBarChart.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/pages/TermAnalysis.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/pages/Terms.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/components/pages/TrendTimelines.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/helpers/util.js" afterDir="false" />
+    <list default="true" id="eaad3f9b-385c-4760-bbaf-b9ee01a5c1fb" name="Default" comment="finalized beta!!!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/MainRouter.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/MainRouter.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SingleTopic.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SingleTopic.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/SingleWordItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SingleWordItem.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/TopWords.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TopWords.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/pages/ArticleSearch.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/ArticleSearch.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/pages/Home.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/Home.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/pages/TopNews.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/TopNews.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/pages/Trends.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/Trends.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/pages/TermAnalysis.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/TermAnalysis.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/pages/Terms.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/Terms.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -32,7 +19,7 @@
       <file leaf-file-name="MainRouter.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/MainRouter.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6260">
+            <state relative-caret-position="20">
               <caret line="313" column="11" selection-start-line="313" selection-start-column="11" selection-end-line="313" selection-end-column="11" />
             </state>
           </provider>
@@ -41,8 +28,8 @@
       <file leaf-file-name="Terms.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/pages/Terms.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="99">
-              <caret line="69" column="21" selection-start-line="69" selection-start-column="21" selection-end-line="69" selection-end-column="21" />
+            <state relative-caret-position="360">
+              <caret line="70" column="35" selection-start-line="70" selection-start-column="35" selection-end-line="70" selection-end-column="35" />
             </state>
           </provider>
         </entry>
@@ -56,11 +43,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Home.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Home.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/pages/Home.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="47" column="9" lean-forward="true" selection-start-line="47" selection-start-column="9" selection-end-line="47" selection-end-column="9" />
+            <state relative-caret-position="-84">
+              <caret line="108" column="16" lean-forward="true" selection-start-line="108" selection-start-column="16" selection-end-line="108" selection-end-column="16" />
               <folding>
                 <element signature="e#0#41#0" />
                 <element signature="e#413#448#0" />
@@ -75,17 +62,24 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TermAnalysis.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/package.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="339">
+              <caret line="56" column="4" lean-forward="true" selection-start-line="56" selection-start-column="4" selection-end-line="56" selection-end-column="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TermAnalysis.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/pages/TermAnalysis.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="500">
-              <caret line="237" column="13" selection-start-line="237" selection-start-column="13" selection-end-line="237" selection-end-column="13" />
+            <state relative-caret-position="220">
+              <caret line="53" column="6" lean-forward="true" selection-start-line="53" selection-start-column="6" selection-end-line="53" selection-end-column="6" />
               <folding>
                 <element signature="e#0#41#0" />
                 <element signature="e#889#1170#0" />
                 <element signature="e#926#1165#0" />
-                <element signature="e#1194#2069#0" />
-                <element signature="e#1206#1421#0" />
                 <element signature="e#1442#2025#0" />
                 <element signature="e#1845#1935#0" />
                 <element signature="e#2097#2296#0" />
@@ -148,9 +142,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>shuffled</find>
-      <find>localhost</find>
-      <find>Get free</find>
       <find>free</find>
       <find>update</find>
       <find>Topic T</find>
@@ -175,9 +166,12 @@
       <find>to=</find>
       <find>&lt;L</find>
       <find>.map</find>
-      <find>localhost:8000</find>
-      <find>https://birds-eye-news-api.herokuapp.com</find>
       <find>http://localhost:8000</find>
+      <find>doesn</find>
+      <find>simple-s</find>
+      <find>simple-stat</find>
+      <find>https://birds-eye-news-api.herokuapp.com</find>
+      <find>localhost:8000</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -192,6 +186,7 @@
       <replace>renderFilterTypeButtons</replace>
       <replace>shuffle</replace>
       <replace>https://birds-eye-news-api.herokuapp.com</replace>
+      <replace>http://localhost:8000</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -211,7 +206,6 @@
         <option value="$PROJECT_DIR$/src/components/SingleTopicOld.js" />
         <option value="$PROJECT_DIR$/src/components/FrequencyLineGraph.js" />
         <option value="$PROJECT_DIR$/src/index.js" />
-        <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/src/components/pages/SingleSource.js" />
         <option value="$PROJECT_DIR$/src/components/pages/Chyrons.js" />
         <option value="$PROJECT_DIR$/src/components/TopWordsChart.js" />
@@ -247,15 +241,16 @@
         <option value="$PROJECT_DIR$/src/components/pages/TrendTimelines.js" />
         <option value="$PROJECT_DIR$/src/components/pages/Trends.js" />
         <option value="$PROJECT_DIR$/src/components/data/TermBarChart.js" />
-        <option value="$PROJECT_DIR$/src/components/pages/Home.js" />
         <option value="$PROJECT_DIR$/src/components/pages/TopNews.js" />
         <option value="$PROJECT_DIR$/src/components/articles/BasicArticleSearch.js" />
         <option value="$PROJECT_DIR$/src/components/TopWords.js" />
         <option value="$PROJECT_DIR$/src/components/SingleWordItem.js" />
         <option value="$PROJECT_DIR$/src/components/SingleTopic.js" />
         <option value="$PROJECT_DIR$/src/MainRouter.js" />
-        <option value="$PROJECT_DIR$/src/components/pages/TermAnalysis.js" />
         <option value="$PROJECT_DIR$/src/components/pages/Terms.js" />
+        <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/src/components/pages/Home.js" />
+        <option value="$PROJECT_DIR$/src/components/pages/TermAnalysis.js" />
       </list>
     </option>
   </component>
@@ -451,7 +446,7 @@
       <workItem from="1539206928687" duration="10189000" />
       <workItem from="1539383421623" duration="23624000" />
       <workItem from="1539459918176" duration="2125000" />
-      <workItem from="1539471744111" duration="505000" />
+      <workItem from="1539471744111" duration="3211000" />
     </task>
     <task id="LOCAL-00001" summary="progress">
       <created>1533179196867</created>
@@ -600,11 +595,18 @@
       <option name="project" value="LOCAL" />
       <updated>1539144690061</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="finalized beta!!!">
+      <created>1539472626312</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1539472626312</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="759928000" />
+    <option name="totallyTimeSpent" value="762634000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="777" extended-state="6" />
@@ -616,8 +618,8 @@
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.0" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32592592" />
       <window_info id="npm" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.3220339" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20274636" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.69728917" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20274636" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32932332" />
@@ -678,7 +680,8 @@
     <MESSAGE value="need space" />
     <MESSAGE value="tons of improvements" />
     <MESSAGE value="trends stuff" />
-    <option name="LAST_COMMIT_MESSAGE" value="trends stuff" />
+    <MESSAGE value="finalized beta!!!" />
+    <option name="LAST_COMMIT_MESSAGE" value="finalized beta!!!" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -686,7 +689,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/components/pages/old/TopNews.js" />
     <entry file="file://$PROJECT_DIR$/src/components/pages/old/FrontPageSearch.js" />
     <entry file="file://$PROJECT_DIR$/src/components/old/ToolMenu.js" />
     <entry file="file://$PROJECT_DIR$/src/components/pages/old/ArticleSearch.js" />
@@ -1237,13 +1239,6 @@
     <entry file="file://$PROJECT_DIR$/src/components/TagCloud.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/MainRouter.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6260">
-          <caret line="313" column="11" selection-start-line="313" selection-start-column="11" selection-end-line="313" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/pages/Trends.js">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -1309,16 +1304,66 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/pages/old/Dashboard.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="24" column="22" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/pages/TopNews.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="317">
+          <caret line="27" column="10" selection-start-line="27" selection-start-column="10" selection-end-line="27" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/MainRouter.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="20">
+          <caret line="313" column="11" selection-start-line="313" selection-start-column="11" selection-end-line="313" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/pages/Terms.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="70" column="35" selection-start-line="70" selection-start-column="35" selection-end-line="70" selection-end-column="35" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="339">
+          <caret line="56" column="4" lean-forward="true" selection-start-line="56" selection-start-column="4" selection-end-line="56" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/pages/Home.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-84">
+          <caret line="108" column="16" lean-forward="true" selection-start-line="108" selection-start-column="16" selection-end-line="108" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#41#0" />
+            <element signature="e#413#448#0" />
+            <element signature="e#714#978#0" />
+            <element signature="e#751#973#0" />
+            <element signature="e#1008#1033#0" />
+            <element signature="e#1111#1155#0" />
+            <element signature="e#1176#2730#0" />
+            <element signature="e#1277#1363#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/pages/TermAnalysis.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="500">
-          <caret line="237" column="13" selection-start-line="237" selection-start-column="13" selection-end-line="237" selection-end-column="13" />
+        <state relative-caret-position="220">
+          <caret line="53" column="6" lean-forward="true" selection-start-line="53" selection-start-column="6" selection-end-line="53" selection-end-column="6" />
           <folding>
             <element signature="e#0#41#0" />
             <element signature="e#889#1170#0" />
             <element signature="e#926#1165#0" />
-            <element signature="e#1194#2069#0" />
-            <element signature="e#1206#1421#0" />
             <element signature="e#1442#2025#0" />
             <element signature="e#1845#1935#0" />
             <element signature="e#2097#2296#0" />
@@ -1365,44 +1410,6 @@
             <element signature="e#7350#7659#0" />
             <element signature="e#7372#7447#0" />
             <element signature="e#7670#7802#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/pages/old/Dashboard.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="24" column="22" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/pages/Terms.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="99">
-          <caret line="69" column="21" selection-start-line="69" selection-start-column="21" selection-end-line="69" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/pages/TopNews.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="317">
-          <caret line="27" column="10" selection-start-line="27" selection-start-column="10" selection-end-line="27" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/pages/Home.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="47" column="9" lean-forward="true" selection-start-line="47" selection-start-column="9" selection-end-line="47" selection-end-column="9" />
-          <folding>
-            <element signature="e#0#41#0" />
-            <element signature="e#413#448#0" />
-            <element signature="e#714#978#0" />
-            <element signature="e#751#973#0" />
-            <element signature="e#1008#1033#0" />
-            <element signature="e#1111#1155#0" />
-            <element signature="e#1176#2730#0" />
-            <element signature="e#1277#1363#0" />
           </folding>
         </state>
       </provider>

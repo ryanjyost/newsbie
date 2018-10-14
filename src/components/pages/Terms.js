@@ -3,7 +3,6 @@ import axios from "axios/index";
 import _ from "lodash";
 import Loader from "../../components/Loader";
 import { Link } from "react-router-dom";
-import { mean, standardDeviation, zScore } from "simple-statistics/index";
 import SingleWordItem from "../SingleWordItem";
 import { Card, Icon as AntIcon } from "antd";
 
@@ -25,13 +24,6 @@ export default class TermAnalysis extends Component {
       .then(res => {
         this.setState({ topTags: res.data.terms });
 
-        const values = res.data.terms.map(term => {
-          return term.avg;
-        });
-
-        const avg = mean(values);
-        const sd = standardDeviation(values);
-        this.setState({ mean: avg, sd: sd });
         // let splitTags = _.partition(res.data.topTags, tag => {
         //   return tag.sourceCount / res.data.batches[0].sourceCount > 0.05;
         // });
@@ -65,15 +57,18 @@ export default class TermAnalysis extends Component {
         <div style={{ padding: "100px 20px" }}>
           <Card style={{ display: "flex", flexWrap: "wrap" }}>
             {this.state.topTags.map((tag, i) => {
-              const val = zScore(tag.avg, this.state.mean, this.state.sd);
               return (
                 <Link
                   key={i}
                   to={`/app/terms/${tag.term.replace(" ", "-")}`}
                   className={"hoverUnderline"}
                   style={{
-                    fontSize: Math.max(Math.min(20 + val * 10, 60 || 30), 12),
-                    margin: 10
+                    fontSize: 30,
+                    margin: 5,
+                    display: "inline-block",
+                    border: "1px solid #d8d8d8",
+                    borderRadius: 3,
+                    padding: "0px 5px"
                   }}
                 >
                   {tag.term}
