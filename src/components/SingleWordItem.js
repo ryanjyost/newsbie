@@ -102,6 +102,9 @@ export default class SingleWordItem extends Component {
               type="circle"
               percent={Number(this.props.mainValue)}
               width={isSmall ? 40 : 60}
+              format={perc => {
+                return `${perc}%`;
+              }}
             />
           )}
         </div>

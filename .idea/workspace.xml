@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="eaad3f9b-385c-4760-bbaf-b9ee01a5c1fb" name="Default" comment="finalized beta!!!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/TopWords.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/TopWords.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/pages/TermAnalysis.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/TermAnalysis.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/pages/Terms.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/pages/Terms.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/SingleWordItem.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/SingleWordItem.js" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -16,116 +14,40 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MainRouter.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/MainRouter.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="20">
-              <caret line="313" column="11" selection-start-line="313" selection-start-column="11" selection-end-line="313" selection-end-column="11" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Terms.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/pages/Terms.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="70" column="35" selection-start-line="70" selection-start-column="35" selection-end-line="70" selection-end-column="35" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="TopNews.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/pages/TopNews.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="317">
-              <caret line="27" column="10" selection-start-line="27" selection-start-column="10" selection-end-line="27" selection-end-column="10" />
+            <state relative-caret-position="80">
+              <caret line="4" selection-start-line="4" selection-end-line="4" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Home.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/pages/Home.js">
+      <file leaf-file-name="TopWords.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/TopWords.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-84">
-              <caret line="108" column="16" lean-forward="true" selection-start-line="108" selection-start-column="16" selection-end-line="108" selection-end-column="16" />
+            <state relative-caret-position="473">
+              <caret line="43" column="31" lean-forward="true" selection-start-line="43" selection-start-column="31" selection-end-line="43" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="SingleWordItem.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/components/SingleWordItem.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="107" column="14" lean-forward="true" selection-start-line="107" selection-start-column="14" selection-end-line="107" selection-end-column="14" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ArticleSearch.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/pages/ArticleSearch.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="900">
+              <caret line="48" column="54" selection-start-line="48" selection-start-column="54" selection-end-line="48" selection-end-column="54" />
               <folding>
                 <element signature="e#0#41#0" />
-                <element signature="e#413#448#0" />
-                <element signature="e#714#978#0" />
-                <element signature="e#751#973#0" />
-                <element signature="e#1008#1033#0" />
-                <element signature="e#1111#1155#0" />
-                <element signature="e#1176#2730#0" />
-                <element signature="e#1277#1363#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/package.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="339">
-              <caret line="56" column="4" lean-forward="true" selection-start-line="56" selection-start-column="4" selection-end-line="56" selection-end-column="4" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TermAnalysis.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/components/pages/TermAnalysis.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="220">
-              <caret line="53" column="6" lean-forward="true" selection-start-line="53" selection-start-column="6" selection-end-line="53" selection-end-column="6" />
-              <folding>
-                <element signature="e#0#41#0" />
-                <element signature="e#889#1170#0" />
-                <element signature="e#926#1165#0" />
-                <element signature="e#1442#2025#0" />
-                <element signature="e#1845#1935#0" />
-                <element signature="e#2097#2296#0" />
-                <element signature="e#2153#2203#0" />
-                <element signature="e#2225#2290#0" />
-                <element signature="e#2334#3403#0" />
-                <element signature="e#2386#2622#0" />
-                <element signature="e#2452#2483#0" />
-                <element signature="e#2545#2577#0" />
-                <element signature="e#2583#2614#0" />
-                <element signature="e#2649#3193#0" />
-                <element signature="e#2715#3100#0" />
-                <element signature="e#2762#2825#0" />
-                <element signature="e#2961#3089#0" />
-                <element signature="e#3106#3185#0" />
-                <element signature="e#3125#3174#0" />
-                <element signature="e#3235#3262#0" />
-                <element signature="e#3443#3845#0" />
-                <element signature="e#3497#3655#0" />
-                <element signature="e#3524#3556#0" />
-                <element signature="e#3579#3610#0" />
-                <element signature="e#3616#3647#0" />
-                <element signature="e#3695#3801#0" />
-                <element signature="e#3712#3792#0" />
-                <element signature="e#3867#3939#0" />
-                <element signature="e#3982#4446#0" />
-                <element signature="e#4048#4073#0" />
-                <element signature="e#4578#6056#0" />
-                <element signature="e#4603#6041#0" />
-                <element signature="e#5001#5342#0" />
-                <element signature="e#5353#5911#0" />
-                <element signature="e#5709#5874#0" />
-                <element signature="e#5734#5810#0" />
-                <element signature="e#5816#5860#0" />
-                <element signature="e#5923#5938#0" />
-                <element signature="e#6216#6722#0" />
-                <element signature="e#6253#6695#0" />
-                <element signature="e#6281#6438#0" />
-                <element signature="e#6496#6674#0" />
-                <element signature="e#6787#7832#0" />
-                <element signature="e#6917#7817#0" />
-                <element signature="e#6939#7110#0" />
-                <element signature="e#7132#7339#0" />
-                <element signature="e#7350#7659#0" />
-                <element signature="e#7372#7447#0" />
-                <element signature="e#7670#7802#0" />
               </folding>
             </state>
           </provider>
@@ -244,13 +166,13 @@
         <option value="$PROJECT_DIR$/src/components/pages/TopNews.js" />
         <option value="$PROJECT_DIR$/src/components/articles/BasicArticleSearch.js" />
         <option value="$PROJECT_DIR$/src/components/TopWords.js" />
-        <option value="$PROJECT_DIR$/src/components/SingleWordItem.js" />
         <option value="$PROJECT_DIR$/src/components/SingleTopic.js" />
         <option value="$PROJECT_DIR$/src/MainRouter.js" />
         <option value="$PROJECT_DIR$/src/components/pages/Terms.js" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/src/components/pages/Home.js" />
         <option value="$PROJECT_DIR$/src/components/pages/TermAnalysis.js" />
+        <option value="$PROJECT_DIR$/src/components/SingleWordItem.js" />
       </list>
     </option>
   </component>
@@ -292,6 +214,11 @@
             <path>
               <item name="newsbie" type="b2602c69:ProjectViewProjectNode" />
               <item name="newsbie" type="462c0819:PsiDirectoryNode" />
+              <item name="public" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="newsbie" type="b2602c69:ProjectViewProjectNode" />
+              <item name="newsbie" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -299,27 +226,6 @@
               <item name="newsbie" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newsbie" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newsbie" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="articles" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newsbie" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newsbie" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="data" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="newsbie" type="b2602c69:ProjectViewProjectNode" />
-              <item name="newsbie" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="components" type="462c0819:PsiDirectoryNode" />
-              <item name="old" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="newsbie" type="b2602c69:ProjectViewProjectNode" />
@@ -327,6 +233,10 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="components" type="462c0819:PsiDirectoryNode" />
               <item name="pages" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="newsbie" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="bcb0276e:PhpExternalLibrariesNodePatcher$PatchedExternalLibrariesNode" />
             </path>
           </expand>
           <select />
@@ -606,7 +516,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="762634000" />
+    <option name="totallyTimeSpent" value="762928000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1280" height="777" extended-state="6" />
@@ -615,11 +525,11 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="7" weight="0.0" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.3298193" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32592592" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.69728917" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20274636" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20274636" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32932332" />
@@ -627,31 +537,45 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
+      <window_info id="npm" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20274636" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Version Control" order="7" weight="0.0" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32592592" />
+      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+      <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="bottom" id="Messages" order="7" />
       <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32932332" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.69728917" />
+      <window_info id="Favorites" order="2" side_tool="true" />
     </layout>
     <layout-to-restore>
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info id="npm" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20436187" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Version Control" order="11" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32831326" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.3338346" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Version Control" order="11" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Messages" order="12" />
@@ -1081,19 +1005,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/TopWords.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="328">
-          <caret line="43" column="31" lean-forward="true" selection-start-line="43" selection-start-column="31" selection-end-line="43" selection-end-column="31" />
-          <folding>
-            <element signature="e#2957#3110#0" />
-            <element signature="e#3149#3204#0" />
-            <element signature="e#3212#3264#0" />
-            <element signature="e#3297#3357#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/SingleTopic.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="260">
@@ -1187,51 +1098,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/pages/ArticleSearch.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="333" column="3" selection-start-line="333" selection-start-column="3" selection-end-line="357" />
+        <state relative-caret-position="900">
+          <caret line="48" column="54" selection-start-line="48" selection-start-column="54" selection-end-line="48" selection-end-column="54" />
           <folding>
-            <element signature="e#534#1019#0" />
-            <element signature="e#571#1014#0" />
-            <element signature="e#1043#2901#0" />
-            <element signature="e#1141#2738#0" />
-            <element signature="e#1149#1174#0" />
-            <element signature="e#1277#1457#0" />
-            <element signature="e#1303#1445#0" />
-            <element signature="e#1507#1531#0" />
-            <element signature="e#1638#2690#0" />
-            <element signature="e#1759#1839#0" />
-            <element signature="e#1969#2048#0" />
-            <element signature="e#2171#2524#0" />
-            <element signature="e#2355#2395#0" />
-            <element signature="e#2428#2467#0" />
-            <element signature="e#2473#2512#0" />
-            <element signature="e#2552#2634#0" />
-            <element signature="e#2744#2897#0" />
-            <element signature="e#2766#2889#0" />
-            <element signature="e#2938#3524#0" />
-            <element signature="e#3197#3245#0" />
-            <element signature="e#3273#3347#0" />
-            <element signature="e#3407#3518#0" />
-            <element signature="e#3557#4190#0" />
-            <element signature="e#3867#3915#0" />
-            <element signature="e#3943#4017#0" />
-            <element signature="e#4077#4184#0" />
-            <element signature="e#4221#4292#0" />
-            <element signature="e#4241#4286#0" />
-            <element signature="e#4319#5722#0" />
-            <element signature="e#4366#4538#0" />
-            <element signature="e#4602#5606#0" />
-            <element signature="e#5738#5910#0" />
-            <element signature="e#5952#7195#0" />
-            <element signature="e#6202#7153#0" />
-            <element signature="e#6281#6614#0" />
-            <element signature="e#6459#6495#0" />
-            <element signature="e#6528#6563#0" />
-            <element signature="e#6569#6604#0" />
-            <element signature="e#6694#7027#0" />
-            <element signature="e#6872#6908#0" />
-            <element signature="e#6941#6976#0" />
-            <element signature="e#6982#7017#0" />
+            <element signature="e#0#41#0" />
           </folding>
         </state>
       </provider>
@@ -1287,16 +1157,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/SingleWordItem.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1620">
-          <caret line="112" column="61" lean-forward="true" selection-start-line="112" selection-start-column="14" selection-end-line="112" selection-end-column="61" />
-          <folding>
-            <element signature="e#536#1422#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/old/WordCloud.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="559">
@@ -1308,13 +1168,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="480">
           <caret line="24" column="22" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/pages/TopNews.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="317">
-          <caret line="27" column="10" selection-start-line="27" selection-start-column="10" selection-end-line="27" selection-end-column="10" />
         </state>
       </provider>
     </entry>
@@ -1411,6 +1264,27 @@
             <element signature="e#7372#7447#0" />
             <element signature="e#7670#7802#0" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/pages/TopNews.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="80">
+          <caret line="4" selection-start-line="4" selection-end-line="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/TopWords.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="473">
+          <caret line="43" column="31" lean-forward="true" selection-start-line="43" selection-start-column="31" selection-end-line="43" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/SingleWordItem.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="107" column="14" lean-forward="true" selection-start-line="107" selection-start-column="14" selection-end-line="107" selection-end-column="14" />
         </state>
       </provider>
     </entry>
