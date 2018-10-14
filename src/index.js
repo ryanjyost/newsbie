@@ -3,6 +3,21 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import MainRouter from "./MainRouter";
 import registerServiceWorker from "./registerServiceWorker";
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Link,
+  Redirect
+} from "react-router-dom";
+import { withRouter } from "react-router";
 
-ReactDOM.render(<MainRouter />, document.getElementById("root"));
+const MainWithRouter = withRouter(MainRouter);
+
+ReactDOM.render(
+  <Router>
+    <MainWithRouter />
+  </Router>,
+  document.getElementById("root")
+);
 registerServiceWorker();

@@ -63,12 +63,12 @@ export default class TermAnalysis extends Component {
                   to={`/app/terms/${tag.term.replace(" ", "-")}`}
                   className={"hoverUnderline"}
                   style={{
-                    fontSize: 30,
                     margin: 5,
+                    padding: 10,
+                    border: "1px solid rgba(0,0,0,0.02)",
+                    backgroundColor: "rgba(240,242,245,0.15)",
                     display: "inline-block",
-                    border: "1px solid #d8d8d8",
-                    borderRadius: 3,
-                    padding: "0px 5px"
+                    fontSize: 20
                   }}
                 >
                   {tag.term}

@@ -302,7 +302,13 @@ export default class SingleTopic extends Component {
             width={40}
           />
           {/*<Tooltip />*/}>
-          <Area type="monotone" dataKey={"y"} stroke={"#B8E8FF"} dot={false} />
+          <Area
+            type="monotone"
+            dataKey={"y"}
+            fill={"#1890ff"}
+            stroke={"#1890ff"}
+            dot={false}
+          />
         </AreaChart>
       );
     };

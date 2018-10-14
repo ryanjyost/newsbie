@@ -20,9 +20,6 @@ import FrontPages from "./components/pages/FrontPages";
 import Sources from "./components/pages/Sources";
 import UserAuthPage from "./components/pages/UserAuthPage";
 import SingleSource from "./components/pages/SingleSource";
-import TopNews from "./components/pages/TopNews";
-import Test from "./components/pages/test";
-import Chyrons from "./components/pages/Chyrons";
 import Articles from "./components/pages/ArticleSearch";
 import Images from "./components/pages/Images";
 import Trends from "./components/pages/Trends";
@@ -51,13 +48,111 @@ function renderAuthRoute(Component, props, user, styles, updateUser) {
   }
 }
 
+const Sidebar = ({ location, styles, updateParent }) => {
+  const activeKey = location.pathname || "";
+
+  if (!location.pathname.includes("app")) {
+    return null;
+  } else {
+    return (
+      <Sider
+        collapsedWidth={styles.hideSidebar ? 0 : 80}
+        trigger={null}
+        collapsible
+        collapsed={styles.collapsed}
+        style={{
+          overflow: "auto",
+          height: "100vh",
+          position: "fixed",
+          left: 0,
+          backgroundColor: "#FDFEFF",
+          zIndex: 10000000
+        }}
+      >
+        <Link
+          to={"/app"}
+          style={{
+            cursor: "pointer",
+            display: "flex",
+            justifyContent: styles.collapsed ? "center" : "flex-start",
+            alignItems: "center",
+            height: 64,
+            paddingLeft: styles.collapsed ? 0 : 15,
+            borderRight: "1px solid #f2f2f2"
+          }}
+          onClick={() => {
+            window.scrollTo(0, 0);
+          }}
+        >
+          <img
+            src={
+              styles.collapsed
+                ? "https://d1dzf0mjm4jp11.cloudfront.net/newsbie-logo.png"
+                : "https://d1dzf0mjm4jp11.cloudfront.net/newsbie-logo-wide.png"
+            }
+            height={30}
+            // width={collapsed ? 30 * (4571 / 1000)}
+          />
+        </Link>
+        <Menu
+          mode="inline"
+          style={{ borderRight: "1px solid #e8e8e8" }}
+          selectedKeys={[activeKey]}
+          onSelect={item => {
+            if (styles.hideSidebar) {
+              updateParent("collapsed", true);
+            }
+          }}
+        >
+          <Menu.Item key="/app" style={{ marginTop: 0 }}>
+            <Link to={"/app"}>
+              <AntIcon type="home" />
+              <span className="nav-text">Overview</span>
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="/app/trends" style={{ marginTop: 0 }}>
+            <Link to={"/app/trends"}>
+              <AntIcon type="line-chart" />
+              <span className="nav-text">Trends</span>
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="/app/terms" style={{ marginTop: 0 }}>
+            <Link to={"/app/terms"}>
+              <AntIcon type="experiment" />
+              <span className="nav-text">Term Analysis</span>
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="/app/articles" style={{ marginTop: 0 }}>
+            <Link to={"/app/articles"}>
+              <AntIcon type="read" />
+              <span className="nav-text">Articles</span>
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="/app/front_pages" style={{ marginTop: 0 }}>
+            <Link to={"/app/front_pages"}>
+              <AntIcon type="block" />
+              <span className="nav-text">Front Pages</span>
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="/app/news_images" style={{ marginTop: 0 }}>
+            <Link to={"/app/news_images"}>
+              <AntIcon type="picture" />
+              <span className="nav-text">Images</span>
+            </Link>
+          </Menu.Item>
+        </Menu>
+      </Sider>
+    );
+  }
+};
+
 class MainRouter extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       menuOpen: false,
       screenWidth: 0,
-      user: true,
+      user: null,
       collapsed: true,
       didMount: false,
       touchOnly: false,
@@ -149,10 +244,16 @@ class MainRouter extends React.Component {
     }
   }
 
+  updateIsApp(newState) {
+    this.setState({ isApp: newState });
+  }
+
   render() {
+    const { location, match } = this.props;
     const { user, screenWidth, collapsed, didMount } = this.state;
     let hideSidebar = screenWidth < 800;
     let isOpenWide = !hideSidebar && !collapsed;
+    let isApp = location.pathname.includes("/app");
 
     let styles = {
       screenWidth,
@@ -160,110 +261,15 @@ class MainRouter extends React.Component {
       isOpenWide,
       collapsed,
       sidebarWidth: hideSidebar ? 0 : collapsed ? 80 : 200,
-      touchOnly: this.state.touchOnly
-    };
-
-    const Sidebar = ({ location }) => {
-      const activeKey = location.pathname || "";
-
-      if (!location.pathname.includes("app")) {
-        return null;
-      } else {
-        return (
-          <Sider
-            collapsedWidth={hideSidebar ? 0 : 80}
-            trigger={null}
-            collapsible
-            collapsed={this.state.collapsed}
-            style={{
-              overflow: "auto",
-              height: "100vh",
-              position: "fixed",
-              left: 0,
-              backgroundColor: "#FDFEFF",
-              zIndex: 10000000
-            }}
-          >
-            <Link
-              to={"/app"}
-              style={{
-                cursor: "pointer",
-                display: "flex",
-                justifyContent: collapsed ? "center" : "flex-start",
-                alignItems: "center",
-                height: 64,
-                paddingLeft: collapsed ? 0 : 15,
-                borderRight: "1px solid #f2f2f2"
-              }}
-              onClick={() => {
-                window.scrollTo(0, 0);
-              }}
-            >
-              <img
-                src={
-                  collapsed
-                    ? "https://d1dzf0mjm4jp11.cloudfront.net/newsbie-logo.png"
-                    : "https://d1dzf0mjm4jp11.cloudfront.net/newsbie-logo-wide.png"
-                }
-                height={30}
-                // width={collapsed ? 30 * (4571 / 1000)}
-              />
-            </Link>
-            <Menu
-              mode="inline"
-              style={{ borderRight: "1px solid #e8e8e8" }}
-              selectedKeys={[activeKey]}
-              onSelect={item => {
-                if (hideSidebar) {
-                  this.setState({ collapsed: true });
-                }
-              }}
-            >
-              <Menu.Item key="/app" style={{ marginTop: 0 }}>
-                <Link to={"/app"}>
-                  <AntIcon type="home" />
-                  <span className="nav-text">Overview</span>
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="/app/trends" style={{ marginTop: 0 }}>
-                <Link to={"/app/trends"}>
-                  <AntIcon type="line-chart" />
-                  <span className="nav-text">Trends</span>
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="/app/terms" style={{ marginTop: 0 }}>
-                <Link to={"/app/terms"}>
-                  <AntIcon type="experiment" />
-                  <span className="nav-text">Term Analysis</span>
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="/app/articles" style={{ marginTop: 0 }}>
-                <Link to={"/app/articles"}>
-                  <AntIcon type="read" />
-                  <span className="nav-text">Articles</span>
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="/app/front_pages" style={{ marginTop: 0 }}>
-                <Link to={"/app/front_pages"}>
-                  <AntIcon type="block" />
-                  <span className="nav-text">Front Pages</span>
-                </Link>
-              </Menu.Item>
-              <Menu.Item key="/app/news_images" style={{ marginTop: 0 }}>
-                <Link to={"/app/news_images"}>
-                  <AntIcon type="picture" />
-                  <span className="nav-text">Images</span>
-                </Link>
-              </Menu.Item>
-            </Menu>
-          </Sider>
-        );
+      touchOnly: this.state.touchOnly,
+      colors: {
+        white: "#FDFEFF"
       }
     };
-    const SidebarWithRouter = withRouter(Sidebar);
 
     const HeaderNoRouter = ({ location, match }) => {
       let title = "";
+      let isApp = location.pathname.includes("/app");
       const routeMapping = {
         "/app": "Overview",
         "/app/articles": "Articles",
@@ -282,23 +288,7 @@ class MainRouter extends React.Component {
           .replace("-", " ")}"`;
       }
 
-      if (location.pathname === "/") {
-        const menu = (
-          <Menu onClick={e => this.setState({ topMenuKey: e.key })}>
-            <Menu.Item key="/pricing" style={{ marginTop: 0 }}>
-              <Link to={"/pricing"}>
-                <span className="nav-text">Pricing</span>
-              </Link>
-            </Menu.Item>
-            <Menu.Item key="2">
-              <Link to={"/pricing"}>1st item</Link>
-            </Menu.Item>
-            <Menu.Item key="3">
-              <Link to={"/pricing"}>1st item</Link>
-            </Menu.Item>
-          </Menu>
-        );
-
+      if (!isApp) {
         return (
           <Header
             style={{
@@ -313,30 +303,47 @@ class MainRouter extends React.Component {
               alignItems: "center"
             }}
           >
-            <div style={{ marginLeft: 20 }}>
+            <div style={{ marginLeft: 20, position: "relative" }}>
               <img
                 src={
-                  screenWidth < 500
+                  screenWidth < 500 && isApp
                     ? "https://d1dzf0mjm4jp11.cloudfront.net/newsbie-logo.png"
                     : "https://d1dzf0mjm4jp11.cloudfront.net/newsbie-logo-wide.png"
                 }
-                height={30}
+                height={isApp ? 30 : 26}
                 // width={collapsed ? 30 * (4571 / 1000)}
               />
+              <div
+                style={{
+                  position: "absolute",
+                  top: -17,
+                  right: -20,
+                  fontSize: 10
+                  // backgroundColor: "rgba(0,0,0,0.2)"
+                }}
+              >
+                <span
+                  style={{
+                    border: "1px solid #e5e5e5",
+                    padding: "1px 4px",
+                    borderRadius: 3,
+                    color: "rgba(0,0,0,0.7)"
+                  }}
+                >
+                  beta
+                </span>
+              </div>
             </div>
 
             <div
               style={{ marginLeft: 20, display: "flex", alignItems: "center" }}
             >
-              <div style={{ marginRight: 20 }}>
-                <Dropdown overlay={menu}>
-                  <Button style={{ padding: "0px 15px" }}>
-                    Menu <AntIcon type="down" />
-                  </Button>
-                </Dropdown>
-              </div>
-              <Button size={"small"} style={{ marginRight: 20 }}>
-                <Link to="/app">Enter the App &rarr;</Link>
+              <Button
+                onClick={() => this.updateIsApp(true)}
+                size={"small"}
+                style={{ marginRight: 20 }}
+              >
+                <Link to="/app">Use the app &rarr;</Link>
               </Button>
             </div>
           </Header>
@@ -380,7 +387,7 @@ class MainRouter extends React.Component {
                 style={{ display: "flex", alignItems: "center" }}
                 target={"_blank"}
                 href={
-                  "https://join.slack.com/t/newsbie/shared_invite/enQtNDM4MzY3NTY4MzA2LWI2YzQzMTZjMmU4ZDdlZjk4NTJiYjc4OTBlZjY0N2UxMjIwMjk1YWM3YzI0OWM0MmYxNTE5MjkwYTc2YjFmZDY"
+                  "https://join.slack.com/t/newsbie/shared_invite/enQtNDU0OTgwOTc5ODU4LTg4M2U4OGJhYTEwNmEyM2I0ZDNkOWE5OGVjZmMxOGQ1M2I3ZDFkODE5ODBmZTFiNWI2MzIyNjY0MjRiYjI4Njg"
                 }
               >
                 <Button
@@ -403,162 +410,170 @@ class MainRouter extends React.Component {
       return null;
     } else {
       return (
-        <Router>
+        <Layout>
+          <Sidebar
+            location={location}
+            styles={styles}
+            updateParent={(key, val) => this.setState({ [key]: val })}
+          />
           <Layout>
-            <SidebarWithRouter />
-            <Layout>
-              <HeaderWithRouter />
-              <Content
-                style={{
-                  paddingLeft: styles.sidebarWidth,
-                  position: "relative",
-                  float: "left"
-                }}
-              >
-                {!this.state.collapsed &&
-                  hideSidebar && (
-                    <div
-                      onClick={() => this.setState({ collapsed: true })}
-                      style={{
-                        height: "100%",
-                        width: "100%",
-                        position: "absolute",
-                        top: 0,
-                        backgroundColor: "rgba(0,0,0,0.3)",
-                        zIndex: 10000
+            <HeaderWithRouter />
+            <Content
+              key={"content"}
+              style={{
+                paddingLeft: isApp ? styles.sidebarWidth : 0,
+                position: "relative",
+                float: "left"
+              }}
+            >
+              {!this.state.collapsed &&
+                hideSidebar && (
+                  <div
+                    onClick={() => this.setState({ collapsed: true })}
+                    style={{
+                      height: "100%",
+                      width: "100%",
+                      position: "absolute",
+                      top: 0,
+                      backgroundColor: "rgba(0,0,0,0.3)",
+                      zIndex: 10000
+                    }}
+                  />
+                )}
+
+              <Switch>
+                <Route
+                  path="/"
+                  exact
+                  render={props => {
+                    if (user) {
+                      return (
+                        <Redirect
+                          to={{
+                            pathname: "/app",
+                            state: { from: props.location }
+                          }}
+                        />
+                      );
+                    } else {
+                      return (
+                        <Landing
+                          {...props}
+                          {...this.state}
+                          styles={styles}
+                          updateIsApp={() => this.updateIsApp(true)}
+                        />
+                      );
+                    }
+                  }}
+                />
+                <Route
+                  path="/app"
+                  exact
+                  render={props => (
+                    <Home {...props} {...this.state} styles={styles} />
+                  )}
+                />
+                <Route
+                  path="/app/terms"
+                  exact
+                  render={props =>
+                    renderAuthRoute(
+                      Terms,
+                      props,
+                      user,
+                      styles,
+                      this.updateUser.bind(this)
+                    )
+                  }
+                />
+                <Route
+                  path="/app/terms/:term"
+                  render={props =>
+                    renderAuthRoute(
+                      TermAnalysis,
+                      props,
+                      user,
+                      styles,
+                      this.updateUser.bind(this)
+                    )
+                  }
+                />
+                <Route
+                  path="/app/articles"
+                  render={props =>
+                    renderAuthRoute(
+                      Articles,
+                      props,
+                      user,
+                      styles,
+                      this.updateUser.bind(this)
+                    )
+                  }
+                />
+                <Route
+                  path="/app/front_pages"
+                  render={props =>
+                    renderAuthRoute(
+                      FrontPages,
+                      props,
+                      user,
+                      styles,
+                      this.updateUser.bind(this)
+                    )
+                  }
+                />
+                <Route
+                  path="/app/trends"
+                  render={props =>
+                    renderAuthRoute(
+                      Trends,
+                      props,
+                      user,
+                      styles,
+                      this.updateUser.bind(this)
+                    )
+                  }
+                />
+                <Route
+                  path="/app/news_images"
+                  render={props =>
+                    renderAuthRoute(
+                      Images,
+                      props,
+                      user,
+                      styles,
+                      this.updateUser.bind(this)
+                    )
+                  }
+                />
+                <Route
+                  path="/sources"
+                  exact
+                  render={props => <Sources {...props} />}
+                />
+                <Route
+                  path="/sources/:source"
+                  render={props => <SingleSource {...props} />}
+                />
+                <Route path="/old/landing" component={LandingOld} />
+                <Route path="/old/dashboard" component={DashboardOld} />
+                <Route
+                  render={props => (
+                    <Home
+                      {...props}
+                      {...this.state}
+                      styles={styles}
+                      updateUser={user => {
+                        this.setState({ user });
                       }}
                     />
                   )}
-
-                <Switch>
-                  <Route
-                    path="/"
-                    exact
-                    render={props => {
-                      if (user) {
-                        return (
-                          <Redirect
-                            to={{
-                              pathname: "/app",
-                              state: { from: props.location }
-                            }}
-                          />
-                        );
-                      } else {
-                        return (
-                          <Landing {...props} {...this.state} styles={styles} />
-                        );
-                      }
-                    }}
-                  />
-                  <Route
-                    path="/app"
-                    exact
-                    render={props => (
-                      <Home {...props} {...this.state} styles={styles} />
-                    )}
-                  />
-                  <Route
-                    path="/app/terms"
-                    exact
-                    render={props =>
-                      renderAuthRoute(
-                        Terms,
-                        props,
-                        user,
-                        styles,
-                        this.updateUser.bind(this)
-                      )
-                    }
-                  />
-                  <Route
-                    path="/app/terms/:term"
-                    render={props =>
-                      renderAuthRoute(
-                        TermAnalysis,
-                        props,
-                        user,
-                        styles,
-                        this.updateUser.bind(this)
-                      )
-                    }
-                  />
-                  <Route
-                    path="/app/articles"
-                    render={props =>
-                      renderAuthRoute(
-                        Articles,
-                        props,
-                        user,
-                        styles,
-                        this.updateUser.bind(this)
-                      )
-                    }
-                  />
-                  <Route
-                    path="/app/front_pages"
-                    render={props =>
-                      renderAuthRoute(
-                        FrontPages,
-                        props,
-                        user,
-                        styles,
-                        this.updateUser.bind(this)
-                      )
-                    }
-                  />
-                  <Route
-                    path="/app/trends"
-                    render={props =>
-                      renderAuthRoute(
-                        Trends,
-                        props,
-                        user,
-                        styles,
-                        this.updateUser.bind(this)
-                      )
-                    }
-                  />
-                  <Route
-                    path="/app/news_images"
-                    render={props =>
-                      renderAuthRoute(
-                        Images,
-                        props,
-                        user,
-                        styles,
-                        this.updateUser.bind(this)
-                      )
-                    }
-                  />
-                  <Route
-                    path="/sources"
-                    exact
-                    render={props => <Sources {...props} />}
-                  />
-                  <Route
-                    path="/sources/:source"
-                    render={props => <SingleSource {...props} />}
-                  />
-                  <Route path="/old/landing" component={LandingOld} />
-                  <Route path="/old/dashboard" component={DashboardOld} />
-                  <Route
-                    render={props => (
-                      <Home
-                        {...props}
-                        {...this.state}
-                        styles={styles}
-                        updateUser={user => {
-                          this.setState({ user });
-                        }}
-                      />
-                    )}
-                  />
-                </Switch>
-              </Content>
-            </Layout>
+                />
+              </Switch>
+            </Content>
           </Layout>
-        </Router>
+        </Layout>
       );
     }
   }
