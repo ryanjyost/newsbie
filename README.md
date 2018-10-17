@@ -1,3 +1,9 @@
+Data collected and analyzed by this project --> https://github.com/ryanjyost/news-sites-scraper
+
+RESTful API and further analysis with this project --> https://github.com/ryanjyost/birds-eye-news-api
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
