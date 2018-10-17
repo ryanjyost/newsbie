@@ -217,15 +217,19 @@ export default class TermAnalysis extends Component {
             tickLine={{ stroke: "#e5e5e5" }}
             domain={[this.state.graphMin, this.state.graphMax]}
             stroke={"rgba(0,0,0,0.4)"}
-            ticks={[this.state.graphMin + 0.01, this.state.graphMax - 0.01]}
+            // ticks={[this.state.graphMin + 0.01, this.state.graphMax - 0.01]}
             tickFormatter={obj => {
               if (obj) {
-                return `${Number(obj * 100).toFixed(0)}%`;
+                if (this.state.graphMax - this.state.graphMin < 4) {
+                  return `${Number(obj * 100).toFixed(1)}%`;
+                } else {
+                  return `${Number(obj * 100).toFixed(0)}%`;
+                }
               } else {
                 return "";
               }
             }}
-            width={40}
+            width={50}
           />
           {/*<Tooltip />*/}>
           <Area

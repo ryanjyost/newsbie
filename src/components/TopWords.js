@@ -82,17 +82,17 @@ export default class TopWords extends Component {
                         fontWeight: "400"
                       }}
                     >
-                      {/*<Link*/}
-                      {/*to={`/app/terms/${tag.term.replace(" ", "-")}`}*/}
-                      {/*className={"hoverUnderline"}*/}
-                      {/*// style={{*/}
-                      {/*//   fontSize: isSmall ? 15 : 17,*/}
-                      {/*//   color: "rgba(0,0,0,0.7)",*/}
-                      {/*//   fontWeight: "400"*/}
-                      {/*// }}*/}
-                      {/*>*/}
-                      {tag.term}
-                      {/*</Link>*/}
+                      <Link
+                        to={`/app/terms/${tag.term.replace(" ", "-")}`}
+                        className={"hoverUnderline"}
+                        // style={{
+                        //   fontSize: isSmall ? 15 : 17,
+                        //   color: "rgba(0,0,0,0.7)",
+                        //   fontWeight: "400"
+                        // }}
+                      >
+                        {tag.term}
+                      </Link>
                       <span
                         style={{
                           marginLeft: 5,
