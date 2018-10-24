@@ -97,7 +97,7 @@ export default class SingleTopic extends Component {
 
   prepRelatedWords(topic) {
     let splitTags = _.partition(topic.related, tag => {
-      return tag.tf / topic.main.tf > 0.1;
+      return tag.tf / topic.main.tf > 0.01;
     });
 
     this.setState({
@@ -191,7 +191,7 @@ export default class SingleTopic extends Component {
             <span style={{ color: "rgba(0,0,0,0.7)", fontSize: 18 }}>
               {topic.main.term}
             </span>{" "}
-            or related terms
+            or similar terms
           </div>
         </div>
       );

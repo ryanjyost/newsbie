@@ -11,12 +11,15 @@ import {
   Redirect
 } from "react-router-dom";
 import { withRouter } from "react-router";
+import ScrollToTop from "./components/hoc/ScrollToTop";
 
 const MainWithRouter = withRouter(MainRouter);
 
 ReactDOM.render(
   <Router>
-    <MainWithRouter />
+    <ScrollToTop>
+      <MainWithRouter />
+    </ScrollToTop>
   </Router>,
   document.getElementById("root")
 );

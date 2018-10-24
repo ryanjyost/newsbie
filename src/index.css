@@ -42,6 +42,14 @@ a, a:active, a:visited {
   text-decoration:none !important;
 }
 
+textarea::placeholder {
+    color: rgba(0,0,0,0.3)
+}
+
+.forceUnderline {
+  text-decoration: underline !important;
+}
+
 button {
   border: none;
   cursor:pointer;

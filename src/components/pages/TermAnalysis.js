@@ -168,7 +168,18 @@ export default class TermAnalysis extends Component {
   }
 
   paginateArticles(articles, stateField) {
-    this.setState({ [stateField]: articles.slice(0, 50) });
+    let sorted = articles.sort((a, b) => {
+      let dateA = a.date ? moment(a.date) : moment(a.created_at);
+      let dateB = b.date ? moment(b.date) : moment(b.created_at);
+      if (dateA.isAfter(dateB)) {
+        return -1;
+      } else if (dateA.isBefore(dateB)) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    this.setState({ [stateField]: sorted.slice(0, 50) });
     // let countperPage = 20,
     //   currPage = 1;
     // let pages = [],
@@ -388,7 +399,7 @@ export default class TermAnalysis extends Component {
             <span style={{ color: "rgba(0,0,0,0.7)", fontSize: 18 }}>
               {topic.main.term}
             </span>{" "}
-            or related terms
+            or similar terms
           </div>
         </div>
       );

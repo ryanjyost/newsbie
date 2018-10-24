@@ -14,7 +14,14 @@ import detectIt from "detect-it";
 import LandingOld from "./components/Landing";
 import DashboardOld from "./components/pages/old/Dashboard";
 
+// pages
 import Landing from "./components/pages/Landing";
+import Pricing from "./components/pages/Pricing";
+import Upcoming from "./components/pages/Upcoming";
+import PrivacyPolicy from "./components/pages/PrivacyPolicy";
+import TermsOfUse from "./components/pages/TermsOfUse";
+
+// app
 import Home from "./components/pages/Home";
 import FrontPages from "./components/pages/FrontPages";
 import Sources from "./components/pages/Sources";
@@ -25,6 +32,7 @@ import Images from "./components/pages/Images";
 import Trends from "./components/pages/Trends";
 import Terms from "./components/pages/Terms";
 import TermAnalysis from "./components/pages/TermAnalysis";
+import ManageAccount from "./components/pages/ManageAccount";
 
 //=========================================
 
@@ -36,7 +44,13 @@ const { Header, Content, Footer, Sider } = Layout;
 
 function renderAuthRoute(Component, props, user, styles, updateUser) {
   if (user) {
-    return <Component {...props} styles={styles} />;
+    return (
+      <Component
+        {...props}
+        styles={styles}
+        updateUser={user => updateUser(user)}
+      />
+    );
   } else {
     return (
       <UserAuthPage
@@ -48,7 +62,7 @@ function renderAuthRoute(Component, props, user, styles, updateUser) {
   }
 }
 
-const Sidebar = ({ location, styles, updateParent }) => {
+const Sidebar = ({ location, styles, updateParent, user }) => {
   const activeKey = location.pathname || "";
 
   if (!location.pathname.includes("app")) {
@@ -78,7 +92,8 @@ const Sidebar = ({ location, styles, updateParent }) => {
             alignItems: "center",
             height: 64,
             paddingLeft: styles.collapsed ? 0 : 15,
-            borderRight: "1px solid #f2f2f2"
+            borderRight: "1px solid #f2f2f2",
+            position: "relative"
           }}
           onClick={() => {
             window.scrollTo(0, 0);
@@ -93,6 +108,26 @@ const Sidebar = ({ location, styles, updateParent }) => {
             height={30}
             // width={collapsed ? 30 * (4571 / 1000)}
           />
+          <div
+            style={{
+              position: "absolute",
+              top: 6,
+              right: styles.collapsed ? 6 : 25,
+              fontSize: 10
+              // backgroundColor: "rgba(0,0,0,0.2)"
+            }}
+          >
+            <span
+              style={{
+                border: "1px solid #e5e5e5",
+                padding: "1px 4px",
+                borderRadius: 3,
+                color: "rgba(0,0,0,0.7)"
+              }}
+            >
+              beta
+            </span>
+          </div>
         </Link>
         <Menu
           mode="inline"
@@ -140,6 +175,14 @@ const Sidebar = ({ location, styles, updateParent }) => {
               <span className="nav-text">Images</span>
             </Link>
           </Menu.Item>
+          {user && (
+            <Menu.Item key="/app/account" style={{ marginTop: 0 }}>
+              <Link to={"/app/account"}>
+                <AntIcon type="user" />
+                <span className="nav-text">Manage Account</span>
+              </Link>
+            </Menu.Item>
+          )}
         </Menu>
       </Sider>
     );
@@ -151,6 +194,7 @@ class MainRouter extends React.Component {
     super(props);
     this.state = {
       menuOpen: false,
+      // prevPath: null,
       screenWidth: 0,
       user: null,
       collapsed: true,
@@ -167,7 +211,7 @@ class MainRouter extends React.Component {
 
     let user = store.get("user");
     if (user) {
-      this.setState({ user });
+      this.setState({ user: user.user });
     }
 
     window.addEventListener(
@@ -226,7 +270,16 @@ class MainRouter extends React.Component {
   }
 
   updateUser(user) {
-    this.setState({ user });
+    if (user) {
+      if ("user" in user) {
+        this.setState({ user: user.user });
+      } else {
+        this.setState({ user });
+      }
+    } else {
+      this.setState({ user });
+    }
+
     store.set("user", user);
   }
 
@@ -244,13 +297,9 @@ class MainRouter extends React.Component {
     }
   }
 
-  updateIsApp(newState) {
-    this.setState({ isApp: newState });
-  }
-
   render() {
     const { location, match } = this.props;
-    const { user, screenWidth, collapsed, didMount } = this.state;
+    const { user, screenWidth, collapsed, didMount, prevPath } = this.state;
     let hideSidebar = screenWidth < 800;
     let isOpenWide = !hideSidebar && !collapsed;
     let isApp = location.pathname.includes("/app");
@@ -277,7 +326,9 @@ class MainRouter extends React.Component {
         "/app/news_images": "Images",
         "/app/trends": "Trends",
         // "/app/trends/timelines": "Trends - Timelines",
-        "/app/terms": "Pick a Term to Analyze"
+        "/app/terms": "Pick a Term to Analyze",
+        "/app/account": "Manage Account",
+        "/app/upcoming": "Upcoming Features"
       };
 
       if (location.pathname in routeMapping) {
@@ -287,6 +338,145 @@ class MainRouter extends React.Component {
           .replace("/app/terms/", "")
           .replace("-", " ")}"`;
       }
+
+      const renderDropdown = () => {
+        const menu = (
+          <Menu>
+            <Menu.Item>
+              {isApp ? (
+                <a
+                  style={{ display: "flex", alignItems: "center" }}
+                  target={"_blank"}
+                  href={
+                    "https://join.slack.com/t/newsbie/shared_invite/enQtNDU0OTgwOTc5ODU4LTg4M2U4OGJhYTEwNmEyM2I0ZDNkOWE5OGVjZmMxOGQ1M2I3ZDFkODE5ODBmZTFiNWI2MzIyNjY0MjRiYjI4Njg"
+                  }
+                >
+                  Chat on Slack
+                </a>
+              ) : (
+                <Link to="/app">Enter the App &rarr;</Link>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              <Link to="/upcoming">Upcoming Features</Link>
+            </Menu.Item>
+            {!isApp && (
+              <Menu.Item>
+                <Link to="/pricing">Pricing</Link>
+              </Menu.Item>
+            )}
+            <Menu.Item>
+              <Link to="/privacy-policy">Privacy Policy</Link>
+            </Menu.Item>
+            <Menu.Item>
+              <Link to="/terms">Terms of Use</Link>
+            </Menu.Item>
+          </Menu>
+        );
+        return (
+          <div style={{ marginRight: 20 }}>
+            <Dropdown
+              overlay={menu}
+              placement="bottomRight"
+              trigger={["click", "hover"]}
+            >
+              <a className="ant-dropdown-link" href="#">
+                Menu <AntIcon type="down" style={{ marginLeft: 0 }} />
+              </a>
+            </Dropdown>
+          </div>
+        );
+      };
+
+      const renderMore = () => {
+        const menu = (
+          <Menu>
+            <Menu.Item>
+              <a href="mailto:ryanjyost@gmail.com">Contact</a>
+            </Menu.Item>
+            <Menu.Item>
+              <Link to="/privacy-policy">Privacy Policy</Link>
+            </Menu.Item>
+            <Menu.Item>
+              <Link to="/terms">Terms of Use</Link>
+            </Menu.Item>
+          </Menu>
+        );
+        return (
+          <div style={{ marginRight: 20 }}>
+            <Dropdown
+              overlay={menu}
+              placement="bottomRight"
+              trigger={["click", "hover"]}
+              size={"small"}
+            >
+              <a className="ant-dropdown-link" href="#">
+                More <AntIcon type="down" style={{ marginLeft: 0 }} />
+              </a>
+            </Dropdown>
+          </div>
+        );
+      };
+
+      const renderNonAppMenu = () => {
+        if (styles.screenWidth < 600) {
+          return renderDropdown();
+        } else {
+          return (
+            <div
+              style={{
+                marginLeft: 20,
+                display: "flex",
+                alignItems: "center"
+              }}
+            >
+              <Link to="/upcoming" style={{ marginRight: 20 }}>
+                Upcoming Features
+              </Link>
+              <Link to="/pricing" style={{ marginRight: 20 }}>
+                Pricing
+              </Link>
+              {renderMore()}
+              <Button size={"small"} style={{ marginRight: 20 }}>
+                <Link to="/app">Enter the app &rarr;</Link>
+              </Button>
+            </div>
+          );
+        }
+      };
+
+      const renderAppMenu = () => {
+        if (styles.screenWidth < 600) {
+          return renderDropdown();
+        } else {
+          return (
+            <div
+              style={{ marginLeft: 20, display: "flex", alignItems: "center" }}
+            >
+              <Link to="/app/upcoming" style={{ marginRight: 20 }}>
+                Upcoming Features
+              </Link>
+              {renderMore()}
+              <a
+                style={{ display: "flex", alignItems: "center" }}
+                target={"_blank"}
+                href={
+                  "https://join.slack.com/t/newsbie/shared_invite/enQtNDU0OTgwOTc5ODU4LTg4M2U4OGJhYTEwNmEyM2I0ZDNkOWE5OGVjZmMxOGQ1M2I3ZDFkODE5ODBmZTFiNWI2MzIyNjY0MjRiYjI4Njg"
+                }
+              >
+                <Button
+                  size="small"
+                  style={{ marginRight: 20, backgroundColor: "transparent" }}
+                  type="default"
+                >
+                  <AntIcon type="slack" style={{ marginRight: 0 }} />Chat on
+                  Slack
+                </Button>
+              </a>
+            </div>
+          );
+        }
+      };
 
       if (!isApp) {
         return (
@@ -303,7 +493,7 @@ class MainRouter extends React.Component {
               alignItems: "center"
             }}
           >
-            <div style={{ marginLeft: 20, position: "relative" }}>
+            <Link to={"/"} style={{ marginLeft: 20, position: "relative" }}>
               <img
                 src={
                   screenWidth < 500 && isApp
@@ -333,19 +523,9 @@ class MainRouter extends React.Component {
                   beta
                 </span>
               </div>
-            </div>
+            </Link>
 
-            <div
-              style={{ marginLeft: 20, display: "flex", alignItems: "center" }}
-            >
-              <Button
-                onClick={() => this.updateIsApp(true)}
-                size={"small"}
-                style={{ marginRight: 20 }}
-              >
-                <Link to="/app">Use the app &rarr;</Link>
-              </Button>
-            </div>
+            {renderNonAppMenu()}
           </Header>
         );
       } else {
@@ -382,24 +562,7 @@ class MainRouter extends React.Component {
               />
               <h4 style={{ margin: "0px 0px 0px 10px" }}>{title}</h4>
             </div>
-            {!hideSidebar && (
-              <a
-                style={{ display: "flex", alignItems: "center" }}
-                target={"_blank"}
-                href={
-                  "https://join.slack.com/t/newsbie/shared_invite/enQtNDU0OTgwOTc5ODU4LTg4M2U4OGJhYTEwNmEyM2I0ZDNkOWE5OGVjZmMxOGQ1M2I3ZDFkODE5ODBmZTFiNWI2MzIyNjY0MjRiYjI4Njg"
-                }
-              >
-                <Button
-                  size="small"
-                  style={{ marginRight: 20, backgroundColor: "transparent" }}
-                  type="default"
-                >
-                  <AntIcon type="slack" style={{ marginRight: 0 }} />Chat on
-                  Slack
-                </Button>
-              </a>
-            )}
+            {renderAppMenu()}
           </Header>
         );
       }
@@ -414,6 +577,7 @@ class MainRouter extends React.Component {
           <Sidebar
             location={location}
             styles={styles}
+            user={user}
             updateParent={(key, val) => this.setState({ [key]: val })}
           />
           <Layout>
@@ -461,11 +625,48 @@ class MainRouter extends React.Component {
                           {...props}
                           {...this.state}
                           styles={styles}
-                          updateIsApp={() => this.updateIsApp(true)}
+                          updateUser={user => this.updateUser(user)}
                         />
                       );
                     }
                   }}
+                />
+                <Route
+                  path="/pricing"
+                  exact
+                  render={props => {
+                    return (
+                      <Pricing {...props} {...this.state} styles={styles} />
+                    );
+                  }}
+                />
+                <Route
+                  path="/upcoming"
+                  exact
+                  render={props => (
+                    <Upcoming {...props} {...this.state} styles={styles} />
+                  )}
+                />
+                <Route
+                  path="/login"
+                  exact
+                  render={props => (
+                    <UserAuthPage
+                      {...props}
+                      styles={styles}
+                      updateUser={user => this.updateUser(user)}
+                    />
+                  )}
+                />
+                <Route exact path="/privacy-policy" component={PrivacyPolicy} />
+                <Route exact path="/terms" component={TermsOfUse} />
+                {/*=== APP ===*/}
+                <Route
+                  path="/app/upcoming"
+                  exact
+                  render={props => (
+                    <Upcoming {...props} {...this.state} styles={styles} />
+                  )}
                 />
                 <Route
                   path="/app"
@@ -548,24 +749,23 @@ class MainRouter extends React.Component {
                   }
                 />
                 <Route
-                  path="/sources"
-                  exact
-                  render={props => <Sources {...props} />}
+                  path="/app/account"
+                  render={props =>
+                    renderAuthRoute(
+                      ManageAccount,
+                      props,
+                      user,
+                      styles,
+                      this.updateUser.bind(this)
+                    )
+                  }
                 />
-                <Route
-                  path="/sources/:source"
-                  render={props => <SingleSource {...props} />}
-                />
-                <Route path="/old/landing" component={LandingOld} />
-                <Route path="/old/dashboard" component={DashboardOld} />
                 <Route
                   render={props => (
-                    <Home
-                      {...props}
-                      {...this.state}
-                      styles={styles}
-                      updateUser={user => {
-                        this.setState({ user });
+                    <Redirect
+                      to={{
+                        pathname: "/",
+                        state: { from: props.location }
                       }}
                     />
                   )}
@@ -580,165 +780,3 @@ class MainRouter extends React.Component {
 }
 
 export default MainRouter;
-
-//class TopBarOld extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     // this.state = {
-//     //   menuOpen: false
-//     // };
-//   }
-//
-//   render() {
-//     const { menuOpen, location } = this.props;
-//     let title = "";
-//     if (menuOpen) {
-//       title = "Menu";
-//     } else {
-//       switch (location.pathname) {
-//         case "/":
-//           title = "newsbie";
-//           break;
-//         case "/articles":
-//           title = "Articles";
-//           break;
-//         case "/front_pages":
-//           title = "Front Pages";
-//           break;
-//         case "/sources":
-//           title = "Sources";
-//           break;
-//         case "/chyrons":
-//           title = "Chyrons";
-//           break;
-//         case "/top_news":
-//           title = "Top News";
-//           break;
-//         default:
-//           break;
-//       }
-//     }
-//
-//     if (title === "") {
-//       if (location.pathname.includes("/sources/")) {
-//         title = "Source Report";
-//       }
-//     }
-//
-//     return (
-//       <div
-//         className={"overlay"}
-//         style={{
-//           height: menuOpen ? "" : 40,
-//           backgroundColor: "rgba(255, 255, 255, 1)",
-//           borderBottom: "1px solid #e5e5e5",
-//           width: "100%",
-//           display: "flex",
-//           alignItems: "flex-start",
-//           justifyContent: menuOpen ? "flex-start" : "center",
-//           flexDirection: "column",
-//           letterSpacing: "0.02em",
-//           // padding: "0px 20px",
-//           // boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
-//           position: "fixed",
-//           top: 0,
-//           zIndex: 100,
-//           overflow: "hidden"
-//         }}
-//         // onClick={() => window.scrollTo(0, 0)}
-//       >
-//         <div
-//           style={{
-//             height: 55,
-//             backgroundColor: "rgba(255, 255, 255, 0.95)",
-//             width: "100%",
-//             display: "flex",
-//             alignItems: "center",
-//             justifyContent: "space-between",
-//             letterSpacing: "0.02em",
-//             maxWidth: 900,
-//             margin: "auto"
-//             // padding: "0px 20px",
-//             // boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
-//             // position: "fixed",
-//             // top: 0,
-//             // zIndex: 100,
-//           }}
-//           // onClick={() => window.scrollTo(0, 0)}
-//         >
-//           <Link
-//             to={"/"}
-//             style={{
-//               fontSize: 16,
-//               cursor: "pointer",
-//               marginLeft: 10,
-//               display: "flex",
-//               width: 100
-//             }}
-//             onClick={() => window.scrollTo(0, 0)}
-//           >
-//             <img src={"/images/ms-icon-310x310.png"} height={30} width={30} />
-//             <span
-//               style={{
-//                 textDecoration: "none",
-//                 fontSize: 10,
-//                 color: "rgba(0,0,0,0.5)",
-//                 marginLeft: 3
-//               }}
-//             >
-//               beta
-//             </span>
-//           </Link>
-//           <div
-//             onClick={() => window.scrollTo(0, 0)}
-//             style={{ fontSize: 14, cursor: "pointer" }}
-//           >
-//             {title}
-//           </div>
-//           <div
-//             style={{
-//               cursor: "pointer",
-//               width: 100,
-//               display: "flex",
-//               justifyContent: "flex-end"
-//             }}
-//             onClick={() => {
-//               this.props.updateState("menuOpen", !menuOpen);
-//             }}
-//           >
-//             <Icon
-//               style={{
-//                 marginRight: 10,
-//                 color: "rgba(0,0,0,0.4)"
-//               }}
-//               icon={menuOpen ? ic_close : ic_menu}
-//               size={26}
-//             />
-//           </div>
-//         </div>
-//         {menuOpen ? <ToolMenu user={this.props.user} /> : null}
-//       </div>
-//     );
-//   }
-// }
-//
-// class TopBar extends React.Component {
-//   render() {}
-// }
-//
-// class ScrollToTop extends React.Component {
-//   componentDidUpdate(prevProps) {
-//     if (this.props.location !== prevProps.location) {
-//       window.scrollTo(0, 0);
-//       this.props.updateState("menuOpen", false);
-//     }
-//   }
-//
-//   render() {
-//     return this.props.children;
-//   }
-// }
-//
-// const ScollToTopWithRouter = withRouter(ScrollToTop);
-//
-// const TopBarWithRouter = withRouter(TopBar);
