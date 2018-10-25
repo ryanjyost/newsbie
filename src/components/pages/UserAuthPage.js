@@ -30,7 +30,7 @@ class UserAuthPage extends Component {
             lineHeight: 1.2
           }}
         >
-          Join the Private Beta
+          Join the Private Beta!
         </h3>
         <h5
           style={{
