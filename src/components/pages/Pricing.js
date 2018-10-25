@@ -153,8 +153,28 @@ export default class Pricing extends Component {
               margin: 0
             }}
           >
-            What are you willing to pay?
+            How much might you pay for a fully-featured Newsbie?
           </h3>
+        )}
+
+        {!feedbackSubmitted && (
+          <p
+            style={{
+              textAlign: "center",
+              fontSize: 12,
+              lineHeight: 1.5,
+              letterSpacing: "0.02em",
+              maxWidth: 500,
+              color: "rgba(0,0,0,0.6)",
+              padding: "10px 20px 0px 20px",
+              marginBottom: 0
+            }}
+          >
+            Newsbie's currently in beta and free if you join. Once the beta
+            period is over - and I've collected feedback and built awesome new
+            features that the beta users want - I'll need to charge a
+            subscription to keep going.
+          </p>
         )}
 
         {!feedbackSubmitted && renderPrice()}
@@ -210,22 +230,6 @@ export default class Pricing extends Component {
           </div>
         </div>
 
-        <p
-          style={{
-            textAlign: "center",
-            fontSize: 12,
-            lineHeight: 1.5,
-            letterSpacing: "0.02em",
-            maxWidth: 500,
-            color: "rgba(0,0,0,0.6)",
-            padding: "0px 20px"
-          }}
-        >
-          Newsbie's currently in beta and free if you join. Once the beta period
-          is over - and I've collected feedback and built awesome new features
-          that the beta users want - I'll need to charge a subscription to keep
-          going.
-        </p>
         <a
           href={"https://twitter.com/ryanjyost"}
           target={"_blank"}
