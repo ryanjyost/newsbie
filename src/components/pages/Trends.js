@@ -245,6 +245,26 @@ export default class Trends extends Component {
             </h4>
             {renderNegative()}
 
+            {/* ============ NEUTRAL  ============ */}
+            <div>
+              <h4
+                style={{
+                  marginBottom: 15,
+                  marginRight: 5,
+                  fontWeight: "normal",
+                  color: "rgba(0,0,0,0.5)"
+                }}
+              >
+                Terms that are{" "}
+                <span style={{ fontWeight: "bold" }}>pretty much the same</span>{" "}
+                compared to{" "}
+                <span>
+                  <strong>{this.displayTextForTab(neutralTab)}</strong>
+                </span>
+              </h4>
+            </div>
+            {renderNeutral()}
+
             {/* ============ POSITIVE  ============ */}
             <div style={{ marginBottom: 15 }}>
               <h4
@@ -269,26 +289,6 @@ export default class Trends extends Component {
               </h6>
             </div>
             {renderBrandNew()}
-
-            {/* ============ NEUTRAL  ============ */}
-            <div>
-              <h4
-                style={{
-                  marginBottom: 15,
-                  marginRight: 5,
-                  fontWeight: "normal",
-                  color: "rgba(0,0,0,0.5)"
-                }}
-              >
-                Terms that are{" "}
-                <span style={{ fontWeight: "bold" }}>pretty much the same</span>{" "}
-                compared to{" "}
-                <span>
-                  <strong>{this.displayTextForTab(neutralTab)}</strong>
-                </span>
-              </h4>
-            </div>
-            {renderNeutral()}
           </div>
         </div>
       );

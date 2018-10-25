@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios/index";
 import shuffle from "shuffle-array";
-import ReactGA from "react-ga";
 import _ from "lodash";
 import moment from "moment";
 import {

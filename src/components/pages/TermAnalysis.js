@@ -41,7 +41,8 @@ export default class TermAnalysis extends Component {
       mappedImages: [],
       politicsArticles: [],
       opinionArticles: [],
-      currType: "politics"
+      currType: "politics",
+      combinedArticleCount: 0
     };
   }
 
@@ -53,29 +54,35 @@ export default class TermAnalysis extends Component {
       config: { headers: { "Content-Type": "application/json" } }
     })
       .then(res => {
-        console.log(res.data);
         this.prepLineGraphData(res.data.batches, res.data.topic);
-        this.prepRelatedWords(res.data.topic);
-        this.prepBarGraphData(res.data.topic.related, res.data.topic.main.tf);
+        this.prepRelatedWords(
+          res.data.related,
+          res.data.articles.combined.length
+        );
+        this.prepBarGraphData(
+          res.data.related,
+          res.data.articles.combined.length
+        );
         this.paginateArticles(res.data.articles.politics, "politicsArticles");
         this.paginateArticles(res.data.articles.opinion, "opinionArticles");
         this.setState({
           mappedImages: mappedSourceToImage(),
-          topic: res.data.topic
+          topic: res.data.topic,
+          combinedArticleCount: res.data.articles.combined.length
         });
         // this.setState({ topic: res.data.topic, batches: res.data.batches });
       })
       .catch(err => console.log(err));
   }
 
-  prepRelatedWords(topic) {
-    let splitTags = _.partition(topic.related, tag => {
-      return tag.tf / topic.main.tf > 0.1;
+  prepRelatedWords(related, denom) {
+    let splitTags = _.partition(related, tag => {
+      return tag.tf / denom > 0.03;
     });
 
     this.setState({
       topTags: splitTags[0],
-      moreTags: splitTags[1]
+      moreTags: splitTags[1].slice(0, 20)
     });
   }
 
@@ -93,16 +100,26 @@ export default class TermAnalysis extends Component {
       .map((batch, i) => {
         // console.log(i, batch.created_at);
         if (batch) {
-          let yVal = batch.tags.find(item => {
-            return item.term === topic.main.term;
+          let tags = batch.tags.filter(item => {
+            return (
+              item.term === topic.main.term ||
+              item.term.includes(topic.main.term) ||
+              topic.main.term.includes(item.term)
+            );
           });
 
-          let dur = moment.duration(moment().diff(moment(batch.created_at)));
-          let xVal = dur.asHours();
+          let yValues = tags.map(tag => {
+            return tag.sourceCount;
+          });
+
+          let yVal = 0;
+          for (let val of yValues) {
+            yVal = yVal + val;
+          }
 
           return {
             x: -this.nearestHour(batch.created_at),
-            y: yVal ? yVal.sourceCount / batch.sourceCount : 0
+            y: yVal ? yVal / batch.sourceCount : 0
           };
         } else {
           return {
@@ -111,6 +128,8 @@ export default class TermAnalysis extends Component {
           };
         }
       });
+
+    //console.log(graphData);
 
     let values = graphData.map(val => {
       return val.y;
@@ -149,7 +168,18 @@ export default class TermAnalysis extends Component {
   }
 
   paginateArticles(articles, stateField) {
-    this.setState({ [stateField]: articles.slice(0, 50) });
+    let sorted = articles.sort((a, b) => {
+      let dateA = a.date ? moment(a.date) : moment(a.created_at);
+      let dateB = b.date ? moment(b.date) : moment(b.created_at);
+      if (dateA.isAfter(dateB)) {
+        return -1;
+      } else if (dateA.isBefore(dateB)) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
+    this.setState({ [stateField]: sorted.slice(0, 50) });
     // let countperPage = 20,
     //   currPage = 1;
     // let pages = [],
@@ -198,18 +228,28 @@ export default class TermAnalysis extends Component {
             tickLine={{ stroke: "#e5e5e5" }}
             domain={[this.state.graphMin, this.state.graphMax]}
             stroke={"rgba(0,0,0,0.4)"}
-            ticks={[this.state.graphMin + 0.01, this.state.graphMax - 0.01]}
+            // ticks={[this.state.graphMin + 0.01, this.state.graphMax - 0.01]}
             tickFormatter={obj => {
               if (obj) {
-                return `${Number(obj * 100).toFixed(0)}%`;
+                if (this.state.graphMax - this.state.graphMin < 4) {
+                  return `${Number(obj * 100).toFixed(1)}%`;
+                } else {
+                  return `${Number(obj * 100).toFixed(0)}%`;
+                }
               } else {
                 return "";
               }
             }}
-            width={40}
+            width={50}
           />
           {/*<Tooltip />*/}>
-          <Area type="monotone" dataKey={"y"} stroke={"#B8E8FF"} dot={false} />
+          <Area
+            type="monotone"
+            dataKey={"y"}
+            fill={"#1890ff"}
+            stroke={"#1890ff"}
+            dot={false}
+          />
         </AreaChart>
       );
     };
@@ -300,7 +340,7 @@ export default class TermAnalysis extends Component {
             list={this.state.topTags}
             suppList={this.state.moreTags}
             calcValue={word => {
-              return word.tf / topic.main.tf;
+              return word.tf / this.state.combinedArticleCount;
             }}
           />
         );
@@ -359,7 +399,7 @@ export default class TermAnalysis extends Component {
             <span style={{ color: "rgba(0,0,0,0.7)", fontSize: 18 }}>
               {topic.main.term}
             </span>{" "}
-            or related terms
+            or similar terms
           </div>
         </div>
       );

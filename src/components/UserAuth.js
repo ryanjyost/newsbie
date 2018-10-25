@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { auth } from "../firebase";
-import { Input, Icon, Button } from "antd";
+import { Input, Icon, Button, Checkbox } from "antd";
+import axios from "axios/index";
+import { Link } from "react-router-dom";
 
 export default class UserAuth extends Component {
   constructor(props) {
@@ -15,7 +17,8 @@ export default class UserAuth extends Component {
       fetching: null,
       error: null,
       signUpSuccess: false,
-      signInSuccess: false
+      signInSuccess: false,
+      emailOptIn: false
     };
   }
 
@@ -26,15 +29,35 @@ export default class UserAuth extends Component {
     auth
       .doCreateUserWithEmailAndPassword(email, password1)
       .then(authUser => {
-        console.log(authUser);
+        this.createUser(authUser);
         this.props.updateUser(authUser);
+        // this.setState({
+        //   signUpSuccess: true,
+        //   fetching: null
+        // });
+      })
+      .catch(error => {
+        this.setState({
+          fetching: null,
+          error: error.message
+        });
+      });
+  }
+
+  createUser(user) {
+    axios({
+      method: "POST",
+      url: "https://birds-eye-news-api.herokuapp.com/users",
+      data: { user, subscribe: this.state.emailOptIn },
+      config: { headers: { "Content-Type": "application/json" } }
+    })
+      .then(res => {
         this.setState({
           signUpSuccess: true,
           fetching: null
         });
       })
       .catch(error => {
-        console.log(error);
         this.setState({
           fetching: null,
           error: error.message
@@ -50,6 +73,7 @@ export default class UserAuth extends Component {
       .doSignInWithEmailAndPassword(email, password1)
       .then(authUser => {
         this.props.updateUser(authUser);
+        this.createUser(authUser, true);
         this.setState({
           signUpSuccess: true,
           fetching: null
@@ -67,6 +91,7 @@ export default class UserAuth extends Component {
   handleEnterKey(e) {
     const disableSignup =
       this.state.email === "" ||
+      !this.state.emailOptIn ||
       this.state.password1.length < 6 ||
       this.state.password1 !== this.state.password2 ||
       this.state.fetching;
@@ -109,14 +134,66 @@ export default class UserAuth extends Component {
 
     const disableSignup =
       this.state.email === "" ||
+      !this.state.emailOptIn ||
       this.state.password1.length < 6 ||
       this.state.password1 !== this.state.password2 ||
-      fetching;
+      this.state.fetching;
 
     const disableSignIn =
       this.state.email === "" || this.state.password1 === "" || fetching;
 
     const renderSignUpForm = () => {
+      const renderLegal = () => {
+        const linkStyle = { color: "rgba(0,0,0,0.7)" };
+        return (
+          <div
+            style={{
+              fontSize: 11,
+              margin: "10px 0px 10px 0px",
+              color: "rgba(0,0,0,0.4)"
+            }}
+          >
+            By creating an account, you agree to Newsbie's{" "}
+            <Link style={linkStyle} to={"/terms"}>
+              Terms of Service
+            </Link>{" "}
+            and{" "}
+            <Link style={linkStyle} to={"/privacy-policy"}>
+              Privacy Policy
+            </Link>.
+          </div>
+        );
+      };
+
+      const renderOptIn = () => {
+        return (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              fontSize: 11,
+              margin: "10px 0px",
+              color: "rgba(0,0,0,0.7)"
+            }}
+          >
+            <Checkbox
+              value={this.state.emailOptIn}
+              style={{
+                fontSize: 11,
+                color: "rgba(0,0,0,0.7)",
+                fontWeight: "normal"
+              }}
+              onChange={e => this.setState({ emailOptIn: e.target.checked })}
+            >
+              I'm OK with being contacted occasionally via email about Newsbie.{" "}
+              <i>
+                Required for private beta participation - unsubscribe any time.
+              </i>
+            </Checkbox>
+          </div>
+        );
+      };
+
       return (
         <div
           style={{
@@ -170,6 +247,7 @@ export default class UserAuth extends Component {
               />
             }
           />
+          {renderOptIn()}
           <Button
             type="primary"
             disabled={disableSignup}
@@ -177,8 +255,9 @@ export default class UserAuth extends Component {
             className={"shadow shadowHover"}
             onClick={() => this.onSignUp()}
           >
-            {fetching ? "Creating your account..." : `Get Started - It's Free`}
+            {fetching ? "Creating your account..." : `Sign me up for the beta!`}
           </Button>
+          {renderLegal()}
           {!fetching && (
             <div
               style={{
