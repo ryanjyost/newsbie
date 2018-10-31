@@ -25,11 +25,19 @@ export default class Landing extends Component {
       fontSize: isSmall ? 22 : 22,
       marginBottom: isSmall ? 10 : isHorz ? 6 : 3
     };
+    let featureHeaderStyle = {
+      textAlign: "left",
+      fontWeight: 500,
+      color: "rgba(0,0,0,0.7)",
+      lineHeight: 1.3,
+      fontSize: 16,
+      margin: "0px 10px"
+    };
 
     let subHeaderStyle = {
       textAlign: isHorz ? "left" : "center",
       fontWeight: 500,
-      color: "#9B9B9B",
+      color: "#898989",
       fontSize: isSmall ? 16 : 15,
       letterSpacing: "0.02em",
       lineHeight: 1.5,
@@ -48,6 +56,14 @@ export default class Landing extends Component {
       border: "none",
       borderRadius: 5
     };
+    let cardHeader = {
+      marginBottom: 50,
+      textAlign: "center",
+      fontWeight: 700,
+      color: "#1890ff",
+      lineHeight: 1.3,
+      fontSize: 26
+    };
 
     let btnStyle = {
       display: "block",
@@ -55,7 +71,18 @@ export default class Landing extends Component {
       boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)"
     };
 
-    const renderImage = image => {
+    const outerDivStyle = {
+      display: "flex",
+      flexDirection: isHorz ? "row" : "column",
+      alignItems: "center"
+    };
+
+    const innerDivStyle = {
+      padding: isHorz ? "0px 30px 0px 30px" : "0px 0px",
+      width: isHorz ? "40%" : "100%"
+    };
+
+    const renderImage = (image, isFeature) => {
       const Dot = ({ isLeft }) => {
         return (
           <div
@@ -73,9 +100,9 @@ export default class Landing extends Component {
         <div
           style={{
             borderRadius: 3,
-            margin: "auto",
-            marginTop: isHorz ? 0 : 30,
-            marginBottom: isHorz ? 0 : 30,
+            margin: isFeature ? "0px" : "auto",
+            marginTop: isHorz ? 0 : !isFeature ? 0 : 30,
+            marginBottom: isHorz ? 0 : !isFeature ? 0 : 30,
             display: "block",
             boxShadow: "0 20px 40px 0 rgba(0,0,0,.15)",
             border: "1px solid rgba(0,0,0,0.1)",
@@ -96,6 +123,7 @@ export default class Landing extends Component {
           >
             <Dot isLeft /> <Dot /> <Dot />
           </div>
+
           <img
             style={{
               // boxShadow: "0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23)"
@@ -133,7 +161,7 @@ export default class Landing extends Component {
             display: "block",
             boxShadow: "0 20px 40px 0 rgba(0,0,0,.15)",
             border: "1px solid rgba(0,0,0,0.1)",
-            width: Math.min(600, styles.screenWidth - 40),
+            width: Math.min(800, styles.screenWidth - 40),
             maxWidth: "100%"
           }}
         >
@@ -192,7 +220,7 @@ export default class Landing extends Component {
             style={{
               fontSize: isSmall ? 15 : 16,
               padding: "0px 20px",
-              maxWidth: 520,
+              maxWidth: 550,
               width: "100%",
               margin: "auto",
               marginBottom: 30,
@@ -205,8 +233,8 @@ export default class Landing extends Component {
           >
             {/*Newsbie makes it easy to monitor, analyze and understand the news*/}
             {/*media. Life-long news junkies, beginners, and everyone in*/}
-            Newsbie makes it easy to balance and enhance your news media diet,
-            so that you can understand more in less time
+            Newsbie makes it easy to balance, enhance and digest your news media
+            diet, so that you can understand more in less time
           </h5>
 
           <Button style={btnStyle} type={"primary"} size={"large"}>
@@ -221,18 +249,9 @@ export default class Landing extends Component {
     };
 
     const renderBenefits = () => {
-      const outerDivStyle = {
-        display: "flex",
-        flexDirection: isHorz ? "row" : "column",
-        alignItems: "center"
-      };
-
-      const innerDivStyle = {
-        padding: isHorz ? "0px 30px 0px 30px" : "0px 0px",
-        width: isHorz ? "40%" : "100%"
-      };
       return (
         <Card style={cardStyle}>
+          <h2 style={cardHeader}>Why use Newsbie?</h2>
           <div style={outerDivStyle}>
             <div style={innerDivStyle}>
               <h3 style={headerStyle}>
@@ -310,56 +329,203 @@ export default class Landing extends Component {
       );
     };
 
-    const renderSlack = () => {
+    const renderProblems = () => {
       return (
-        <div
-          style={{
-            padding: "100px 10px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center"
-          }}
-        >
-          <h3 style={headerStyle}>
-            Want to discuss the news? Have questions? Need advice?
-          </h3>
-          <a
-            style={{
-              display: "inline-block",
-              margin: "auto",
-              marginTop: 20
-            }}
-            target={"_blank"}
-            href={
-              "https://join.slack.com/t/newsbie/shared_invite/enQtNDU0OTgwOTc5ODU4LTg4M2U4OGJhYTEwNmEyM2I0ZDNkOWE5OGVjZmMxOGQ1M2I3ZDFkODE5ODBmZTFiNWI2MzIyNjY0MjRiYjI4Njg"
-            }
-          >
-            <Button
+        <Card style={{ ...cardStyle, ...{ backgroundColor: "#fff" } }}>
+          <h2 style={{ ...cardHeader, ...{ color: "rgba(0,0,0,0.8)" } }}>
+            Any of these struggles feel familiar?
+          </h2>
+          <div style={outerDivStyle}>
+            <div style={innerDivStyle}>
+              <h3 style={headerStyle}>
+                Become a better, more critical news consumer
+              </h3>
+              <h5 style={subHeaderStyle}>
+                Discover biases, tactics, patterns, trends and other insights
+                that add context and clarity to your worldview.
+              </h5>
+            </div>
+            {renderImage("landing-main.png")}
+          </div>
+        </Card>
+      );
+    };
+
+    const renderNewFeatures = () => {
+      let innerDiv = {
+        padding: isHorz ? "0px 20px 0px 20px" : "0px 0px",
+        display: "flex",
+        flexDirection: "column",
+        position: "relative",
+        borderRadius: 3,
+        width: isHorz ? "60%" : "100%"
+      };
+
+      let outerDiv = {
+        display: "flex",
+        alignItems: "center",
+        // maxWidth: 500,
+        margin: "auto",
+        borderRadius: 3
+      };
+
+      const SingleFeature = ({ problem, solution, image, reverse }) => {
+        return (
+          <div style={{ padding: "70px 00px" }}>
+            <div
               style={{
-                backgroundColor: "#443642",
-                color: "#fff",
-                display: "flex",
-                alignItems: "center"
+                ...outerDiv,
+                ...{
+                  flexDirection: isHorz
+                    ? reverse
+                      ? "row-reverse"
+                      : "row"
+                    : "column"
+                }
               }}
-              size="large"
             >
-              <Icon type={"slack"} />Join the Slack Community
-            </Button>
-          </a>
-        </div>
+              <div style={innerDiv}>
+                <div
+                  style={{
+                    flex: 0.5,
+                    backgroundColor: "#f0f2f5",
+                    padding: "40px 20px",
+                    position: "relative",
+                    borderRadius: 3
+                  }}
+                >
+                  <h4
+                    style={{
+                      margin: 0,
+                      lineHeight: 1.3,
+                      color: "rgba(0,0,0,0.6)"
+                    }}
+                  >
+                    {problem}
+                  </h4>
+                  <div
+                    style={{
+                      width: 30,
+                      height: 30,
+                      borderRadius: "50%",
+                      backgroundColor: "#fff",
+                      position: "absolute",
+                      bottom: -15,
+                      right: "calc(50% - 15px)",
+                      color: "#1890ff",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      fontSize: 20,
+                      fontWeight: "bold"
+                    }}
+                  >
+                    &darr;
+                  </div>
+                </div>
+                <div
+                  style={{
+                    flex: 0.5,
+                    backgroundColor: "rgba(24, 144, 255, 1)",
+                    padding: "40px 20px",
+                    borderRadius: 3
+                  }}
+                >
+                  <h4
+                    style={{
+                      margin: 0,
+                      color: "#fff",
+                      lineHeight: 1.3
+                    }}
+                  >
+                    {solution}
+                  </h4>
+                </div>
+              </div>
+              <div
+                style={{
+                  padding: !isHorz ? 0 : "0px 10px",
+                  width: isHorz ? "40%" : "100%"
+                }}
+              >
+                {renderImage(image, true)}
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      return (
+        <Card style={{ ...cardStyle, ...{ paddingTop: 70 } }}>
+          <h2 style={cardHeader}>
+            <div style={{ color: "rgba(0,0,0,0.3)", fontSize: 22 }}>
+              The old way sucks
+            </div>
+            <div style={{ padding: "10px 0px" }}>&darr;</div>{" "}
+            <div style={{ fontSize: 26 }}>The newsbie way is better</div>
+          </h2>
+
+          <SingleFeature
+            problem={
+              "Feel like you don't have a clear view of what's going on?"
+            }
+            solution={
+              "Newsbie provides a rich overview of the entire news media landscape."
+            }
+            image={"landing-main.png"}
+          />
+
+          <SingleFeature
+            problem={
+              "Ever seem like there's multiple versions of the news out there?"
+            }
+            solution={
+              "Be confident you've got the whole picture, not just a small slice, with access to thousands" +
+              " of articles across the spectrum."
+            }
+            image={"feature-4.png"}
+            reverse
+          />
+
+          <SingleFeature
+            problem={
+              "Overwhelmed by the fire hose of content and news stories? It's a lot to manage and makes things more" +
+              " confusing."
+            }
+            solution={
+              "Absorb a greater quality and quantity of information through unique tools, graphs and metrics."
+            }
+            image={"feature-3.png"}
+          />
+
+          <SingleFeature
+            problem={
+              "Struggle to keep up with the constant avalanche of topics, terms and people?"
+            }
+            solution={
+              "Access in-depth breakdowns of trending topics. Research terms on Google, Wikipedia or Twitter" +
+              " in one click."
+            }
+            image={"feature-6.png"}
+            reverse
+          />
+
+          <SingleFeature
+            problem={
+              "The news cycle is so rapid and disorienting - it's easy to forget what happened yesterday, let" +
+              " alone a week ago."
+            }
+            solution={
+              "Browse current and historical front pages of news sites. See how topics and terms trend over" +
+              " time."
+            }
+            image={"feature-7.png"}
+          />
+        </Card>
       );
     };
 
     const renderFeatures = () => {
-      let featureHeaderStyle = {
-        textAlign: "left",
-        fontWeight: 500,
-        color: "rgba(0,0,0,0.7)",
-        lineHeight: 1.3,
-        fontSize: 16,
-        margin: "0px 10px"
-      };
-
       const features = [
         {
           icon: "eye",
@@ -428,18 +594,7 @@ export default class Landing extends Component {
             width: "100%"
           }}
         >
-          <h2
-            style={{
-              marginBottom: 30,
-              textAlign: "center",
-              fontWeight: 700,
-              color: "rgba(0,0,0,0.8)",
-              lineHeight: 1.3,
-              fontSize: 26
-            }}
-          >
-            Features
-          </h2>
+          <h2 style={cardHeader}>Features</h2>
           <div
             style={{
               display: "flex",
@@ -513,10 +668,11 @@ export default class Landing extends Component {
       >
         {renderHero()}
 
-        <div style={{ margin: "60px 0px 0px 0px" }}>{renderBenefits()}</div>
-        {renderSlack()}
+        <div style={{ marginTop: 30, padding: "0px 0px 0px 0px" }}>
+          {renderBenefits()}
+        </div>
 
-        {renderFeatures()}
+        <div style={{ marginTop: 30 }}>{renderNewFeatures()}</div>
 
         <UserAuthPage
           {...this.props}

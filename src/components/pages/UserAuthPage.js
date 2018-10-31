@@ -22,32 +22,33 @@ class UserAuthPage extends Component {
           color: "rgba(0,0,0,0.5)"
         }}
       >
-        <h3
+        <h4
           style={{
             textAlign: "center",
             fontWeight: "bold",
             color: "rgba(0,0,0,0.7)",
-            lineHeight: 1.2
-          }}
-        >
-          Join the Private Beta!
-        </h3>
-        <h5
-          style={{
-            maxWidth: 500,
-            fontWeight: 500,
-            color: "#9B9B9B",
-            fontSize: 15,
-            letterSpacing: "0.02em",
-            lineHeight: 1.5,
-            textAlign: "center",
+            lineHeight: 1.2,
             marginBottom: 20
           }}
         >
-          The <strong>first 100 folks</strong> to join get free early access,
-          discounts in the future, and will help build the news app of their
-          dreams.
-        </h5>
+          Start using the beta version of Newsbie
+        </h4>
+        {/*<h5*/}
+        {/*style={{*/}
+        {/*maxWidth: 500,*/}
+        {/*fontWeight: 500,*/}
+        {/*color: "#9B9B9B",*/}
+        {/*fontSize: 15,*/}
+        {/*letterSpacing: "0.02em",*/}
+        {/*lineHeight: 1.5,*/}
+        {/*textAlign: "center",*/}
+        {/*marginBottom: 20*/}
+        {/*}}*/}
+        {/*>*/}
+        {/*The <strong>first 100 folks</strong> to join get free early access,*/}
+        {/*discounts in the future, and will help build the news app of their*/}
+        {/*dreams.*/}
+        {/*</h5>*/}
 
         <div
           style={{

@@ -172,23 +172,20 @@ export default class UserAuth extends Component {
               display: "flex",
               alignItems: "center",
               fontSize: 11,
-              margin: "10px 0px",
-              color: "rgba(0,0,0,0.7)"
+              margin: "10px 0px"
             }}
           >
             <Checkbox
               value={this.state.emailOptIn}
               style={{
                 fontSize: 11,
-                color: "rgba(0,0,0,0.7)",
+                color: "rgba(0,0,0,0.4)",
                 fontWeight: "normal"
               }}
               onChange={e => this.setState({ emailOptIn: e.target.checked })}
             >
               I'm OK with being contacted occasionally via email about Newsbie.{" "}
-              <i>
-                Required for private beta participation - unsubscribe any time.
-              </i>
+              <i>Required for beta participation - unsubscribe any time.</i>
             </Checkbox>
           </div>
         );
@@ -206,7 +203,7 @@ export default class UserAuth extends Component {
           <label style={labelStyle}>Email</label>
           <Input
             style={inputStyle}
-            placeholder="Enter your email"
+            // placeholder="jsnow@winterfell.gov"
             prefix={
               <Icon
                 type="user"
@@ -218,9 +215,9 @@ export default class UserAuth extends Component {
           />
           <label style={labelStyle}>
             Password{" "}
-            <span style={{ color: "rgba(0,0,0,0.4)", fontWeight: "normal" }}>
-              (minimum 6 characters)
-            </span>
+            {/*<span style={{ color: "rgba(0,0,0,0.2)", fontWeight: "normal" }}>*/}
+            {/*(minimum 6 characters)*/}
+            {/*</span>*/}
           </label>
           <Input
             style={inputStyle}
@@ -255,7 +252,7 @@ export default class UserAuth extends Component {
             className={"shadow shadowHover"}
             onClick={() => this.onSignUp()}
           >
-            {fetching ? "Creating your account..." : `Sign me up for the beta!`}
+            {fetching ? "Creating your account..." : `Sign up`}
           </Button>
           {renderLegal()}
           {!fetching && (
@@ -264,7 +261,7 @@ export default class UserAuth extends Component {
                 textAlign: "center",
                 fontSize: 12,
                 padding: 10,
-                color: "rgba(0,0,0,0.8)"
+                color: "rgba(0,0,0,0.4)"
               }}
             >
               Already have an account?{" "}
@@ -273,7 +270,7 @@ export default class UserAuth extends Component {
                 className="hoverUnderline"
                 style={{ color: "rgba(24, 144, 255, 1)" }}
               >
-                Sign In
+                Sign in
               </span>
             </div>
           )}
@@ -293,7 +290,6 @@ export default class UserAuth extends Component {
           <label style={labelStyle}>Email</label>
           <Input
             style={inputStyle}
-            placeholder="Enter your email"
             prefix={
               <Icon
                 type="user"
@@ -323,7 +319,7 @@ export default class UserAuth extends Component {
             className={"shadow shadowHover"}
             onClick={() => this.onSignIn()}
           >
-            {fetching ? "Signing in..." : "Sign In"}
+            {fetching ? "Signing in..." : "Sign in"}
           </Button>
 
           {!fetching && (
@@ -341,7 +337,7 @@ export default class UserAuth extends Component {
                 className="hoverUnderline"
                 style={{ color: "rgba(24, 144, 255, 1)" }}
               >
-                Sign Up
+                Sign up
               </span>
             </div>
           )}

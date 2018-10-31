@@ -671,9 +671,15 @@ class MainRouter extends React.Component {
                 <Route
                   path="/app"
                   exact
-                  render={props => (
-                    <Home {...props} {...this.state} styles={styles} />
-                  )}
+                  render={props =>
+                    renderAuthRoute(
+                      Home,
+                      props,
+                      user,
+                      styles,
+                      this.updateUser.bind(this)
+                    )
+                  }
                 />
                 <Route
                   path="/app/terms"
