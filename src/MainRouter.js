@@ -437,9 +437,11 @@ class MainRouter extends React.Component {
                 Pricing
               </Link>
               {renderMore()}
-              <Button size={"small"} style={{ marginRight: 20 }}>
-                <Link to="/app">Enter the app &rarr;</Link>
-              </Button>
+              <Link to="/app">
+                <Button size={"small"} style={{ marginRight: 20 }}>
+                  Enter the app &rarr;
+                </Button>
+              </Link>
             </div>
           );
         }

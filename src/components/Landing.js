@@ -455,7 +455,7 @@ export default class Landing extends Component {
                   size={28}
                 />
               </div>
-              cut through the bullsh*t of your modern media diet
+              cut through the noise of your modern media diet
             </div>
             <div
               style={{

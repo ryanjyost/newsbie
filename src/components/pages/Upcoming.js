@@ -107,16 +107,14 @@ export default class Upcoming extends Component {
               margin: "0px 0px 20px 0px"
             }}
           >
-            <Button type={"primary"}>
-              <Link
-                to={{
-                  pathname: "/login",
-                  state: { prevPath: this.props.location.pathname }
-                }}
-              >
-                Sign up or sign in to vote
-              </Link>
-            </Button>
+            <Link
+              to={{
+                pathname: "/login",
+                state: { prevPath: this.props.location.pathname }
+              }}
+            >
+              <Button type={"primary"}>Sign up or sign in to vote</Button>
+            </Link>
           </div>
         );
       } else {

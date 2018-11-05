@@ -237,11 +237,11 @@ export default class Landing extends Component {
             diet, so that you can understand more in less time
           </h5>
 
-          <Button style={btnStyle} type={"primary"} size={"large"}>
-            <Link to="/app">
+          <Link to="/app">
+            <Button style={btnStyle} type={"primary"} size={"large"}>
               <span style={{ paddingRight: 8 }}>Try it out</span> &rarr;
-            </Link>
-          </Button>
+            </Button>
+          </Link>
 
           {renderVideo()}
         </div>
@@ -279,8 +279,8 @@ export default class Landing extends Component {
             >
               <h3 style={headerStyle}>Absorb more info in less time</h3>
               <h5 style={subHeaderStyle}>
-                Efficiently find signals in all the noise (and filter out the
-                bulls**t) with powerful tools and metrics.
+                Efficiently find signals in all the noise with powerful tools
+                and metrics.
               </h5>
             </div>
             {renderImage("newsbie-term-analysis-preview.png")}
