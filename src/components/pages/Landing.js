@@ -466,17 +466,17 @@ export default class Landing extends Component {
 
             <h3 style={infoHeader}>Fun homework exercises</h3>
             <h5 style={infoSub}>
-              Have students log into newsbie and write a piece on an
-              observation, or have them compare two news sources' coverage of
-              the same story.
+              Students can log in to newsbie and write about a trend they see,
+              or compare two news sources' coverage of the same story, or just
+              prepare to chat the next day!
             </h5>
 
             <h3 style={infoHeader}>
               Teach media literacy, journalism and more
             </h3>
             <h5 style={infoSub}>
-              Discuss biases, journalist practices and more with abundant real
-              world examples.
+              Discuss biases, journalistic practices and more with an abundance
+              of real world examples.
             </h5>
           </div>
         </Card>
