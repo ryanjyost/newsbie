@@ -609,6 +609,31 @@ class MainRouter extends React.Component {
 
               <Switch>
                 <Route
+                  path="/landing"
+                  exact
+                  render={props => {
+                    if (user) {
+                      return (
+                        <Redirect
+                          to={{
+                            pathname: "/app",
+                            state: { from: props.location }
+                          }}
+                        />
+                      );
+                    } else {
+                      return (
+                        <Landing
+                          {...props}
+                          {...this.state}
+                          styles={styles}
+                          updateUser={user => this.updateUser(user)}
+                        />
+                      );
+                    }
+                  }}
+                />
+                <Route
                   path="/"
                   exact
                   render={props => {
@@ -624,6 +649,7 @@ class MainRouter extends React.Component {
                     } else {
                       return (
                         <Landing
+                          educators
                           {...props}
                           {...this.state}
                           styles={styles}

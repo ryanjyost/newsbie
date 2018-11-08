@@ -10,9 +10,78 @@ export default class Landing extends Component {
   }
 
   render() {
-    const { styles } = this.props;
+    const { styles, educators } = this.props;
     const isSmall = styles.screenWidth < 500;
     const isHorz = styles.screenWidth > 800;
+
+    let copyObject = {
+      hero: (
+        <span>Stay informed {isSmall ? <br /> : null}without going insane</span>
+      ),
+      subHeader:
+        "newsbie makes it easy to balance, enhance and digest your news media diet, so that you can" +
+        " understand more in less time",
+      benefits: [
+        {
+          main: "Become a better, more critical news consumer",
+          sub:
+            "Discover biases, tactics, patterns," +
+            " trends and other insights that add context and clarity to your worldview."
+        },
+        {
+          main: "Absorb more info in less time",
+          sub:
+            " Efficiently find signals in all the noise with powerful tools and metrics."
+        },
+        {
+          main: "Stay grounded with cold, hard data",
+          sub:
+            "Counteract biases and subjectivity with unbiased and objective analysis of news media data."
+        },
+        {
+          main: "Break free from echo chambers and filter bubbles",
+          sub:
+            "newsbie's balanced, bird's eye view of the entire news media landscape let's you see every story and" +
+            " theme from multiple angles."
+        }
+      ]
+    };
+
+    if (educators) {
+      copyObject = {
+        hero: "Help your students understand the news media",
+        subHeader:
+          "Newsbie is a better way for educators to foster news media literacy and critical" +
+          " thinking, in the classroom and beyond",
+        benefits: [
+          {
+            main: "Cultivate fruitful discussions",
+            sub:
+              "Showcase biases, tactics, patterns, trends, etc. to get students curious and the conversation going."
+          },
+          {
+            main: "Empower students to explore relevant terms and topics",
+            sub:
+              "From discovering a term for the first time to diving deep on current contexts, you and your students" +
+              " have" +
+              " the right tools for the job."
+          },
+          {
+            main: "Keep things grounded with cold, hard data",
+            sub:
+              "Leverage stats, graphs and metrics to promote objective, apolitical analysis and discussions."
+          },
+          {
+            main: "Make information diversification easy",
+            sub:
+              "Newsbie's balanced, bird's eye view of the entire news media landscape helps you and your students see" +
+              " every" +
+              " story" +
+              " and theme from multiple angles."
+          }
+        ]
+      };
+    }
 
     const cdn = "https://d1dzf0mjm4jp11.cloudfront.net/";
 
@@ -201,8 +270,8 @@ export default class Landing extends Component {
           style={{
             ...{
               backgroundColor: styles.colors.white,
-              paddingTop: 160,
-              paddingBottom: 80
+              marginBottom: 30,
+              padding: "160px 20px 80px 20px"
             }
           }}
         >
@@ -214,7 +283,7 @@ export default class Landing extends Component {
               textAlign: "center"
             }}
           >
-            Stay informed {isSmall ? <br /> : null}without going insane
+            {copyObject.hero}
           </h3>
           <h5
             style={{
@@ -231,10 +300,9 @@ export default class Landing extends Component {
               lineHeight: 1.5
             }}
           >
-            {/*Newsbie makes it easy to monitor, analyze and understand the news*/}
+            {/*newsbie makes it easy to monitor, analyze and understand the news*/}
             {/*media. Life-long news junkies, beginners, and everyone in*/}
-            Newsbie makes it easy to balance, enhance and digest your news media
-            diet, so that you can understand more in less time
+            {copyObject.subHeader}
           </h5>
 
           <Link to="/app">
@@ -248,19 +316,181 @@ export default class Landing extends Component {
       );
     };
 
-    const renderBenefits = () => {
+    const renderInfo = () => {
+      let infoHeader = { ...headerStyle, ...{ fontSize: 18 } };
+      let infoSub = {
+        ...subHeaderStyle,
+        ...{
+          textAlign: "center",
+          width: "100%",
+          maxWidth: 500,
+          marginBottom: 50
+        }
+      };
+
       return (
         <Card style={cardStyle}>
-          <h2 style={cardHeader}>Why use Newsbie?</h2>
+          <h2 style={cardHeader}>First things first...</h2>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center"
+            }}
+          >
+            {/*<div style={innerDivStyle}>*/}
+            <h3 style={infoHeader}>What exactly is newsbie?</h3>
+            <h5 style={infoSub}>
+              It's a web application that you access at{" "}
+              <a style={{ color: "#1890ff" }} href="newsbie.io/app">
+                https://newsbie.io/app
+              </a>
+            </h5>
+
+            <h3 style={infoHeader}>What does it offer?</h3>
+            <h5 style={infoSub}>
+              Simple, powerful news media aggregation, navigation and analysis
+              tools.
+            </h5>
+
+            <h3 style={infoHeader}>Where does the data come from?</h3>
+            <h5 style={infoSub}>
+              Newsbie collects news article data and screenshots from a couple
+              dozen news websites every 15 minutes.
+            </h5>
+
+            <h3 style={infoHeader}>Who is newsbie for?</h3>
+            <h5 style={infoSub}>
+              Teachers, professors, academics, and others who wish to lead
+              healthy discussions and facilitate news media literacy. It's also
+              just a great way to stay informed and better understand the news.
+            </h5>
+          </div>
+        </Card>
+      );
+    };
+
+    const renderBenefits = () => {
+      let infoHeader = { ...headerStyle, ...{ fontSize: 18 } };
+      let infoSub = {
+        ...subHeaderStyle,
+        ...{
+          textAlign: "center",
+          width: "100%",
+          maxWidth: 500,
+          marginBottom: 50
+        }
+      };
+
+      return (
+        <Card style={cardStyle}>
+          <h2 style={cardHeader}>Benefits</h2>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center"
+            }}
+          >
+            {/*<div style={innerDivStyle}>*/}
+            <h3 style={infoHeader}>More engaged students</h3>
+            <h5 style={infoSub}>
+              The app makes it easy to present current events in the classroom
+              and for students to explore on their own.
+            </h5>
+
+            <h3 style={infoHeader}>
+              A chance for civil, nonpartisan discourse
+            </h3>
+            <h5 style={infoSub}>
+              The balanced, analytical presentation of news data provides a
+              novel, neutral place to explore the news and dampen polarizing
+              forces.
+            </h5>
+
+            <h3 style={infoHeader}>
+              Constantly new material for assignments and exercises
+            </h3>
+            <h5 style={infoSub}>
+              Newsbie never stops updating and analyzing the latest news, so you
+              always have something new and interesting to bring to the
+              classroom.
+            </h5>
+
+            <h3 style={infoHeader}>A better understanding of the news media</h3>
+            <h5 style={infoSub}>
+              The main goal of newsbie is to help users better understand and be
+              critical of the news media - that means <strong>everyone</strong>{" "}
+              has something to learn!
+            </h5>
+          </div>
+        </Card>
+      );
+    };
+
+    const renderUseCases = () => {
+      let infoHeader = { ...headerStyle, ...{ fontSize: 18 } };
+      let infoSub = {
+        ...subHeaderStyle,
+        ...{
+          textAlign: "center",
+          width: "100%",
+          maxWidth: 500,
+          marginBottom: 50
+        }
+      };
+
+      return (
+        <Card style={cardStyle}>
+          <h2 style={cardHeader}>Use Cases</h2>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center"
+            }}
+          >
+            {/*<div style={innerDivStyle}>*/}
+            <h3 style={infoHeader}>Daily news check-in</h3>
+            <h5 style={infoSub}>
+              Every day for five minutes or so, walk through newsbie with your
+              students. Showcase interesting phenomena, pick a single topic to
+              explore, etc.
+            </h5>
+
+            <h3 style={infoHeader}>Open ended hand raising</h3>
+            <h5 style={infoSub}>
+              Simply throw newsbie up on the big screen, navigate around the app
+              and encourage students to ask questions and share observations.
+            </h5>
+
+            <h3 style={infoHeader}>Fun homework exercises</h3>
+            <h5 style={infoSub}>
+              Students can log in to newsbie and write about a trend they see,
+              or compare two news sources' coverage of the same story, or just
+              prepare to chat the next day!
+            </h5>
+
+            <h3 style={infoHeader}>
+              Teach media literacy, journalism and more
+            </h3>
+            <h5 style={infoSub}>
+              Discuss biases, journalistic practices and more with an abundance
+              of real world examples.
+            </h5>
+          </div>
+        </Card>
+      );
+    };
+
+    const renderOverview = () => {
+      return (
+        <Card style={cardStyle}>
+          <h2 style={cardHeader}>What can I do with newsbie?</h2>
           <div style={outerDivStyle}>
             <div style={innerDivStyle}>
-              <h3 style={headerStyle}>
-                Become a better, more critical news consumer
-              </h3>
-              <h5 style={subHeaderStyle}>
-                Discover biases, tactics, patterns, trends and other insights
-                that add context and clarity to your worldview.
-              </h5>
+              <h3 style={headerStyle}>{copyObject.benefits[0].main}</h3>
+              <h5 style={subHeaderStyle}>{copyObject.benefits[0].sub}</h5>
             </div>
             {renderImage("landing-main.png")}
           </div>
@@ -277,11 +507,8 @@ export default class Landing extends Component {
             <div
               style={{ ...innerDivStyle, ...{ marginLeft: isHorz ? 20 : 0 } }}
             >
-              <h3 style={headerStyle}>Absorb more info in less time</h3>
-              <h5 style={subHeaderStyle}>
-                Efficiently find signals in all the noise with powerful tools
-                and metrics.
-              </h5>
+              <h3 style={headerStyle}>{copyObject.benefits[1].main}</h3>
+              <h5 style={subHeaderStyle}>{copyObject.benefits[1].sub}</h5>
             </div>
             {renderImage("newsbie-term-analysis-preview.png")}
           </div>
@@ -293,11 +520,8 @@ export default class Landing extends Component {
             }}
           >
             <div style={innerDivStyle}>
-              <h3 style={headerStyle}>Stay grounded with cold, hard data</h3>
-              <h5 style={subHeaderStyle}>
-                Counteract biases and subjectivity with unbiased and objective
-                analysis of news media data.
-              </h5>
+              <h3 style={headerStyle}>{copyObject.benefits[2].main}</h3>
+              <h5 style={subHeaderStyle}>{copyObject.benefits[2].sub}</h5>
             </div>
             {renderImage("newsbie-trend-preview.png")}
           </div>
@@ -314,14 +538,8 @@ export default class Landing extends Component {
             <div
               style={{ ...innerDivStyle, ...{ marginLeft: isHorz ? 20 : 0 } }}
             >
-              <h3 style={headerStyle}>
-                Break free from echo chambers and filter bubbles
-              </h3>
-              <h5 style={subHeaderStyle}>
-                Newsbie's balanced, bird's eye view of the entire news media
-                landscape let's you see every story and theme from multiple
-                angles.
-              </h5>
+              <h3 style={headerStyle}>{copyObject.benefits[3].main}</h3>
+              <h5 style={subHeaderStyle}>{copyObject.benefits[3].sub}</h5>
             </div>
             {renderImage("newsbie-articles-preview.png")}
           </div>
@@ -356,14 +574,17 @@ export default class Landing extends Component {
         padding: isHorz ? "0px 20px 0px 20px" : "0px 0px",
         display: "flex",
         flexDirection: "column",
+        alignItems: "center",
         position: "relative",
         borderRadius: 3,
-        width: isHorz ? "60%" : "100%"
+        width: "100%",
+        maxWidth: 500
       };
 
       let outerDiv = {
         display: "flex",
         alignItems: "center",
+        justifyContent: "center",
         // maxWidth: 500,
         margin: "auto",
         borderRadius: 3
@@ -372,18 +593,7 @@ export default class Landing extends Component {
       const SingleFeature = ({ problem, solution, image, reverse }) => {
         return (
           <div style={{ padding: "70px 00px" }}>
-            <div
-              style={{
-                ...outerDiv,
-                ...{
-                  flexDirection: isHorz
-                    ? reverse
-                      ? "row-reverse"
-                      : "row"
-                    : "column"
-                }
-              }}
-            >
+            <div style={outerDiv}>
               <div style={innerDiv}>
                 <div
                   style={{
@@ -442,14 +652,14 @@ export default class Landing extends Component {
                   </h4>
                 </div>
               </div>
-              <div
-                style={{
-                  padding: !isHorz ? 0 : "0px 10px",
-                  width: isHorz ? "40%" : "100%"
-                }}
-              >
-                {renderImage(image, true)}
-              </div>
+              {/*<div*/}
+              {/*style={{*/}
+              {/*padding: !isHorz ? 0 : "0px 10px",*/}
+              {/*width: isHorz ? "40%" : "100%"*/}
+              {/*}}*/}
+              {/*>*/}
+              {/*{renderImage(image, true)}*/}
+              {/*</div>*/}
             </div>
           </div>
         );
@@ -470,7 +680,7 @@ export default class Landing extends Component {
               "Feel like you don't have a clear view of what's going on?"
             }
             solution={
-              "Newsbie provides a rich overview of the entire news media landscape."
+              "newsbie provides a rich overview of the entire news media landscape."
             }
             image={"landing-main.png"}
           />
@@ -669,10 +879,24 @@ export default class Landing extends Component {
         {renderHero()}
 
         <div style={{ marginTop: 30, padding: "0px 0px 0px 0px" }}>
+          {renderInfo()}
+        </div>
+
+        <div style={{ marginTop: 30, padding: "0px 0px 0px 0px" }}>
+          {renderOverview()}
+        </div>
+
+        <div style={{ marginTop: 30, padding: "0px 0px 0px 0px" }}>
           {renderBenefits()}
         </div>
 
-        <div style={{ marginTop: 30 }}>{renderNewFeatures()}</div>
+        <div style={{ marginTop: 30 }}>
+          {educators ? renderFeatures() : renderNewFeatures()}
+        </div>
+
+        <div style={{ marginTop: 30, padding: "0px 0px 0px 0px" }}>
+          {renderUseCases()}
+        </div>
 
         <UserAuthPage
           {...this.props}
